@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\framework\Shearlegs.API\Shearlegs.API.csproj" />
+    <ProjectReference Include="..\..\framework\Shearlegs.Core\Shearlegs.Core.csproj" />
+  </ItemGroup>
+
+</Project>
