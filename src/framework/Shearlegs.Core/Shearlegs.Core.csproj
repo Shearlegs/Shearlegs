@@ -6,8 +6,11 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.1" />
-    <PackageReference Include="NuGet.Frameworks" Version="5.9.0" />
-    <PackageReference Include="NuGet.Packaging" Version="5.9.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="5.0.0" />
+    <PackageReference Include="NuGet.Frameworks" Version="5.9.1" />
+    <PackageReference Include="NuGet.Packaging" Version="5.9.1" />
+    <PackageReference Include="NuGet.Protocol" Version="5.9.1" />
+    <PackageReference Include="NuGet.Resolver" Version="5.9.1" />
   </ItemGroup>
 
   <ItemGroup>
