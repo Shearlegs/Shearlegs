@@ -2,11 +2,12 @@
 using Newtonsoft.Json;
 using Shearlegs.API.Plugins;
 using Shearlegs.API.Plugins.Attributes;
+using Shearlegs.API.Plugins.Loaders;
 using Shearlegs.API.Plugins.Result;
 using Shearlegs.Core.AssemblyLoading;
-using Shearlegs.Core.NuGet;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -16,17 +17,18 @@ namespace Shearlegs.Core.Plugins
 {
     public class PluginManager : IPluginManager
     {
-        private readonly NugetPackageManager nugetPackageManager;
+        private readonly IPluginLoader pluginLoader;
 
-        public PluginManager(NugetPackageManager nugetPackageManager)
+        public PluginManager(IPluginLoader pluginLoader)
         {
-            this.nugetPackageManager = nugetPackageManager;
+            this.pluginLoader = pluginLoader;
         }
 
         public async Task<IPluginResult> ExecutePluginAsync(byte[] pluginData, string parametersJson)
         {
             using AssemblyContext context = AssemblyContext.Create();
-            Assembly pluginAssembly = await nugetPackageManager.LoadNugetPackageAsync(context, pluginData);
+            using MemoryStream ms = new MemoryStream(pluginData);
+            Assembly pluginAssembly = await pluginLoader.LoadPluginAsync(context, ms);
 
             IPlugin pluginInstance = ActivatePlugin(pluginAssembly, parametersJson);
             IPluginResult result = await pluginInstance.ExecuteAsync();

@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace Shearlegs.Core.NuGet
+namespace Shearlegs.NuGet.Helpers
 {
     /// <summary>
     /// Contains a pre-determined list of NuGet packages that are provided by the run-time, and
@@ -142,7 +138,7 @@ namespace Shearlegs.Core.NuGet
             "System.Xml.XmlDocument",
             "System.Xml.XmlSerializer",
             "System.Xml.XPath",
-            "System.Xml.XPath.XDocument",
+            "System.Xml.XPath.XDocument"
         };
     }
 }

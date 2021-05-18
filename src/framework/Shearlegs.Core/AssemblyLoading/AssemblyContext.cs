@@ -1,14 +1,16 @@
-﻿using System;
+﻿using Shearlegs.API.AssemblyLoading;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Loader;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Shearlegs.Core.AssemblyLoading
 {
-    public class AssemblyContext : IDisposable
+    public class AssemblyContext : IDisposable, IAssemblyContext
     {
         public static AssemblyContext Create() => new AssemblyContext();
 
