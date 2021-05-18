@@ -3,6 +3,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Shearlegs.API.Plugins;
 using Shearlegs.API.Plugins.Result;
+using Shearlegs.Core.Plugins.Result;
 using Shearlegs.Runtime;
 using System.IO;
 using System.Threading.Tasks;
@@ -17,7 +18,6 @@ namespace Shearlegs.Framework.Test
         {
             var servicveProvider = ShearlegsRuntime.BuildServiceProvider();
 
-
             var pluginManager = servicveProvider.GetRequiredService<IPluginManager>();
 
             var pluginData = 
@@ -26,8 +26,10 @@ namespace Shearlegs.Framework.Test
             string json =
                 await File.ReadAllTextAsync(@"C:\Users\Michal\projects\Github\Shearlegs\Shearlegs\src\samples\SamplePlugin\bin\Debug\parameters.json");
 
-            IPluginResult instance = await pluginManager.ExecutePluginAsync(pluginData, json);
+            IPluginResult result = await pluginManager.ExecutePluginAsync(pluginData, json);
+            PluginTextResult textResult = result as PluginTextResult;
 
+            System.Console.WriteLine(textResult.Text);
 
         }
     }

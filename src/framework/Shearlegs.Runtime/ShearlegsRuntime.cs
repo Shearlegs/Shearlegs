@@ -11,7 +11,8 @@ namespace Shearlegs.Runtime
     {
         public static void RegisterServices(IServiceCollection serviceCollection)
         {
-            serviceCollection.AddSingleton<NuGetPackageManager>();
+            serviceCollection.AddTransient<NuGetPackageManager>();
+
             serviceCollection.AddSingleton<IPluginManager, PluginManager>();
             serviceCollection.AddTransient<IPluginLoader, NuGetPluginLoader>();
         }
