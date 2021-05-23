@@ -18,8 +18,6 @@ namespace SamplePlugin
         {
             StringBuilder sb = new StringBuilder();
 
-            System.Console.WriteLine(Dapper.CommandFlags.Buffered.ToString()); 
-
             sb.AppendLine("This is start of sample plugin result!");
             sb.AppendLine("Text from plugin parameters: " + parameters.Text);
             sb.AppendLine("Secret from plugin parameters: " + parameters.Secret);

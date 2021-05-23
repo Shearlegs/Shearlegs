@@ -52,10 +52,9 @@ namespace Shearlegs.Core.Plugins
             IServiceCollection serviceCollection = new ServiceCollection();
             serviceCollection.AddSingleton(pluginType);
 
-            foreach (Type service in services)
+            foreach (Type serviceType in services)
             {
-                serviceCollection.Add(new ServiceDescriptor(service.GetType(), service.GetType(),
-                    service.GetCustomAttribute<ServiceAttribute>().Lifetime));
+                serviceCollection.Add(new ServiceDescriptor(serviceType, serviceType, serviceType.GetCustomAttribute<ServiceAttribute>().Lifetime));
             }
 
             if (parameters != null)
