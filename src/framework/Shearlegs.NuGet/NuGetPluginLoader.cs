@@ -96,7 +96,7 @@ namespace Shearlegs.NuGet
             RuntimeGraph graph = GetRuntimeGraph(Directory.GetCurrentDirectory());
             ManagedCodeConventions conv = new ManagedCodeConventions(graph);
 
-            var collection = new ContentItemCollection();
+            ContentItemCollection collection = new ContentItemCollection();
             collection.Load(await reader.GetFilesAsync(CancellationToken.None));
 
             List<Assembly> assemblies = new List<Assembly>();
