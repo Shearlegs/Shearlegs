@@ -103,17 +103,17 @@ namespace Shearlegs.NuGet
             return packageIdentities;
         }
 
-        public string GetNugetPackageFile(PackageIdentity identity)
+        public string GetNugetPackageFile(PackageIdentity identity, out string installedPath)
         {
             if (identity == null)
             {
                 throw new ArgumentNullException(nameof(identity));
             }
 
-            var dir = packagePathResolver.GetInstallPath(identity);
-            var dirName = new DirectoryInfo(dir).Name;
+            installedPath = packagePathResolver.GetInstallPath(identity);
+            var dirName = new DirectoryInfo(installedPath).Name;
 
-            return Path.Combine(dir, dirName + ".nupkg");
+            return Path.Combine(installedPath, dirName + ".nupkg");
         }
 
         private async Task InstallPackages(SourceCacheContext sourceCacheContext, IEnumerable<SourcePackageDependencyInfo> packagesToInstall)

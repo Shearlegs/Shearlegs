@@ -67,13 +67,13 @@ namespace Shearlegs.NuGet
             // Load dependencies
             foreach (PackageIdentity identity in identities)
             {
-                string path = manager.GetNugetPackageFile(identity);
+                string path = manager.GetNugetPackageFile(identity, out string installedPath);
                 using PackageArchiveReader dependencyReader = new PackageArchiveReader(path);
-                await LoadLibAsync(context, dependencyReader);
+                await LoadLibAsync(context, dependencyReader, installedPath);
             }
 
             // Load plugin 
-            IEnumerable<Assembly> assemblies = await LoadLibAsync(context, reader);
+            IEnumerable<Assembly> assemblies = await LoadLibAsync(context, reader, null);
             return assemblies.FirstOrDefault();
         }
 
@@ -91,7 +91,7 @@ namespace Shearlegs.NuGet
             return null;
         }
 
-        private async Task<IEnumerable<Assembly>> LoadLibAsync(IAssemblyContext context, PackageArchiveReader reader)
+        private async Task<IEnumerable<Assembly>> LoadLibAsync(IAssemblyContext context, PackageArchiveReader reader, string path)
         {
             RuntimeGraph graph = GetRuntimeGraph(Directory.GetCurrentDirectory());
             ManagedCodeConventions conv = new ManagedCodeConventions(graph);
@@ -103,28 +103,41 @@ namespace Shearlegs.NuGet
             
             NuGetFramework framework = frameworkReducer.GetNearest(targetFramework, await reader.GetSupportedFrameworksAsync(CancellationToken.None));
 
+            ContentItemGroup natives = collection.FindBestItemGroup(
+                conv.Criteria.ForRuntime(RuntimeInformation.RuntimeIdentifier), 
+                conv.Patterns.NativeLibraries);
+
             ContentItemGroup group = collection.FindBestItemGroup(
                 conv.Criteria.ForFrameworkAndRuntime(framework, RuntimeInformation.RuntimeIdentifier),
                 conv.Patterns.RuntimeAssemblies);
 
-            if (group == null)
+            if (group != null)
             {
-                return assemblies;
+                foreach (ContentItem item in group.Items)
+                {
+                    if (!item.Path.EndsWith(".dll"))
+                        continue;
+
+                    ZipArchiveEntry entry = reader.GetEntry(item.Path);
+                    using Stream libStream = entry.Open();
+                    using MemoryStream ms = new MemoryStream();
+                    await libStream.CopyToAsync(ms);
+                    ms.Position = 0;
+                    Assembly assembly = context.LoadAssembly(ms);
+                    assemblies.Add(assembly);
+                    logger.LogInformation($"{assembly.GetName().Name} {assembly.GetName().Version} has been loaded!");
+                }
             }
 
-            foreach (ContentItem item in group.Items)
-            {                
-                if (!item.Path.EndsWith(".dll"))
-                    continue;
-
-                ZipArchiveEntry entry = reader.GetEntry(item.Path);
-                using Stream libStream = entry.Open();
-                using MemoryStream ms = new MemoryStream();
-                await libStream.CopyToAsync(ms);
-                ms.Position = 0;
-                Assembly assembly = context.LoadAssembly(ms);
-                assemblies.Add(assembly);
-                logger.LogInformation($"{assembly.GetName().Name} {assembly.GetName().Version} has been loaded!");              
+            if (natives != null)
+            {
+                foreach (ContentItem item in natives.Items)
+                {
+                    if (!item.Path.EndsWith(".dll"))
+                        continue;
+                    
+                    NativeLibrary.Load(Path.Combine(path, item.Path));
+                }
             }
 
             return assemblies;
