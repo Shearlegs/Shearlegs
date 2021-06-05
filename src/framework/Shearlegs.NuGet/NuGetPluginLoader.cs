@@ -135,8 +135,8 @@ namespace Shearlegs.NuGet
                 {
                     if (!item.Path.EndsWith(".dll"))
                         continue;
-                    
-                    NativeLibrary.Load(Path.Combine(path, item.Path));
+                    string itemPath = Path.Combine(path, item.Path);
+                    NativeLibrary.Load(itemPath);                    
                 }
             }
 

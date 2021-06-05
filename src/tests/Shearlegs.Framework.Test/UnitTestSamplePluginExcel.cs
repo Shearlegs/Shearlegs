@@ -32,12 +32,19 @@ namespace Shearlegs.Framework.Test
 
             IPluginManager pluginManager = serviceProvider.GetRequiredService<IPluginManager>();
 
+            await DoTest(pluginManager);
+            await DoTest(pluginManager);
+
+        }
+
+        private async Task DoTest(IPluginManager pluginManager)
+        {
             byte[] pluginData = await File.ReadAllBytesAsync(PluginPath);
             string json = parameters.ToString();
 
             IPluginResult result = await pluginManager.ExecutePluginAsync(pluginData, json);
             PluginFileResult fileResult = result as PluginFileResult;
-            
+
             string outputPath = Path.Combine(OutputDirectory, fileResult.Name);
             await File.WriteAllBytesAsync(outputPath, fileResult.Content);
         }

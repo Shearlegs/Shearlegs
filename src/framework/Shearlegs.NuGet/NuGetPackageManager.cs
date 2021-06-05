@@ -127,6 +127,12 @@ namespace Shearlegs.NuGet
 
             foreach (var package in packagesToInstall)
             {
+                // skip already installed packages
+                if (Directory.Exists(packagePathResolver.GetInstalledPath(package)))
+                {
+                    continue;
+                }
+
                 var downloadResource = await package.Source.GetResourceAsync<DownloadResource>(CancellationToken.None);
 
                 // Download the package (might come from the shared package cache).
@@ -136,6 +142,8 @@ namespace Shearlegs.NuGet
                     SettingsUtility.GetGlobalPackagesFolder(settings),
                     nugetLogger,
                     CancellationToken.None);
+
+                
 
                 // Extract the package into the target directory.
                 await PackageExtractor.ExtractPackageAsync(
