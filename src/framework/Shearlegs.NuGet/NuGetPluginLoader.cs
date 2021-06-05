@@ -1,8 +1,12 @@
 ﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.PlatformAbstractions;
+using NuGet.Client;
+using NuGet.ContentModel;
 using NuGet.Frameworks;
 using NuGet.Packaging;
 using NuGet.Packaging.Core;
 using NuGet.Resolver;
+using NuGet.RuntimeModel;
 using Shearlegs.API.AssemblyLoading;
 using Shearlegs.API.Plugins.Loaders;
 using System;
@@ -11,6 +15,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -72,34 +77,56 @@ namespace Shearlegs.NuGet
             return assemblies.FirstOrDefault();
         }
 
-        private async Task<IEnumerable<Assembly>> LoadLibAsync(IAssemblyContext context, PackageArchiveReader reader)
+        private RuntimeGraph GetRuntimeGraph(string expandedPath)
         {
-            IEnumerable<FrameworkSpecificGroup> libs = await reader.GetLibItemsAsync(CancellationToken.None);
-
-            List<Assembly> assemblies = new List<Assembly>();
-            NuGetFramework framework = frameworkReducer.GetNearest(targetFramework, libs.Select(l => l.TargetFramework));
-            foreach (FrameworkSpecificGroup lib in libs)
+            string runtimeGraphFile = Path.Combine(expandedPath, RuntimeGraph.RuntimeGraphFileName);
+            if (File.Exists(runtimeGraphFile))
             {
-                if (lib.TargetFramework != framework)
+                using (FileStream stream = File.OpenRead(runtimeGraphFile))
                 {
-                    continue;
-                }
-
-                foreach (string item in lib.Items)
-                {
-                    if (!item.EndsWith(".dll"))
-                        continue;
-
-                    ZipArchiveEntry entry = reader.GetEntry(item);
-                    using Stream libStream = entry.Open();                    
-                    using MemoryStream ms = new MemoryStream();
-                    await libStream.CopyToAsync(ms);
-                    ms.Position = 0;
-                    Assembly assembly = context.LoadAssembly(ms);
-                    assemblies.Add(assembly);
-                    logger.LogInformation($"{assembly.GetName().Name} {assembly.GetName().Version} has been loaded!");
+                    return JsonRuntimeFormat.ReadRuntimeGraph(stream);
                 }
             }
+
+            return null;
+        }
+
+        private async Task<IEnumerable<Assembly>> LoadLibAsync(IAssemblyContext context, PackageArchiveReader reader)
+        {
+            RuntimeGraph graph = GetRuntimeGraph(Directory.GetCurrentDirectory());
+            ManagedCodeConventions conv = new ManagedCodeConventions(graph);
+
+            var collection = new ContentItemCollection();
+            collection.Load(await reader.GetFilesAsync(CancellationToken.None));
+
+            List<Assembly> assemblies = new List<Assembly>();
+            
+            NuGetFramework framework = frameworkReducer.GetNearest(targetFramework, await reader.GetSupportedFrameworksAsync(CancellationToken.None));
+
+            ContentItemGroup group = collection.FindBestItemGroup(
+                conv.Criteria.ForFrameworkAndRuntime(framework, RuntimeInformation.RuntimeIdentifier),
+                conv.Patterns.RuntimeAssemblies);
+
+            if (group == null)
+            {
+                return assemblies;
+            }
+
+            foreach (ContentItem item in group.Items)
+            {                
+                if (!item.Path.EndsWith(".dll"))
+                    continue;
+
+                ZipArchiveEntry entry = reader.GetEntry(item.Path);
+                using Stream libStream = entry.Open();
+                using MemoryStream ms = new MemoryStream();
+                await libStream.CopyToAsync(ms);
+                ms.Position = 0;
+                Assembly assembly = context.LoadAssembly(ms);
+                assemblies.Add(assembly);
+                logger.LogInformation($"{assembly.GetName().Name} {assembly.GetName().Version} has been loaded!");              
+            }
+
             return assemblies;
         }
     }

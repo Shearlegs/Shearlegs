@@ -90,7 +90,6 @@ namespace Shearlegs.NuGet
                 if (!DependencySuppliedByHost(dependency))
                 {
                     configs.Add(config);
-                    packageIdentities.Add(packageIdentity);
                     await GetPackageDependencies(packageIdentity, sourceCacheContext, allPackages);
                 }                    
             }
@@ -100,6 +99,7 @@ namespace Shearlegs.NuGet
             await InstallPackages(sourceCacheContext, packagesToInstall);
             
             packageIdentities.AddRange(packagesToInstall);
+
             return packageIdentities;
         }
 
