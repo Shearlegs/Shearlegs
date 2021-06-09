@@ -2,26 +2,28 @@
 @using LoginPage.Layouts
 @layout LoginLayout
 
-<main class="form-signin text-center" style="zoom: 3">
-    <form @onsubmit="LoginAsync">
+<main class="form-signin text-center">
+    <form action="signin" method="post">
         <img class="mb-2" src="/img/icon.png" alt="" width="100" height="100">
         <h3 class="h3 mb-3 fw-normal">Login to Continue</h3>
 
+        @if (IsWrong)
+        {
+            <div class="mb-3 bg-danger p-2 rounded-3">
+                <small class="text-white"><i class="bi bi-exclamation-circle-fill"></i> Wrong username or password.</small>
+            </div>
+        }
+
         <div class="form-floating">
-            <input type="email" class="form-control" id="floatingInput" @bind="@LoginParams.Name" placeholder="Your username">
+            <input name="username" type="text" class="form-control" id="floatingInput" @bind="@LoginParams.Name" @bind:event="oninput" placeholder="Your username">
             <label for="floatingInput">Username</label>
         </div>
         <div class="form-floating">
-            <input type="password" class="form-control" id="floatingPassword" @bind="@LoginParams.Password" placeholder="Your password">
+            <input name="password" type="password" class="form-control" id="floatingPassword" @bind="@LoginParams.Password" @bind:event="oninput" placeholder="Your password">
             <label for="floatingPassword">Password</label>
         </div>
 
-        <div class="checkbox mb-3">
-            <label>
-                <input type="checkbox" value="remember-me"> Remember me
-            </label>
-        </div>
-        <button class="w-100 btn btn-lg btn-primary" type="submit">Login</button>
+        <button class="w-100 btn btn-lg btn-primary" type="submit" disabled="@IsInvalid">Login</button>
         <p class="mt-5 mb-3 text-muted">&copy; 2020-@DateTime.UtcNow.Year</p>
     </form>
 </main>

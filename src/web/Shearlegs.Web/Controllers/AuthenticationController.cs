@@ -26,23 +26,19 @@ namespace Shearlegs.Web.Controllers
 
         [ResponseCache(NoStore = true, Duration = 0)]
         [HttpPost("~/signin")]
-        public async Task<IActionResult> SignInAsync([FromBody] LoginParams loginParams)
+        public async Task<IActionResult> SignInAsync([FromForm] string username, [FromForm] string password)
         {
-            User user = await usersRepository.GetUserAsync(loginParams.Name, loginParams.Password);
+            User user = await usersRepository.GetUserAsync(username, password);
 
             if (user == null)
             {
-                return BadRequest();
-            }
-
-            if (loginParams.ReturnUrl == null)
-            {
-                loginParams.ReturnUrl = "/";
+                return Redirect("/login?isWrong=true");
             }
 
             List<Claim> claims = new()
             {
-                new Claim(ClaimTypes.Name, user.Id.ToString()),
+                new Claim(ClaimTypes.Name, user.Name),
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Role, user.Role),
             };
 
@@ -56,17 +52,19 @@ namespace Shearlegs.Web.Controllers
                 ExpiresUtc = DateTime.UtcNow.AddHours(24),
                 IsPersistent = true,
                 IssuedUtc = DateTime.UtcNow,
-                RedirectUri = loginParams.ReturnUrl
+                RedirectUri = "/"
             };
 
-            return SignIn(claimsPrincipal, authProperties);
+            await HttpContext.SignInAsync(claimsPrincipal, authProperties);
+            return Redirect("/");
         }
 
         [ResponseCache(NoStore = true, Duration = 0)]
         [HttpGet("~/signout"), HttpPost("~/signout")]
-        public IActionResult SignOutAsync()
+        public async Task<IActionResult> SignOutAsync()
         {
-            return SignOut(new AuthenticationProperties() { RedirectUri = "/" }, CookieAuthenticationDefaults.AuthenticationScheme);
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme, new AuthenticationProperties() { RedirectUri = "/" });
+            return Redirect("/");
         }
     }
 }

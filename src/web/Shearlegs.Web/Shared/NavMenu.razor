@@ -15,8 +15,23 @@
                     <a class="nav-link" href="/counter">Counter</a>
                 </li>
             </ul>
+            
+            <ul class="navbar-nav">
+                <AuthorizeView>
+                    <Authorized>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                @context.User.Identity.Name
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="/signout">Sign Out</a></li>
+                            </ul>
+                        </li>
+                    </Authorized>
+                </AuthorizeView>                
+            </ul>
             <div class="d-flex">
-                <button class="btn btn-outline-primary">Log In</button>
+
             </div>
         </div>
     </div>
