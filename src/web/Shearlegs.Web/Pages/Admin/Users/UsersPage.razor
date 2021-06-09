@@ -1,0 +1,52 @@
+﻿@page "/admin/users"
+
+<nav aria-label="breadcrumb mb-3">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">Admin</li>
+        <li class="breadcrumb-item active" aria-current="page">Users</li>
+    </ol>
+</nav>
+
+<div class="d-flex align-items-center mb-3">
+    <div class="me-auto d-flex align-items-center">
+        <h4>Users</h4>
+    </div>
+    <div>
+        <div class="input-group">
+            <span class="input-group-text" id="basic-addon1">Search</span>
+            <input type="text" @bind="searchString" @bind:event="oninput" class="form-control" placeholder="Username" />
+        </div>
+
+    </div>
+</div>
+
+@if (Users != null)
+{
+    <table class="table mb-3">
+        <caption>Total Users: @SearchedUsers.Count()</caption>
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Username</th>
+                <th scope="col">Last Login</th>
+                <th scope="col">Create Date</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <Virtualize Items="SearchedUsers" Context="user">
+                <tr>
+                    <th scope="row">@user.Id</th>
+                    <td>@user.Name</td>
+                    <td>@user.LastLoginString</td>
+                    <td>@user.CreateDate</td>
+                    <td><button class="btn btn-sm btn-outline-success"><i class="bi bi-pencil-square"></i></button></td>
+                </tr>
+            </Virtualize>
+        </tbody>
+    </table>
+
+    <div class="mb-3">
+        <button class="btn btn-primary">Create New User</button>
+    </div>
+}

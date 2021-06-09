@@ -1,13 +1,9 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace Shearlegs.Web.Pages.Home.IndexPage
+namespace Shearlegs.Web.Pages.Home.Index
 {
-    public partial class Index
+    public partial class IndexPage
     {
         [Inject]
         public NavigationManager NavigationManager { get; set; }
@@ -15,7 +11,7 @@ namespace Shearlegs.Web.Pages.Home.IndexPage
         [Inject]
         public HttpContextAccessor Accessor { get; set; }
 
-        protected override async Task OnInitializedAsync()
+        protected override void OnInitialized()
         {
             if (!Accessor.HttpContext.User.Identity?.IsAuthenticated ?? true)
             {

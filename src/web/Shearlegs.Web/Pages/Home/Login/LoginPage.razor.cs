@@ -1,29 +1,18 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Primitives;
-using Shearlegs.Web.Database.Repositories;
-using Shearlegs.Web.Models;
 using Shearlegs.Web.Models.Params;
 using System;
-using System.Collections.Generic;
-using System.Net;
 using System.Net.Http;
-using System.Net.Http.Json;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace Shearlegs.Web.Pages.Home.LoginPage
+namespace Shearlegs.Web.Pages.Home.Login
 {
-    public partial class Login
+    public partial class LoginPage
     {
         [Inject]
-        public HttpClient HttpClient { get; set; }
-        [Inject]
-        public UsersRepository UsersRepository { get; set; }
+        public HttpClient HttpClient { get; set; }  
 
         [Inject]
         public NavigationManager NavigationManager { get; set; }
@@ -43,7 +32,7 @@ namespace Shearlegs.Web.Pages.Home.LoginPage
             } 
         }
 
-        protected override async Task OnInitializedAsync()
+        protected override void OnInitialized()
         {
             if (Accessor.HttpContext.User.Identity?.IsAuthenticated ?? false)
             {

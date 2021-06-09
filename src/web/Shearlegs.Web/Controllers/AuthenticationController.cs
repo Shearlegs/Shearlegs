@@ -49,13 +49,14 @@ namespace Shearlegs.Web.Controllers
             AuthenticationProperties authProperties = new()
             {
                 AllowRefresh = true,
-                ExpiresUtc = DateTime.UtcNow.AddHours(24),
+                ExpiresUtc = DateTime.UtcNow.AddDays(7),
                 IsPersistent = true,
                 IssuedUtc = DateTime.UtcNow,
                 RedirectUri = "/"
             };
 
-            await HttpContext.SignInAsync(claimsPrincipal, authProperties);
+            await usersRepository.UpdateLastLoginDateAsync(user.Id);
+            await HttpContext.SignInAsync(claimsPrincipal, authProperties);            
             return Redirect("/");
         }
 

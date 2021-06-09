@@ -1,4 +1,8 @@
 
+td, th {
+    vertical-align: middle;
+}
+
 
 #blazor-error-ui {
     background: lightyellow;
@@ -18,3 +22,5 @@
         right: 0.75rem;
         top: 0.5rem;
     }
+
+    
