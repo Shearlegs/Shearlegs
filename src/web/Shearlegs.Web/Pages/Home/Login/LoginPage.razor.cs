@@ -2,6 +2,9 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Primitives;
+using Microsoft.JSInterop;
+using Shearlegs.Web.Extensions;
+using Shearlegs.Web.Helpers;
 using Shearlegs.Web.Models.Params;
 using System;
 using System.Net.Http;
@@ -16,6 +19,9 @@ namespace Shearlegs.Web.Pages.Home.Login
 
         [Inject]
         public NavigationManager NavigationManager { get; set; }
+
+        [Inject]
+        public IJSRuntime JSRuntime { get; set; }
 
         [Inject]
         public HttpContextAccessor Accessor { get; set; }
@@ -43,7 +49,13 @@ namespace Shearlegs.Web.Pages.Home.Login
             if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("isWrong", out StringValues isWrong))
             {
                 IsWrong = Convert.ToBoolean(isWrong);
-            }
+            }            
+        }
+
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (firstRender)
+                await JSRuntime.ChangeUrlAsync(UrlHelper.RemoveQueryStringByKey(NavigationManager.Uri, "isWrong"));
         }
     }
 }

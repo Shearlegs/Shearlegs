@@ -30,7 +30,8 @@
             <tr>
                 <th scope="col">ID</th>
                 <th scope="col">Username</th>
-                <th scope="col">Last Login</th>
+                <th scope="col">Role</th>
+                <th scope="col" class="table-hide">Last Login</th>
                 <th scope="col" class="table-hide">Create Date</th>
                 <th scope="col"></th>
             </tr>
@@ -40,7 +41,8 @@
                 <tr>
                     <th scope="row">@user.Id</th>
                     <td>@user.Name</td>
-                    <td>@user.LastLoginString</td>
+                    <td>@user.Role</td>
+                    <td class="table-hide">@user.LastLoginString</td>
                     <td class="table-hide">@user.CreateDate</td>
                     <td><a class="btn btn-sm btn-outline-success" href="/admin/users/@user.Id"><i class="bi bi-pencil-square"></i></a></td>
                 </tr>

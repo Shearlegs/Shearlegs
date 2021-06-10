@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Components;
+using Shearlegs.Web.Constants;
 using Shearlegs.Web.Database.Repositories;
 using Shearlegs.Web.Models;
 using Shearlegs.Web.Pages.Admin.Users.Components;
@@ -9,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace Shearlegs.Web.Pages.Admin.Users
 {
+    [Authorize(Roles = RoleConstants.AdminRoleId)]
     public partial class UsersPage
     {
         [Inject]
@@ -24,7 +27,8 @@ namespace Shearlegs.Web.Pages.Admin.Users
         private string searchString;
 
         public List<User> SearchedUsers 
-            => Users.Where(x => string.IsNullOrEmpty(searchString) || x.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase)).ToList();
+            => Users.Where(x => string.IsNullOrEmpty(searchString) || x.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+                .OrderByDescending(x => x.LastLoginDate).ToList();
 
         protected override async Task OnInitializedAsync()
         {

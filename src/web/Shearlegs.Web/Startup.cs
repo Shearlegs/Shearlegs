@@ -44,25 +44,13 @@ namespace Shearlegs.Web
             services.AddRazorPages();
             services.AddControllers();
             services.AddServerSideBlazor();
-            services.AddAuthorizationCore();
+            services.AddAuthorization();
+            services.AddAuthorizationCore();            
 
             services.AddHttpContextAccessor();
             services.AddScoped<HttpContextAccessor>();
             services.AddHttpClient();
-            services.AddScoped(s => 
-            {
-                var uriHelper = s.GetRequiredService<NavigationManager>();
-                var httpContextAccessor = s.GetRequiredService<IHttpContextAccessor>();
-                var httpClient = new HttpClient()
-                {
-                    BaseAddress = new Uri(uriHelper.BaseUri)
-                };
-                if (httpContextAccessor.HttpContext.Request.Cookies.TryGetValue(".AspNetCore.Cookies", out var cookieValue))
-                {
-                    httpClient.DefaultRequestHeaders.TryAddWithoutValidation("cookie", $".AspNetCore.Cookies={cookieValue}");
-                }
-                return httpClient;
-            });
+            services.AddScoped<HttpClient>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

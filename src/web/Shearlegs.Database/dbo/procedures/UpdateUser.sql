@@ -12,9 +12,11 @@ BEGIN
 	UPDATE dbo.Users
 	SET Name = @Name,
 		Role = @Role,
-		PasswordHash = PWDENCRYPT(@Password),
 		UpdateDate = SYSDATETIME()
 	WHERE Id = @Id;
+
+	IF @Password IS NOT NULL
+		UPDATE dbo.Users SET PasswordHash = PWDENCRYPT(@Password) WHERE Id = @Id;
 
 	SELECT Id, Name, Role, LastLoginDate, UpdateDate, CreateDate FROM dbo.Users WHERE Id = @Id;
 

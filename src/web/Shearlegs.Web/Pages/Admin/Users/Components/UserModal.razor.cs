@@ -40,9 +40,8 @@ namespace Shearlegs.Web.Pages.Admin.Users.Components
         {
             isLoading = true;
             User user = await UsersRepository.AddUserAsync(Model);
-            await OnUserCreated.InvokeAsync(user);
             isLoading = false;
-            await HideAsync();
+            await OnUserCreated.InvokeAsync(user);
             Model = new User();
         }
     }

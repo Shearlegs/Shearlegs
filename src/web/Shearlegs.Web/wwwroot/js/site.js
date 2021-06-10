@@ -15,3 +15,7 @@ function HideModal(id) {
     var modal = bootstrap.Modal.getInstance(myModalEl);
     modal.hide();
 }
+
+window.ChangeUrl = function (url) {
+    history.pushState(null, '', url);
+}

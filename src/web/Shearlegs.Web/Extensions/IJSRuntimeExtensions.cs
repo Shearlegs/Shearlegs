@@ -23,9 +23,9 @@ namespace Shearlegs.Web.Extensions
             await jsRuntime.InvokeVoidAsync("HideModal", modalId);
         }
 
-        public static async Task<string> GetFormDataJsonAsync(this IJSRuntime jsRuntime, string formName)
+        public static async Task ChangeUrlAsync(this IJSRuntime jsRuntime, string url)
         {
-            return await jsRuntime.InvokeAsync<string>("GetFormDataJson", formName);
+            await jsRuntime.InvokeVoidAsync("ChangeUrl", url);
         }
     }
 }
