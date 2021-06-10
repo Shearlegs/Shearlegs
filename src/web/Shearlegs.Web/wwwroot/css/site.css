@@ -3,6 +3,11 @@ td, th {
     vertical-align: middle;
 }
 
+@media (max-width: 980px) {
+    .table-hide {
+        display: none !important;
+    }
+}
 
 #blazor-error-ui {
     background: lightyellow;

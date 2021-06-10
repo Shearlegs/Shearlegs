@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace Shearlegs.Web.Models
@@ -14,5 +15,18 @@ namespace Shearlegs.Web.Models
         public string Password { get; set; }
 
         public string LastLoginString => LastLoginDate == default ? "Never" : LastLoginDate.ToString();
+
+        public User MakeCopy()
+        {
+            return new User()
+            {
+                Id = Id,
+                Name = Name,
+                Role = Role,
+                LastLoginDate = LastLoginDate,
+                CreateDate = CreateDate,
+                Password = Password
+            };
+        }
     }
 }

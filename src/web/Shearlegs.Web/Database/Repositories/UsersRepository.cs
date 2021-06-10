@@ -26,14 +26,14 @@ namespace Shearlegs.Web.Database.Repositories
 
         public async Task<User> AddUserAsync(User user)
         {
-            const string sql = "dbo.AddUser";
-            return await connection.QuerySingleOrDefaultAsync<User>(sql, user);
+            const string sql = "dbo.CreateUser";
+            return await connection.QuerySingleOrDefaultAsync<User>(sql, new { user.Name, user.Password, user.Role }, commandType: CommandType.StoredProcedure);
         }
 
         public async Task<User> UpdateUserAsync(User user)
         {
             const string sql = "dbo.UpdateUser";
-            return await connection.QuerySingleOrDefaultAsync<User>(sql, user);
+            return await connection.QuerySingleOrDefaultAsync<User>(sql, new { user.Id, user.Name, user.Password, user.Role }, commandType: CommandType.StoredProcedure);
         }
 
         public async Task<IEnumerable<User>> GetUsersAsync()
@@ -45,7 +45,7 @@ namespace Shearlegs.Web.Database.Repositories
         public async Task<User> GetUserAsync(int userId)
         {
             const string sql = "SELECT Id, Name, Role, LastLoginDate, UpdateDate, CreateDate FROM dbo.Users WHERE Id = @userId;";
-            return await connection.QuerySingleOrDefaultAsync(sql, new { userId });
+            return await connection.QuerySingleOrDefaultAsync<User>(sql, new { userId });
         }
 
         public async Task UpdateLastLoginDateAsync(int userId)

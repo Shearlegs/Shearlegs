@@ -1,0 +1,45 @@
+﻿<div class="modal fade" id="@ModalId" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Create User</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <EditForm Model="Model" OnValidSubmit="SubmitAsync">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Username</label>
+                        <InputText @bind-Value="@Model.Name" class="form-control" required />
+                        <div class="form-text">The username should be the size of 25 characters</div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Role</label>
+                        <InputSelect class="form-select" @bind-Value="@Model.Role">
+                            <option value="Admin">Admin</option>
+                            <option value="Guest">Guest</option>
+                        </InputSelect>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Password</label>
+                        <InputText type="password" @bind-Value="@Model.Password" class="form-control" required />
+                        <div class="form-text">The password must have above 8 characters</div>
+                    </div>
+
+                    <DataAnnotationsValidator />
+                    <ValidationSummary />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    @if (isLoading)
+                    {
+                        <LoadingButton />
+                    }
+                    else
+                    {
+                        <button type="submit" class="btn btn-primary">Create User</button>
+                    }
+                </div>
+            </EditForm>            
+        </div>
+    </div>
+</div>

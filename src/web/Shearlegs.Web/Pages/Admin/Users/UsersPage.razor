@@ -1,4 +1,5 @@
 ﻿@page "/admin/users"
+@using Shearlegs.Web.Pages.Admin.Users.Components
 
 <nav aria-label="breadcrumb mb-3">
     <ol class="breadcrumb">
@@ -7,7 +8,7 @@
     </ol>
 </nav>
 
-<div class="d-flex align-items-center mb-3">
+<div class="d-md-flex align-items-center mb-3">
     <div class="me-auto d-flex align-items-center">
         <h4>Users</h4>
     </div>
@@ -15,21 +16,22 @@
         <div class="input-group">
             <span class="input-group-text" id="basic-addon1">Search</span>
             <input type="text" @bind="searchString" @bind:event="oninput" class="form-control" placeholder="Username" />
+            <button class="btn btn-sm btn-primary flex-nowrap ms-1" @onclick="ShowModalAsync">Create New</button>
         </div>
-
+        
     </div>
 </div>
 
 @if (Users != null)
 {
-    <table class="table mb-3">
+    <table class="table table-light table-bordered mb-3">
         <caption>Total Users: @SearchedUsers.Count()</caption>
         <thead>
             <tr>
                 <th scope="col">ID</th>
                 <th scope="col">Username</th>
                 <th scope="col">Last Login</th>
-                <th scope="col">Create Date</th>
+                <th scope="col" class="table-hide">Create Date</th>
                 <th scope="col"></th>
             </tr>
         </thead>
@@ -39,14 +41,12 @@
                     <th scope="row">@user.Id</th>
                     <td>@user.Name</td>
                     <td>@user.LastLoginString</td>
-                    <td>@user.CreateDate</td>
-                    <td><button class="btn btn-sm btn-outline-success"><i class="bi bi-pencil-square"></i></button></td>
+                    <td class="table-hide">@user.CreateDate</td>
+                    <td><a class="btn btn-sm btn-outline-success" href="/admin/users/@user.Id"><i class="bi bi-pencil-square"></i></a></td>
                 </tr>
             </Virtualize>
         </tbody>
     </table>
-
-    <div class="mb-3">
-        <button class="btn btn-primary">Create New User</button>
-    </div>
 }
+
+<UserModal OnUserCreated="OnUserCreated" @ref="Modal" />

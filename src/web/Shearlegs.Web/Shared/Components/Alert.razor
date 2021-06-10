@@ -1,0 +1,25 @@
+﻿<div class="mb-3 @BackgroundClass() p-2 rounded-3">
+    <small class="text-white">
+        @if (!string.IsNullOrEmpty(Icon))
+        {
+            <i class="@Icon"></i>
+        }
+        <span class="ms-1">@Text</span>
+    </small>
+</div>
+
+@code {
+    [Parameter]
+    public string Background { get; set; }
+
+    [Parameter]
+    public string Icon { get; set; }
+
+    [Parameter]
+    public string Text { get; set; }
+
+    public string BackgroundClass()
+    {
+        return Background == null ? "bg-primary" : $"bg-{Background}";
+    }
+}

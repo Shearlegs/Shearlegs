@@ -1,0 +1,62 @@
+﻿@page "/admin/users/{UserId:int}"
+
+@if (User != null)
+{
+    <nav aria-label="breadcrumb mb-3">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">Admin</li>
+            <li class="breadcrumb-item"><a href="/admin/users">Users</a></li>
+            <li class="breadcrumb-item active">@User.Name</li>
+        </ol>
+    </nav>
+
+    @if (isUpdated)
+    {
+        <Alert Background="success" Icon="bi bi-check2" Text="Successfully updated this user!" />
+    }
+
+    <div class="mb-3">
+        <h4>User #@User.Id - @User.Name</h4>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            Basic Information
+        </div>
+        <div class="card-body">
+            <EditForm Model="Model" OnValidSubmit="UpdateUserAsync">
+                <div class="mb-3">
+                    <label class="form-label">Username</label>
+                    <InputText @bind-Value="@Model.Name" class="form-control" required />
+                    <div class="form-text">The username should be the size of 25 characters</div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Role</label>
+                    <InputSelect class="form-select" @bind-Value="@Model.Role">
+                        <option value="Admin">Admin</option>
+                        <option value="Guest">Guest</option>
+                    </InputSelect>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Password</label>
+                    <InputText type="password" @bind-Value="@Model.Password" class="form-control" />
+                    <div class="form-text">The password must have above 8 characters</div>
+                </div>
+                @if (isLoading)
+                {
+                    <LoadingButton />
+                }
+                else
+                {
+                    <button type="submit" class="btn btn-primary">Update User</button>
+                }
+
+            </EditForm>
+        </div>
+    </div>
+
+}
+else
+{
+    <h4>User not found</h4>
+}
