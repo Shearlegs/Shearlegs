@@ -1,15 +1,10 @@
 ﻿using Shearlegs.API.Exceptions;
 using Shearlegs.API.Plugins.Parameters;
 using Shearlegs.Web.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Shearlegs.Web.Models
 {
-    public class VersionParameter
+    public class MVersionParameter
     {
         public string Name { get; set; }
         public string Description { get; set; }
@@ -20,9 +15,9 @@ namespace Shearlegs.Web.Models
         public bool IsRequired { get; set; }
         public bool IsSecret { get; set; }
 
-        public static VersionParameter FromParameterInfo(PluginParameterInfo info)
+        public static MVersionParameter FromParameterInfo(PluginParameterInfo info)
         {
-            VersionParameter parameter = new VersionParameter()
+            MVersionParameter parameter = new()
             {
                 Name = info.Name,
                 Description = info.Description,

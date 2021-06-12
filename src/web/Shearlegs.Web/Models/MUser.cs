@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace Shearlegs.Web.Models
 {
-    public class User
+    public class MUser
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -16,9 +16,9 @@ namespace Shearlegs.Web.Models
 
         public string LastLoginString => LastLoginDate == default ? "Never" : LastLoginDate.ToString();
 
-        public User MakeCopy()
+        public MUser MakeCopy()
         {
-            return new User()
+            return new MUser()
             {
                 Id = Id,
                 Name = Name,

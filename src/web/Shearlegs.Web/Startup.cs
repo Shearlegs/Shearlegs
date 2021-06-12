@@ -31,6 +31,7 @@ namespace Shearlegs.Web
             services.AddTransient(x => new SqlConnection(Configuration.GetConnectionString("Default")));
 
             services.AddTransient<UsersRepository>();
+            services.AddTransient<PluginsRepository>();
 
             ShearlegsRuntime.RegisterServices(services);
             services.AddTransient<PluginService>();

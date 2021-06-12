@@ -19,9 +19,9 @@ namespace Shearlegs.Web.Pages.Admin.Users.Components
         public IJSRuntime JSRuntime { get; set; }
 
         [Parameter]
-        public EventCallback<User> OnUserCreated { get; set; }
+        public EventCallback<MUser> OnUserCreated { get; set; }
 
-        public User Model { get; set; } = new User();
+        public MUser Model { get; set; } = new MUser();
 
         public string ModalId => nameof(UserModal);
 
@@ -39,10 +39,10 @@ namespace Shearlegs.Web.Pages.Admin.Users.Components
         public async Task SubmitAsync()
         {
             isLoading = true;
-            User user = await UsersRepository.AddUserAsync(Model);
+            MUser user = await UsersRepository.AddUserAsync(Model);
             isLoading = false;
             await OnUserCreated.InvokeAsync(user);
-            Model = new User();
+            Model = new MUser();
         }
     }
 }

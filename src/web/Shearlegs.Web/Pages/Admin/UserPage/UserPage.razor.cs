@@ -17,9 +17,9 @@ namespace Shearlegs.Web.Pages.Admin.UserPage
         [Inject]
         public UsersRepository UsersRepository { get; set; }
 
-        public User User { get; set; }
+        public MUser User { get; set; }
 
-        public User Model { get; set; }
+        public MUser Model { get; set; }
 
         protected override async Task OnInitializedAsync()
         {

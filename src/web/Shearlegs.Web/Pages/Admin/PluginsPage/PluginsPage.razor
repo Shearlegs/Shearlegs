@@ -1,0 +1,51 @@
+﻿@page "/admin/plugins"
+
+<nav aria-label="breadcrumb mb-3">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">Admin</li>
+        <li class="breadcrumb-item active" aria-current="page">Plugins</li>
+    </ol>
+</nav>
+
+<div class="d-md-flex align-items-center mb-3">
+    <div class="me-auto d-flex align-items-center">
+        <h4>Users</h4>
+    </div>
+    <div>
+        <div class="input-group">
+            <span class="input-group-text" id="basic-addon1">Search</span>
+            <input type="text" @bind="searchString" @bind:event="oninput" class="form-control" placeholder="PackageId or Name" />
+            @*<button class="btn btn-sm btn-primary flex-nowrap ms-1" @onclick="ShowModalAsync">Create New</button>*@
+        </div>
+
+    </div>
+</div>
+
+@if (Plugins != null)
+{
+    <table class="table table-light table-bordered mb-3">
+        <caption>Total Users: @SearchedPlugins.Count()</caption>
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">PackageId</th>
+                <th scope="col">Name</th>
+                <th scope="col" class="table-hide">Create User</th>
+                <th scope="col" class="table-hide">Update User</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <Virtualize Items="SearchedPlugins" Context="plugin">
+                <tr>
+                    <th scope="row">@plugin.Id</th>
+                    <td>@plugin.PackageId</td>
+                    <td>@plugin.Name</td>
+                    <td class="table-hide">@plugin.CreateUser.Name</td>
+                    <td class="table-hide">@plugin.UpdateUser.Name</td>
+                    <td><a class="btn btn-sm btn-outline-success" href="/admin/plugins/@plugin.Id"><i class="bi bi-pencil-square"></i></a></td>
+                </tr>
+            </Virtualize>
+        </tbody>
+    </table>
+}

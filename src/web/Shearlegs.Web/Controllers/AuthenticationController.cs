@@ -28,7 +28,7 @@ namespace Shearlegs.Web.Controllers
         [HttpPost("~/signin")]
         public async Task<IActionResult> SignInAsync([FromForm] string username, [FromForm] string password)
         {
-            User user = await usersRepository.GetUserAsync(username, password);
+            MUser user = await usersRepository.GetUserAsync(username, password);
 
             if (user == null)
             {

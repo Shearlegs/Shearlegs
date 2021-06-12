@@ -22,11 +22,11 @@ namespace Shearlegs.Web.Pages.Admin.Users
 
         public UserModal Modal { get; set; }
 
-        public IEnumerable<User> Users { get; set; }
+        public IEnumerable<MUser> Users { get; set; }
 
         private string searchString;
 
-        public List<User> SearchedUsers 
+        public List<MUser> SearchedUsers 
             => Users.Where(x => string.IsNullOrEmpty(searchString) || x.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
                 .OrderByDescending(x => x.LastLoginDate).ToList();
 
@@ -35,7 +35,7 @@ namespace Shearlegs.Web.Pages.Admin.Users
             Users = await UsersRepository.GetUsersAsync();
         }
 
-        public void OnUserCreated(User user)
+        public void OnUserCreated(MUser user)
         {
             NavigationManager.NavigateTo($"/admin/users/{user.Id}");
         }
