@@ -9,5 +9,6 @@ namespace Shearlegs.API.Plugins.Attributes
     [AttributeUsage(AttributeTargets.Class)]
     public class ParametersAttribute : Attribute
     {
+
     }
 }

@@ -10,4 +10,8 @@
     <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\framework\Shearlegs.API\Shearlegs.API.csproj" />
+  </ItemGroup>
+
 </Project>

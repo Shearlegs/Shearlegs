@@ -1,8 +1,10 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
+using Shearlegs.API.Exceptions;
 using Shearlegs.API.Plugins;
 using Shearlegs.API.Plugins.Attributes;
 using Shearlegs.API.Plugins.Loaders;
+using Shearlegs.API.Plugins.Parameters;
 using Shearlegs.API.Plugins.Result;
 using Shearlegs.Core.AssemblyLoading;
 using System;
@@ -36,6 +38,62 @@ namespace Shearlegs.Core.Plugins
             return result;
         }
 
+        public async Task<IEnumerable<PluginParameterInfo>> GetPluginParametersAsync(byte[] pluginData)
+        {
+            using AssemblyContext context = AssemblyContext.Create();
+            using MemoryStream ms = new MemoryStream(pluginData);
+            Assembly pluginAssembly = await pluginLoader.LoadPluginAsync(context, ms);
+
+            List<PluginParameterInfo> parameters = new();
+
+            IEnumerable<Type> types = pluginAssembly.GetTypes().Where(t => t.GetCustomAttribute<ParametersAttribute>() != null);
+            if (types.Count() == 0)
+            {
+                return parameters;
+            }
+
+            if (types.Count() > 1)
+            {
+                throw new MultipleParametersTypeException();
+            }
+
+            Type type = types.First();
+            object instance = Activator.CreateInstance(type);
+
+            foreach (PropertyInfo property in type.GetProperties())
+            {
+                ParameterAttribute attribute = property.GetCustomAttribute<ParameterAttribute>(true);
+                PluginParameterInfo parameter = new() 
+                { 
+                    Name = property.Name,
+                    Type = property.PropertyType,
+                    Value = property.GetValue(instance),
+                    Description = attribute?.Description ?? null,
+                    IsRequired = attribute?.IsRequired ?? false,
+                    IsSecret = attribute is SecretAttribute
+                };
+                parameters.Add(parameter);
+            }
+
+            foreach (FieldInfo field in type.GetFields())
+            {
+                ParameterAttribute attribute = field.GetCustomAttribute<ParameterAttribute>(true);
+                PluginParameterInfo parameter = new()
+                {
+                    Name = field.Name,
+                    Type = field.FieldType,
+                    Value = field.GetValue(instance),
+                    Description = attribute?.Description ?? null,
+                    IsRequired = attribute?.IsRequired ?? false,
+                    IsSecret = attribute is SecretAttribute
+                };
+                parameters.Add(parameter);
+            }
+
+            return parameters;
+
+        }
+
         private IPlugin ActivatePlugin(Assembly assembly, string parametersJson)
         {
             Type pluginType = assembly.GetTypes().FirstOrDefault(x => x.GetInterface(nameof(IPlugin)) != null);
@@ -57,7 +115,7 @@ namespace Shearlegs.Core.Plugins
                 serviceCollection.Add(new ServiceDescriptor(serviceType, serviceType, serviceType.GetCustomAttribute<ServiceAttribute>().Lifetime));
             }
 
-            if (parameters != null)
+            if (parameters != null && parametersJson != null)
                 serviceCollection.Add(new ServiceDescriptor(parameters, JsonConvert.DeserializeObject(parametersJson, parameters)));
 
             IServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();

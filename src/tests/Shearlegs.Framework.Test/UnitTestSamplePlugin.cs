@@ -3,10 +3,12 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
 using Shearlegs.API.Plugins;
+using Shearlegs.API.Plugins.Parameters;
 using Shearlegs.API.Plugins.Result;
 using Shearlegs.Core.Plugins.Result;
 using Shearlegs.Runtime;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -38,5 +40,22 @@ namespace Shearlegs.Framework.Test
 
             Console.WriteLine(textResult.Text);
         }   
+
+        [TestMethod]
+        public async Task TestGetParameters()
+        {
+            IServiceProvider serviceProvider = ShearlegsRuntime.BuildServiceProvider();
+
+            IPluginManager pluginManager = serviceProvider.GetRequiredService<IPluginManager>();
+
+            byte[] pluginData = await File.ReadAllBytesAsync(PluginPath);
+
+            IEnumerable<PluginParameterInfo> parameters = await pluginManager.GetPluginParametersAsync(pluginData);
+
+            foreach (PluginParameterInfo parameter in parameters)
+            {
+                Console.WriteLine($"Name: {parameter.Name} - Description: {parameter.Description} - Value: {parameter.Value}");
+            }
+        }
     }
 }

@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace Shearlegs.API.Plugins.Attributes
 {
-    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
-    public class SecretAttribute : Attribute
+    public class SecretAttribute : ParameterAttribute
     {
     }
 }
