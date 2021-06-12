@@ -28,7 +28,7 @@ namespace Shearlegs.Web.Models
                 Description = info.Description,
                 DataType = info.Type.Name,
                 IsRequired = info.IsRequired,
-                IsSecret = info.IsSecret                
+                IsSecret = info.IsSecret
             };
 
             if (info.Type.IsNumericType())

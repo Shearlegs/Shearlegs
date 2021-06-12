@@ -8,7 +8,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Shearlegs.Runtime;
 using Shearlegs.Web.Database.Repositories;
+using Shearlegs.Web.Services;
 using System;
 using System.Data.SqlClient;
 using System.Net.Http;
@@ -30,12 +32,14 @@ namespace Shearlegs.Web
 
             services.AddTransient<UsersRepository>();
 
+            ShearlegsRuntime.RegisterServices(services);
+            services.AddTransient<PluginService>();
+
             services.Configure<CookiePolicyOptions>(options =>
             {
                 options.CheckConsentNeeded = context => true;
 
                 options.MinimumSameSitePolicy = SameSiteMode.None;
-
             });
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -64,7 +68,7 @@ namespace Shearlegs.Web
                 app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
-                        
+
             app.UseCookiePolicy();
             app.UseAuthentication();
 

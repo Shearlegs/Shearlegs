@@ -65,6 +65,9 @@
     <Build Include="dbo\procedures\CreateUser.sql" />
     <Build Include="dbo\procedures\UpdateUser.sql" />
     <Build Include="dbo\procedures\GetUser.sql" />
+    <Build Include="dbo\tables\Plugins.sql" />
+    <Build Include="dbo\tables\Versions.sql" />
+    <Build Include="dbo\tables\VersionParameters.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Script.PostDeployment.sql" />

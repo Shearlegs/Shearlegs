@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\framework\Shearlegs.API\Shearlegs.API.csproj" />
+    <ProjectReference Include="..\..\framework\Shearlegs.Runtime\Shearlegs.Runtime.csproj" />
   </ItemGroup>
 
 </Project>
