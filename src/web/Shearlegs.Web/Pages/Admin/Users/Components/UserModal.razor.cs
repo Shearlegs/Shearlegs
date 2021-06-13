@@ -3,6 +3,7 @@ using Microsoft.JSInterop;
 using Shearlegs.Web.Database.Repositories;
 using Shearlegs.Web.Extensions;
 using Shearlegs.Web.Models;
+using Shearlegs.Web.Shared.Components;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,25 +16,12 @@ namespace Shearlegs.Web.Pages.Admin.Users.Components
         [Inject]
         public UsersRepository UsersRepository { get; set; }
 
-        [Inject]
-        public IJSRuntime JSRuntime { get; set; }
-
         [Parameter]
         public EventCallback<MUser> OnUserCreated { get; set; }
 
         public MUser Model { get; set; } = new MUser();
 
-        public string ModalId => nameof(UserModal);
-
-        public async Task ShowAsync()
-        {
-            await JSRuntime.ShowModalStaticAsync(ModalId);
-        }
-
-        public async Task HideAsync()
-        {
-            await JSRuntime.HideModalAsync(ModalId);
-        }
+        public override string ModalId => nameof(UserModal);
 
         private bool isLoading = false;
         public async Task SubmitAsync()
@@ -41,6 +29,7 @@ namespace Shearlegs.Web.Pages.Admin.Users.Components
             isLoading = true;
             MUser user = await UsersRepository.AddUserAsync(Model);
             isLoading = false;
+            await HideAsync();
             await OnUserCreated.InvokeAsync(user);
             Model = new MUser();
         }

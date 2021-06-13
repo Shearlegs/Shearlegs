@@ -1,4 +1,5 @@
 ﻿@page "/admin/plugins"
+@using Shearlegs.Web.Pages.Admin.PluginsPage.Components
 
 <nav aria-label="breadcrumb mb-3">
     <ol class="breadcrumb">
@@ -9,13 +10,13 @@
 
 <div class="d-md-flex align-items-center mb-3">
     <div class="me-auto d-flex align-items-center">
-        <h4>Users</h4>
+        <h4>Plugins</h4>
     </div>
     <div>
         <div class="input-group">
             <span class="input-group-text" id="basic-addon1">Search</span>
             <input type="text" @bind="searchString" @bind:event="oninput" class="form-control" placeholder="PackageId or Name" />
-            @*<button class="btn btn-sm btn-primary flex-nowrap ms-1" @onclick="ShowModalAsync">Create New</button>*@
+            <button class="btn btn-sm btn-primary flex-nowrap ms-1" @onclick="ShowModalAsync">Create New</button>
         </div>
 
     </div>
@@ -41,11 +42,13 @@
                     <th scope="row">@plugin.Id</th>
                     <td>@plugin.PackageId</td>
                     <td>@plugin.Name</td>
-                    <td class="table-hide">@plugin.CreateUser.Name</td>
-                    <td class="table-hide">@plugin.UpdateUser.Name</td>
+                    <td class="table-hide">@plugin.CreateUser.Name (@plugin.CreateDate)</td>
+                    <td class="table-hide">@plugin.UpdateUser.Name (@plugin.UpdateDate)</td>
                     <td><a class="btn btn-sm btn-outline-success" href="/admin/plugins/@plugin.Id"><i class="bi bi-pencil-square"></i></a></td>
                 </tr>
             </Virtualize>
         </tbody>
     </table>
 }
+
+<PluginModal @ref="Modal" OnPluginCreated="OnPluginCreated" />

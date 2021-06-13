@@ -1,0 +1,53 @@
+﻿@inherits Modal
+
+<div class="modal fade" id="@ModalId" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Create Plugin</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <EditForm Model="Model" OnValidSubmit="SubmitAsync">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">PackageId</label>
+                        <InputText @bind-Value="@Model.PackageId" class="form-control" />
+                        <div class="form-text">Must be the same as the NuGet package name you will be uploading as versions for it</div>
+                        <small class="text-danger"><ValidationMessage For="@(() => Model.PackageId)" /></small>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Name</label>
+                        <InputText @bind-Value="@Model.Name" class="form-control" />
+                        <div class="form-text">User friendly name</div>
+                        <small class="text-danger"><ValidationMessage For="@(() => Model.Name)" /></small>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Author (optional)</label>
+                        <InputText @bind-Value="@Model.Author" class="form-control" />
+                        <div class="form-text">You can write the name of the plugin author</div>
+                        <small class="text-danger"><ValidationMessage For="@(() => Model.Author)" /></small>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <InputTextArea @bind-Value="@Model.Description" rows="5" class="form-control" />
+                        <div class="form-text">Describe what this plugin does</div>
+                        <small class="text-danger"><ValidationMessage For="@(() => Model.Description)" /></small>
+                    </div>
+
+                    <DataAnnotationsValidator />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    @if (isLoading)
+                    {
+                        <LoadingButton />
+                    }
+                    else
+                    {
+                        <button type="submit" class="btn btn-primary">Create Plugin</button>
+                    }
+                </div>
+            </EditForm>
+        </div>
+    </div>
+</div>

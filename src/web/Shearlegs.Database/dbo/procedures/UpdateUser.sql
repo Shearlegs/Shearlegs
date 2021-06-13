@@ -10,8 +10,7 @@ BEGIN
 	BEGIN TRAN;
 
 	UPDATE dbo.Users
-	SET Name = @Name,
-		Role = @Role,
+	SET Role = @Role,
 		UpdateDate = SYSDATETIME()
 	WHERE Id = @Id;
 

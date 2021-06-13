@@ -19,7 +19,7 @@
         <h4>User #@User.Id - @User.Name</h4>
     </div>
 
-    <div class="card">
+    <div class="card mb-3">
         <div class="card-header">
             Basic Information
         </div>
@@ -27,16 +27,16 @@
             <EditForm Model="Model" OnValidSubmit="UpdateUserAsync">
                 <div class="mb-3">
                     <label class="form-label">Username</label>
-                    <InputText @bind-Value="@Model.Name" class="form-control" required />
+                    <InputText @bind-Value="@Model.Name" class="form-control" disabled />
                     <div class="form-text">The username should be the size of 25 characters</div>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Role</label>
                     <InputSelect class="form-select" @bind-Value="@Model.Role">
                         @foreach (string role in RoleConstants.Roles)
-                        {
+                            {
                             <option value="@role">@role</option>
-                        }
+                            }
                     </InputSelect>
                 </div>
                 <div class="mb-3">
@@ -54,6 +54,23 @@
                 }
 
             </EditForm>
+        </div>
+    </div>
+
+    <div class="card mb-5">
+        <div class="card-header">
+            Activity
+        </div>
+        <div class="card-body">
+            <div class="mb-3">
+                <label class="form-label">Last Login Date</label>
+                <input type="text" value="@User.LastLoginString" class="form-control" disabled />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Create Date</label>
+                <input type="text" value="@User.CreateDate" class="form-control" disabled />
+            </div>
         </div>
     </div>
 
