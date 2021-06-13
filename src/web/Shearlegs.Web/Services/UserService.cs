@@ -19,5 +19,6 @@ namespace Shearlegs.Web.Services
         public string Username => accessor.HttpContext.User.Identity.Name;
         public int UserId => int.Parse(accessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
         public string Role => accessor.HttpContext.User.FindFirstValue(ClaimTypes.Role);
+        public bool IsAuthenticated => accessor.HttpContext.User.Identity?.IsAuthenticated ?? false;
     }
 }

@@ -1,5 +1,12 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Http;
+using Shearlegs.Web.Database.Repositories;
+using Shearlegs.Web.Models;
+using Shearlegs.Web.Services;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Shearlegs.Web.Pages.Home.Index
 {
@@ -7,16 +14,34 @@ namespace Shearlegs.Web.Pages.Home.Index
     {
         [Inject]
         public NavigationManager NavigationManager { get; set; }
-
         [Inject]
-        public HttpContextAccessor Accessor { get; set; }
+        public UserService UserService { get; set; }
+        [Inject]
+        public PluginsRepository PluginsRepository { get; set; }
 
-        protected override void OnInitialized()
+
+        private string searchString;
+
+        public List<MPlugin> SearchedPlugins
+            => Plugins.Where(x => string.IsNullOrEmpty(searchString)
+                || x.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase)
+                ).OrderByDescending(x => x.UpdateDate).ToList();
+
+        public IEnumerable<MPlugin> Plugins { get; set; }
+
+        protected override async Task OnInitializedAsync()
         {
-            if (!Accessor.HttpContext.User.Identity?.IsAuthenticated ?? true)
+            if (!UserService.IsAuthenticated)
             {
                 NavigationManager.NavigateTo("/login");
             }
+
+            Plugins = await PluginsRepository.GetPluginsAsync();
+        }
+
+        private void GoToPlugin(MPlugin plugin)
+        {
+            NavigationManager.NavigateTo($"/execute/{plugin.Id}");
         }
     }
 }

@@ -27,5 +27,10 @@ namespace Shearlegs.Web.Extensions
         {
             await jsRuntime.InvokeVoidAsync("ChangeUrl", url);
         }
+
+        public static async Task<string> GetFormDataJsonAsync(this IJSRuntime jsRuntime, string formName)
+        {
+            return await jsRuntime.InvokeAsync<string>("GetFormDataJson", formName);
+        }
     }
 }

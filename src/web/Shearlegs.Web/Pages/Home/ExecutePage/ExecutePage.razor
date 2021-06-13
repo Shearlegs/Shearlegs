@@ -1,0 +1,50 @@
+﻿@page "/execute/{PluginId:int}" 
+
+@if (Plugin != null)
+{
+    <div class="card mb-3">
+        <div class="card-header">
+            @Plugin.Name
+        </div>
+        <div class="card-body">
+            @if (Version == null)
+            {
+                <h3>This plugin doesn't have any versions</h3>
+            }
+            else
+            {
+                <div class="mb-3">
+                    <label class="form-label">Select Version</label>
+                    <select @onchange="OnChangeVersionAsync" class="form-select">
+                        @foreach (MVersion version in Plugin.Versions.OrderByDescending(x => x.CreateDate))
+                        {
+                            <option value="@version.Id">@version.Name</option>
+                        }
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <h4 class="mb-1">Parameters</h4>
+                    <form name="parameters" @onsubmit="SubmitAsync">
+                        @foreach (MVersionParameter parameter in Version.Parameters)
+                        {
+                            <div class="mb-2">
+                                <label class="form-label">@parameter.Name</label>
+                                <input type="@parameter.InputType" name="@parameter.Name" class="form-control" />
+                            </div>
+                        }
+                        <button class="btn btn-primary" type="submit">Submit</button>
+                    </form>
+                    
+                </div>
+            }
+
+
+
+        </div>
+    </div>
+}
+else
+{
+    <h5>Execution Task not found</h5>
+}

@@ -19,3 +19,29 @@ function HideModal(id) {
 window.ChangeUrl = function (url) {
     history.pushState(null, '', url);
 }
+
+async function GetFormDataJson(formName) {
+    let form = document.forms[formName];
+
+    let fd = new FormData(form);
+
+    let data = {};
+
+    for (let [key, prop] of fd) {
+
+        console.log(key);
+        console.log(prop);
+
+        if (prop instanceof File) {
+            data[key] = Array.from(new Uint8Array(await readFileAsData(prop)));
+
+        } else {
+            data[key] = prop;
+        }
+
+    }
+
+    data = JSON.stringify(data, null, 2);
+
+    return data;
+}

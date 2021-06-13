@@ -1,5 +1,37 @@
 ﻿@page "/"
 
-<h1>Hello, world!</h1>
+<div class="d-md-flex align-items-center mb-3">
+    <div class="me-auto d-flex align-items-center">
+        <h4>Execution Tasks</h4>
+    </div>
+    <div>
+        <div class="input-group">
+            <span class="input-group-text" id="basic-addon1">Search</span>
+            <input type="text" @bind="searchString" @bind:event="oninput" class="form-control" placeholder="Name or ID" />
+        </div>
 
-Welcome to your new app.
+    </div>
+</div>
+
+@if (Plugins != null)
+{
+    <table class="table table-light table-hover mb-3">
+        <caption>Total Execution Tasks: @SearchedPlugins.Count()</caption>
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <Virtualize Items="SearchedPlugins" Context="plugin">
+                <tr style="cursor: pointer;" @onclick="() => GoToPlugin(plugin)">
+                    <th scope="row">@plugin.Id</th>
+                    <td>@plugin.Name</td>
+                    <td>@plugin.Description</td>
+                </tr>
+            </Virtualize>
+        </tbody>
+    </table>
+}
