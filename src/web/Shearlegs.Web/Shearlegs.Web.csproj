@@ -14,4 +14,8 @@
     <ProjectReference Include="..\..\framework\Shearlegs.Runtime\Shearlegs.Runtime.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Pages\Developer\UploadPage\Components\" />
+  </ItemGroup>
+
 </Project>

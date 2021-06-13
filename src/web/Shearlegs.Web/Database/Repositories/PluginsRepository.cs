@@ -61,6 +61,12 @@ namespace Shearlegs.Web.Database.Repositories
             return plugin;
         }
 
+        public async Task<MPlugin> GetPluginAsync(string packageId)
+        {
+            const string sql = "SELECT * FROM dbo.Plugins WHERE PackageId = @packageId;";
+            return await connection.QuerySingleOrDefaultAsync<MPlugin>(sql, new { packageId });
+        }
+
         public async Task<IEnumerable<MPlugin>> GetPluginsAsync()
         {
             const string sql = "SELECT p.*, cu.Id, cu.Name, uu.Id, uu.Name " +

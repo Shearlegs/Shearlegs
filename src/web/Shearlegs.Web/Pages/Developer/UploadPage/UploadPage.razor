@@ -7,24 +7,57 @@
     </ol>
 </nav>
 
-<div class="card mb-3">
-    <div class="card-header">
-        Information
-    </div>
-    <div class="card-body">
-        <p>Drop NuGet package file in the input area</p>
-    </div>
-</div>
-
-@if (PluginInfo != null)
+@if (PluginInfo != null && Plugin != null)
 {
-    <h3>@PluginInfo.PackageId</h3>
-    <h6>@PluginInfo.Version IsPrerelease: @PluginInfo.IsPrerelease</h6>
+    <div class="card mb-3">
+        <div class="card-header">
+            @PluginInfo.PackageId - @PluginInfo.Version
+        </div>
+        <div class="card-body">
+            <p>Parameters</p>
+            <ul>
+                @foreach (var parameter in PluginInfo.Parameters)
+                {
+                    <li>@parameter.Name (@parameter.Type.Name) - @parameter.Description</li>
+                }
+
+            </ul>
+            @if (!isLoading2)
+            {
+                <button class="btn btn-primary" @onclick="UploadVersionAsync">Upload Version</button>
+            } else
+            {
+                <LoadingButton />
+            }
+            
+        </div>
+    </div>
 }
 else
 {
+    @if (PluginInfo != null && Plugin == null)
+    {
+        <Alert Background="danger" Icon="bi bi-exclamation-triangle-fill" Text="@($"PackageId <strong>{PluginInfo.PackageId}</strong> does not exist in Plugins")" />
+    }
+
+    <div class="card mb-3">
+        <div class="card-header">
+            Information
+        </div>
+        <div class="card-body">
+            <p>Drop NuGet package file in the input area</p>
+        </div>
+    </div>
+
     <div class="mb-3">
-        <label class="form-label">NuGet Package file</label>
-        <InputFile class="form-control form-control-lg" OnChange="OnInputFileChange" accept=".nupkg" />
+        @if (!isLoading)
+        {
+            <label class="form-label">NuGet Package file</label>
+            <InputFile class="form-control form-control-lg" OnChange="OnInputFileChange" accept=".nupkg" />
+        } else
+        {
+            <LoadingBar />
+        }
+
     </div>
 }
