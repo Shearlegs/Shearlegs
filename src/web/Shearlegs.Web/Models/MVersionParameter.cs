@@ -6,6 +6,7 @@ namespace Shearlegs.Web.Models
 {
     public class MVersionParameter
     {
+        public int VersionId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public string InputType { get; set; }

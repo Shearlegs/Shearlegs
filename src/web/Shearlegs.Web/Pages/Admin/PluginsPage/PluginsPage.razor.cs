@@ -20,9 +20,7 @@ namespace Shearlegs.Web.Pages.Admin.PluginsPage
         [Inject]
         public NavigationManager NavigationManager { get; set; }
 
-        public IEnumerable<MPlugin> Plugins { get; set; }
-
-        
+        public IEnumerable<MPlugin> Plugins { get; set; }        
 
         private string searchString;
 

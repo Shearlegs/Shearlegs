@@ -32,6 +32,7 @@ namespace Shearlegs.Web
 
             services.AddTransient<UsersRepository>();
             services.AddTransient<PluginsRepository>();
+            services.AddTransient<VersionsRepository>();
 
             ShearlegsRuntime.RegisterServices(services);
             services.AddTransient<PluginService>();

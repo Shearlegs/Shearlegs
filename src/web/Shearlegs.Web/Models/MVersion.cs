@@ -13,5 +13,7 @@ namespace Shearlegs.Web.Models
         public byte[] PackageContent { get; set; }
         public int CreateUserId { get; set; }
         public DateTime CreateDate { get; set; }
+
+        public List<MVersionParameter> Parameters { get; set; }
     }
 }
