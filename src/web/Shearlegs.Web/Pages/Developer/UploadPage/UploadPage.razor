@@ -1,0 +1,30 @@
+﻿@page "/developer/upload"
+
+<nav aria-label="breadcrumb mb-3">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">Developer</li>
+        <li class="breadcrumb-item active" aria-current="page">Upload</li>
+    </ol>
+</nav>
+
+<div class="card mb-3">
+    <div class="card-header">
+        Information
+    </div>
+    <div class="card-body">
+        <p>Drop NuGet package file in the input area</p>
+    </div>
+</div>
+
+@if (PluginInfo != null)
+{
+    <h3>@PluginInfo.PackageId</h3>
+    <h6>@PluginInfo.Version IsPrerelease: @PluginInfo.IsPrerelease</h6>
+}
+else
+{
+    <div class="mb-3">
+        <label class="form-label">NuGet Package file</label>
+        <InputFile class="form-control form-control-lg" OnChange="OnInputFileChange" accept=".nupkg" />
+    </div>
+}

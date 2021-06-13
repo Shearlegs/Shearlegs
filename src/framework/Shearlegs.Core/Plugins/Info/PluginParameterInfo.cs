@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Shearlegs.API.Plugins.Info;
+using System;
 
-namespace Shearlegs.API.Plugins.Parameters
+namespace Shearlegs.Core.Plugins.Info
 {
-    public class PluginParameterInfo
-    {   
+    public class PluginParameterInfo : IPluginParameterInfo
+    {
         public string Name { get; set; }
         public string Description { get; set; }
         public Type Type { get; set; }

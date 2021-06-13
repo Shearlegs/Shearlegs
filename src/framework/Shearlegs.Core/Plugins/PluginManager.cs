@@ -3,10 +3,12 @@ using Newtonsoft.Json;
 using Shearlegs.API.Exceptions;
 using Shearlegs.API.Plugins;
 using Shearlegs.API.Plugins.Attributes;
+using Shearlegs.API.Plugins.Info;
 using Shearlegs.API.Plugins.Loaders;
 using Shearlegs.API.Plugins.Parameters;
 using Shearlegs.API.Plugins.Result;
 using Shearlegs.Core.AssemblyLoading;
+using Shearlegs.Core.Plugins.Info;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -30,26 +32,35 @@ namespace Shearlegs.Core.Plugins
         {
             using AssemblyContext context = AssemblyContext.Create();
             using MemoryStream ms = new MemoryStream(pluginData);
-            Assembly pluginAssembly = await pluginLoader.LoadPluginAsync(context, ms);
+            IPluginAssembly plugin = await pluginLoader.LoadPluginAsync(context, ms);
 
-            IPlugin pluginInstance = ActivatePlugin(pluginAssembly, parametersJson);
+            IPlugin pluginInstance = ActivatePlugin(plugin.Assembly, parametersJson);
             IPluginResult result = await pluginInstance.ExecuteAsync();
 
             return result;
         }
 
-        public async Task<IEnumerable<PluginParameterInfo>> GetPluginParametersAsync(byte[] pluginData)
+        public async Task<IPluginInfo> GetPluginInfoAsync(byte[] pluginData)
         {
             using AssemblyContext context = AssemblyContext.Create();
             using MemoryStream ms = new MemoryStream(pluginData);
-            Assembly pluginAssembly = await pluginLoader.LoadPluginAsync(context, ms);
 
-            List<PluginParameterInfo> parameters = new();
+            IPluginAssembly plugin = await pluginLoader.LoadPluginAsync(context, ms);
 
-            IEnumerable<Type> types = pluginAssembly.GetTypes().Where(t => t.GetCustomAttribute<ParametersAttribute>() != null);
+            List<IPluginParameterInfo> parameters = new();
+
+            IPluginInfo info = new PluginInfo() 
+            {
+                PackageId = plugin.PackageId,
+                Version = plugin.Version,
+                IsPrerelease = plugin.IsPrerelease,
+                Parameters = parameters    
+            };
+
+            IEnumerable<Type> types = plugin.Assembly.GetTypes().Where(t => t.GetCustomAttribute<ParametersAttribute>() != null);
             if (types.Count() == 0)
             {
-                return parameters;
+                return info;
             }
 
             if (types.Count() > 1)
@@ -63,7 +74,7 @@ namespace Shearlegs.Core.Plugins
             foreach (PropertyInfo property in type.GetProperties())
             {
                 ParameterAttribute attribute = property.GetCustomAttribute<ParameterAttribute>(true);
-                PluginParameterInfo parameter = new() 
+                IPluginParameterInfo parameter = new PluginParameterInfo() 
                 { 
                     Name = property.Name,
                     Type = property.PropertyType,
@@ -78,7 +89,7 @@ namespace Shearlegs.Core.Plugins
             foreach (FieldInfo field in type.GetFields())
             {
                 ParameterAttribute attribute = field.GetCustomAttribute<ParameterAttribute>(true);
-                PluginParameterInfo parameter = new()
+                IPluginParameterInfo parameter = new PluginParameterInfo()
                 {
                     Name = field.Name,
                     Type = field.FieldType,
@@ -90,8 +101,7 @@ namespace Shearlegs.Core.Plugins
                 parameters.Add(parameter);
             }
 
-            return parameters;
-
+            return info;
         }
 
         private IPlugin ActivatePlugin(Assembly assembly, string parametersJson)

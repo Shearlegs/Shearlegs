@@ -3,6 +3,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
 using Shearlegs.API.Plugins;
+using Shearlegs.API.Plugins.Info;
 using Shearlegs.API.Plugins.Parameters;
 using Shearlegs.API.Plugins.Result;
 using Shearlegs.Core.Plugins.Result;
@@ -50,9 +51,11 @@ namespace Shearlegs.Framework.Test
 
             byte[] pluginData = await File.ReadAllBytesAsync(PluginPath);
 
-            IEnumerable<PluginParameterInfo> parameters = await pluginManager.GetPluginParametersAsync(pluginData);
+            IPluginInfo info = await pluginManager.GetPluginInfoAsync(pluginData);
 
-            foreach (PluginParameterInfo parameter in parameters)
+            Console.WriteLine($"PackageId: {info.PackageId}");
+            Console.WriteLine($"Version: {info.Version} PreRelease: {info.IsPrerelease}");
+            foreach (IPluginParameterInfo parameter in info.Parameters)
             {
                 Console.WriteLine($"Name: {parameter.Name} - Description: {parameter.Description} - Value: {parameter.Value}");
             }

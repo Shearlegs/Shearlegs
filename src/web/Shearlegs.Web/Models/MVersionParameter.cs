@@ -1,4 +1,5 @@
 ﻿using Shearlegs.API.Exceptions;
+using Shearlegs.API.Plugins.Info;
 using Shearlegs.API.Plugins.Parameters;
 using Shearlegs.Web.Extensions;
 
@@ -16,7 +17,7 @@ namespace Shearlegs.Web.Models
         public bool IsRequired { get; set; }
         public bool IsSecret { get; set; }
 
-        public static MVersionParameter FromParameterInfo(PluginParameterInfo info)
+        public static MVersionParameter FromParameterInfo(IPluginParameterInfo info)
         {
             MVersionParameter parameter = new()
             {

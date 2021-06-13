@@ -9,6 +9,7 @@ using NuGet.Resolver;
 using NuGet.RuntimeModel;
 using Shearlegs.API.AssemblyLoading;
 using Shearlegs.API.Plugins.Loaders;
+using Shearlegs.Core.Plugins.Loaders;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -43,7 +44,7 @@ namespace Shearlegs.NuGet
             frameworkReducer = new FrameworkReducer();
         }
 
-        public async Task<Assembly> LoadPluginAsync(IAssemblyContext context, Stream pluginStream)
+        public async Task<IPluginAssembly> LoadPluginAsync(IAssemblyContext context, Stream pluginStream)
         {
             using PackageArchiveReader reader = new PackageArchiveReader(pluginStream);
 
@@ -74,7 +75,16 @@ namespace Shearlegs.NuGet
 
             // Load plugin 
             IEnumerable<Assembly> assemblies = await LoadLibAsync(context, reader, null);
-            return assemblies.FirstOrDefault();
+
+            PackageIdentity pluginIdentity = await reader.GetIdentityAsync(CancellationToken.None);
+
+            return new PluginAssembly()
+            {
+                PackageId = pluginIdentity.Id,
+                Version = pluginIdentity.Version.ToString(),
+                IsPrerelease = pluginIdentity.Version.IsPrerelease,
+                Assembly = assemblies.FirstOrDefault()
+            };
         }
 
         private RuntimeGraph GetRuntimeGraph(string expandedPath)

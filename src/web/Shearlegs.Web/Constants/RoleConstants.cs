@@ -10,10 +10,12 @@ namespace Shearlegs.Web.Constants
         public static readonly string[] Roles = new string[]
         {
             AdminRoleId,
+            DeveloperRoleId,
             GuestRoleId
         };
 
         public const string AdminRoleId = "Admin";
+        public const string DeveloperRoleId = "Developer";
         public const string GuestRoleId = "Guest";
     }
 }
