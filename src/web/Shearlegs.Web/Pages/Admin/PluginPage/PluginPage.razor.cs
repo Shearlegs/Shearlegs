@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Http;
+using Shearlegs.Web.Constants;
 using Shearlegs.Web.Database.Repositories;
 using Shearlegs.Web.Models;
 using Shearlegs.Web.Services;
@@ -10,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace Shearlegs.Web.Pages.Admin.PluginPage
 {
+    [Authorize(Roles = RoleConstants.AdminRoleId)]
     public partial class PluginPage
     {
         [Parameter]
