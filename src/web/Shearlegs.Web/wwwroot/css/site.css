@@ -28,4 +28,13 @@ td, th {
         top: 0.5rem;
     }
 
-    
+/* Table scrollable */
+.tableFixHead {
+    overflow-y: auto;
+    max-height: 350px;
+}
+
+    .tableFixHead thead tr {
+        position: sticky;
+        top: 0;
+    }

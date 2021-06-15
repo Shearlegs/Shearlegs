@@ -50,7 +50,7 @@
                     <small class="text-danger"><ValidationMessage For="@(() => Model.Description)" /></small>
                 </div>
 
-                
+
 
                 @if (isLoading)
                 {
@@ -62,6 +62,33 @@
                 }
 
             </EditForm>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-header">
+            Versions
+        </div>
+        <div class="card-body">
+            <div class="tableFixHead">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Version</th>
+                            <th>Upload Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <Virtualize Items="Plugin.Versions" Context="version">
+                            <tr>
+                                <td class="fw-bold">@version.Name</td>
+                                <td>@version.CreateDate</td>
+                            </tr>
+                        </Virtualize>
+                    </tbody>
+                </table>
+            </div>
+            <span class="text-muted">Total Versions: @Plugin.Versions.Count </span>
         </div>
     </div>
 
