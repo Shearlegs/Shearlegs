@@ -23,6 +23,8 @@ namespace Shearlegs.Web.Pages.Admin.PluginPage
         [Inject]
         public UserService UserService { get; set; }
 
+        public List<MVersion> Versions => Plugin.Versions.OrderByDescending(x => x.CreateDate).ToList();
+
         public MPlugin Plugin { get; set; }
         public MPlugin Model { get; set; }
 

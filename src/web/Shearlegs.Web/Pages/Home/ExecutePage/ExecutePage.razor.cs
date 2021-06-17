@@ -40,7 +40,7 @@ namespace Shearlegs.Web.Pages.Home.ExecutePage
 
         public async Task OnChangeVersionAsync(ChangeEventArgs args)
         {
-            VersionId = (int)args.Value;
+            VersionId = Convert.ToInt32(args.Value.ToString());
             Version = await VersionsRepository.GetVersionAsync(VersionId);
         }
 

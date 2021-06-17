@@ -72,7 +72,7 @@ namespace Shearlegs.Web.Database.Repositories
             const string sql = "SELECT p.*, cu.Id, cu.Name, uu.Id, uu.Name " +
                 "FROM dbo.Plugins p " +
                 "LEFT JOIN dbo.Users cu ON cu.Id = p.CreateUserId " +
-                "LEFT JOIN dbo.Users uu ON uu.Id = p.UpdateUserId";
+                "LEFT JOIN dbo.Users uu ON uu.Id = p.UpdateUserId;";
 
             return await connection.QueryAsync<MPlugin, MUser, MUser, MPlugin>(sql, (p, cu, uu) =>
             {

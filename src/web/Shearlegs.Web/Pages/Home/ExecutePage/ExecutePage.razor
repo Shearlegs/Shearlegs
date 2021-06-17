@@ -7,6 +7,10 @@
             @Plugin.Name
         </div>
         <div class="card-body">
+            <p class="lead">
+                @Plugin.Description
+            </p>
+
             @if (Version == null)
             {
                 <h3>This plugin doesn't have any versions</h3>
@@ -30,12 +34,12 @@
                         {
                             <div class="mb-2">
                                 <label class="form-label">@parameter.Name</label>
-                                <input type="@parameter.InputType" name="@parameter.Name" class="form-control" />
+                                <input type="@parameter.InputType" name="@parameter.Name" class="form-control" required="@parameter.IsRequired" />
                             </div>
                         }
                         <button class="btn btn-primary" type="submit">Submit</button>
                     </form>
-                    
+
                 </div>
             }
 
