@@ -9,5 +9,7 @@ namespace SamplePlugin
         public string Text { get; set; } = "Hello World!";
         [Secret(IsRequired = true, Description = "This is secret parameter description")]
         public string Secret { get; set; }
+        [Parameter(IsRequired = true, Description = "This is a cool number parameter description")]
+        public int CoolNumber { get; set; }
     }
 }

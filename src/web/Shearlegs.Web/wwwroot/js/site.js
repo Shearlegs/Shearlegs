@@ -29,9 +29,6 @@ async function GetFormDataJson(formName) {
 
     for (let [key, prop] of fd) {
 
-        console.log(key);
-        console.log(prop);
-
         if (prop instanceof File) {
             data[key] = Array.from(new Uint8Array(await readFileAsData(prop)));
 

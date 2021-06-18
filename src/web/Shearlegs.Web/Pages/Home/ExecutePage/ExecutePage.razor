@@ -1,10 +1,24 @@
 ﻿@page "/execute/{PluginId:int}" 
+@using Shearlegs.Web.Pages.Home.ExecutePage.Components
 
 @if (Plugin != null)
 {
     <div class="card mb-3">
-        <div class="card-header">
-            @Plugin.Name
+        <div class="card-header d-flex align-items-center">
+            <div class="me-auto">
+                @Plugin.Name - Execution Task
+            </div>
+            <div>
+                <div class="input-group">
+                    <span class="input-group-text">Version</span>
+                    <select @onchange="OnChangeVersionAsync" class="form-select">
+                        @foreach (MVersion version in Plugin.Versions.OrderByDescending(x => x.CreateDate))
+                        {
+                            <option value="@version.Id">@version.Name</option>
+                        }
+                    </select>
+                </div>
+            </div>
         </div>
         <div class="card-body">
             <p class="lead">
@@ -15,36 +29,34 @@
             {
                 <h3>This plugin doesn't have any versions</h3>
             }
+            else if (Result != null)
+            {
+                <ResultBox Result="Result" />
+            }
             else
             {
-                <div class="mb-3">
-                    <label class="form-label">Select Version</label>
-                    <select @onchange="OnChangeVersionAsync" class="form-select">
-                        @foreach (MVersion version in Plugin.Versions.OrderByDescending(x => x.CreateDate))
-                        {
-                            <option value="@version.Id">@version.Name</option>
-                        }
-                    </select>
-                </div>
-
                 <div class="mb-3">
                     <h4 class="mb-1">Parameters</h4>
                     <form name="parameters" @onsubmit="SubmitAsync">
                         @foreach (MVersionParameter parameter in Version.Parameters)
                         {
-                            <div class="mb-2">
-                                <label class="form-label">@parameter.Name</label>
-                                <input type="@parameter.InputType" name="@parameter.Name" class="form-control" required="@parameter.IsRequired" />
-                            </div>
+                            <ParameterInput Parameter="parameter" />
                         }
-                        <button class="btn btn-primary" type="submit">Submit</button>
-                    </form>
 
+                        <div class="mt-3">
+                            @if (isExecuting)
+                            {
+                                <span class="fw-bold">Executing @Plugin.Name @Version.Name...</span>
+                                <LoadingBar />
+                            }
+                            else
+                            {
+                                <button class="btn btn-primary" type="submit">Execute</button>
+                            }
+                        </div>
+                    </form>
                 </div>
             }
-
-
-
         </div>
     </div>
 }

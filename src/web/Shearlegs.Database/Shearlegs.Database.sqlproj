@@ -68,6 +68,7 @@
     <Build Include="dbo\tables\Plugins.sql" />
     <Build Include="dbo\tables\Versions.sql" />
     <Build Include="dbo\tables\VersionParameters.sql" />
+    <Build Include="dbo\tables\PluginSecrets.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Script.PostDeployment.sql" />

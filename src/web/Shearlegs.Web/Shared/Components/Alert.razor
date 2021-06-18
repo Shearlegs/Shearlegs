@@ -4,7 +4,16 @@
         {
             <i class="@Icon"></i>
         }
-        <span class="ms-1">@(new MarkupString(Text))</span>
+    <span class="ms-1">
+            @if (ChildContent != null)
+            {
+                @ChildContent
+            } else
+            {
+                @Text
+            }
+
+    </span>
     </small>
 </div>
 
@@ -17,6 +26,9 @@
 
     [Parameter]
     public string Text { get; set; }
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
 
     public string BackgroundClass()
     {

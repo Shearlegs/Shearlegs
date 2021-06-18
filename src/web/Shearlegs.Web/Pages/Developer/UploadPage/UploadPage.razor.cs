@@ -5,6 +5,7 @@ using Shearlegs.API.Plugins.Info;
 using Shearlegs.Web.Database.Repositories;
 using Shearlegs.Web.Models;
 using Shearlegs.Web.Services;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -25,7 +26,12 @@ namespace Shearlegs.Web.Pages.Developer.UploadPage
         public IPluginInfo PluginInfo { get; set; }
         public MPlugin Plugin { get; set; }
 
+        private bool IsGood => IsGoodPlugin && !IsDuplicateVersion;
+        private bool IsDuplicateVersion => IsGoodPlugin && Plugin.Versions.Exists(x => x.Name.Equals(PluginInfo.Version));
+        private bool IsGoodPlugin => PluginInfo != null && Plugin != null;
+
         private bool isLoading = false;
+        
         private async Task OnInputFileChange(InputFileChangeEventArgs e)
         {
             if (e.FileCount == 0)
@@ -39,8 +45,8 @@ namespace Shearlegs.Web.Pages.Developer.UploadPage
             PluginInfo = await PluginManager.GetPluginInfoAsync(pluginData);
             if (PluginInfo != null)
             {
-                Plugin = await PluginsRepository.GetPluginAsync(PluginInfo.PackageId);
-            }
+                Plugin = await PluginsRepository.GetPluginAsync(PluginInfo.PackageId);                
+            } 
 
             isLoading = false;
         }
@@ -49,7 +55,7 @@ namespace Shearlegs.Web.Pages.Developer.UploadPage
         public async Task UploadVersionAsync()
         {
             isLoading2 = true;
-            MVersion version = new MVersion()
+            MVersion version = new()
             {
                 PluginId = Plugin.Id,
                 Name = PluginInfo.Version,

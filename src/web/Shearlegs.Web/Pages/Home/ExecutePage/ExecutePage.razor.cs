@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using Shearlegs.API.Plugins;
+using Shearlegs.API.Plugins.Result;
 using Shearlegs.Web.Database.Repositories;
 using Shearlegs.Web.Extensions;
 using Shearlegs.Web.Models;
+using Shearlegs.Web.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +24,8 @@ namespace Shearlegs.Web.Pages.Home.ExecutePage
         public VersionsRepository VersionsRepository { get; set; }
         [Inject]
         public IJSRuntime JSRuntime { get; set; }
+        [Inject]
+        public PluginService PluginService { get; set; }
 
         public MPlugin Plugin { get; set; }
 
@@ -44,11 +49,14 @@ namespace Shearlegs.Web.Pages.Home.ExecutePage
             Version = await VersionsRepository.GetVersionAsync(VersionId);
         }
 
+        public IPluginResult Result { get; set; }
+        private bool isExecuting = false;
         public async Task SubmitAsync()
         {
             string json = await JSRuntime.GetFormDataJsonAsync("parameters");
-
-            Console.WriteLine(json);
+            isExecuting = true;
+            Result = await PluginService.ExecuteVersionAsync(Version.Id, json);
+            isExecuting = false;
         }
     }
 }

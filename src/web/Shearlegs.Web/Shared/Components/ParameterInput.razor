@@ -1,0 +1,14 @@
+﻿<div class="mb-2">
+    <label class="form-label">@Parameter.Name</label>
+    <input type="@Parameter.InputType" name="@Parameter.Name" class="form-control" required="@Parameter.IsRequired" />
+    @if (!string.IsNullOrEmpty(Parameter.Description))
+    {
+        <div class="form-text">@Parameter.Description</div>
+    }
+
+</div>
+
+@code {
+    [Parameter]
+    public MVersionParameter Parameter { get; set; }
+}

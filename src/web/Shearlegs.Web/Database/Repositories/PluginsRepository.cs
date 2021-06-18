@@ -63,8 +63,25 @@ namespace Shearlegs.Web.Database.Repositories
 
         public async Task<MPlugin> GetPluginAsync(string packageId)
         {
-            const string sql = "SELECT * FROM dbo.Plugins WHERE PackageId = @packageId;";
-            return await connection.QuerySingleOrDefaultAsync<MPlugin>(sql, new { packageId });
+            const string sql = "SELECT p.*, v.* FROM dbo.Plugins p " +
+                "LEFT JOIN dbo.Versions v ON v.PluginId = p.Id " +
+                "WHERE p.PackageId = @packageId;";
+            MPlugin plugin = null;
+            await connection.QueryAsync<MPlugin, MVersion, MPlugin>(sql, (p, v) => 
+            { 
+                if (plugin == null)
+                {
+                    plugin = p;
+                    plugin.Versions = new List<MVersion>();
+                }
+
+                if (v != null)
+                    plugin.Versions.Add(v);
+
+                return null;
+            }, new { packageId });
+
+            return plugin;
         }
 
         public async Task<IEnumerable<MPlugin>> GetPluginsAsync()

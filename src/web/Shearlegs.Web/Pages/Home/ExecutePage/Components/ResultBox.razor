@@ -1,0 +1,15 @@
+﻿@using Shearlegs.API.Plugins.Result;
+@using Shearlegs.Core.Plugins.Result;
+
+<div class="mb-3 p-3 bg-light">
+    @if (TextResult != null)
+    {
+        <h4>Text result:</h4>
+        <p>@TextResult.Text</p>
+    }
+    else if (FileResult != null)
+    {
+
+    }
+</div>
+

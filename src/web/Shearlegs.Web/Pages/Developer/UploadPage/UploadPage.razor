@@ -7,7 +7,7 @@
     </ol>
 </nav>
 
-@if (PluginInfo != null && Plugin != null)
+@if (IsGood)
 {
     <div class="card mb-3">
         <div class="card-header">
@@ -37,7 +37,16 @@ else
 {
     @if (PluginInfo != null && Plugin == null)
     {
-        <Alert Background="danger" Icon="bi bi-exclamation-triangle-fill" Text="@($"PackageId <strong>{PluginInfo.PackageId}</strong> does not exist in Plugins")" />
+        <Alert Background="danger" Icon="bi bi-exclamation-triangle-fill">
+            PackageId <strong>@PluginInfo.PackageId</strong> does not exist in Plugins
+        </Alert>
+    }
+
+    @if (IsDuplicateVersion)
+    {
+        <Alert Background="danger" Icon="bi bi-exclamation-triangle-fill">
+            Plugin <strong>@Plugin.PackageId</strong> already has version <strong>@PluginInfo.Version</strong>
+        </Alert>
     }
 
     <div class="card mb-3">
@@ -45,17 +54,20 @@ else
             Information
         </div>
         <div class="card-body">
-            <p>Drop NuGet package file in the input area</p>
+            <p>Select plugin NuGet package file in the input</p>
         </div>
     </div>
 
     <div class="mb-3">
+
         @if (!isLoading)
         {
             <label class="form-label">NuGet Package file</label>
             <InputFile class="form-control form-control-lg" OnChange="OnInputFileChange" accept=".nupkg" />
-        } else
+        }
+        else
         {
+            <span class="fw-bold">Loading Package...</span>
             <LoadingBar />
         }
 
