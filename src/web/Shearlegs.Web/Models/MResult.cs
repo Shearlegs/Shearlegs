@@ -40,5 +40,10 @@ namespace Shearlegs.Web.Models
             }
             return result;
         }
+
+        public T Deserialize<T>() where T : IPluginResult
+        {
+            return JsonConvert.DeserializeObject<T>(ResultJson);
+        }
     }
 }

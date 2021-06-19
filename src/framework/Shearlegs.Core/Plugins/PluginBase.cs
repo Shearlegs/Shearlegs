@@ -26,7 +26,7 @@ namespace Shearlegs.Core.Plugins
 
         public Assembly Assembly { get; }
 
-        protected Task<IPluginResult> Text(string text) => Task.FromResult((IPluginResult)(new PluginTextResult(text)));
+        protected Task<IPluginResult> Text(string text, bool isMarkupString = false) => Task.FromResult((IPluginResult)(new PluginTextResult(text, isMarkupString)));
         protected Task<IPluginResult> File(string name, string mimeType, byte[] content) => Task.FromResult((IPluginResult)(new PluginFileResult(name, mimeType, content)));
     }
 }

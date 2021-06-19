@@ -26,9 +26,9 @@ namespace Shearlegs.Web.Pages.Developer.UploadPage
         public IPluginInfo PluginInfo { get; set; }
         public MPlugin Plugin { get; set; }
 
-        private bool IsGood => IsGoodPlugin && !IsDuplicateVersion;
-        private bool IsDuplicateVersion => IsGoodPlugin && Plugin.Versions.Exists(x => x.Name.Equals(PluginInfo.Version));
-        private bool IsGoodPlugin => PluginInfo != null && Plugin != null;
+        private bool IsValid => IsValidPlugin && !IsDuplicateVersion;
+        private bool IsDuplicateVersion => IsValidPlugin && Plugin.Versions.Exists(x => x.Name.Equals(PluginInfo.Version));
+        private bool IsValidPlugin => PluginInfo != null && Plugin != null;
 
         private bool isLoading = false;
         
@@ -51,6 +51,8 @@ namespace Shearlegs.Web.Pages.Developer.UploadPage
             isLoading = false;
         }
 
+        public MVersion Version { get; set; }
+
         private bool isLoading2 = false;
         public async Task UploadVersionAsync()
         {
@@ -69,7 +71,12 @@ namespace Shearlegs.Web.Pages.Developer.UploadPage
                 version.Parameters.Add(MVersionParameter.FromParameterInfo(parameterInfo));
             }
 
-            await VersionsRepository.AddVersionAsync(version);
+            Version = await VersionsRepository.AddVersionAsync(version);
+            Version.Plugin = Plugin;
+
+            PluginInfo = null;
+            Plugin = null;
+
             isLoading2 = false;
         }
 

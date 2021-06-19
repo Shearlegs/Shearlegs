@@ -18,7 +18,7 @@ namespace Shearlegs.Framework.Test
     [TestClass]
     public class UnitTestSamplePlugin
     {
-        const string PluginPath = @"C:\Users\Michal\projects\Github\Shearlegs\Shearlegs\src\samples\SamplePlugin\bin\Debug\SamplePlugin.1.0.0.nupkg";
+        const string PluginPath = @"C:\Users\Michal\projects\Github\Shearlegs\Shearlegs\src\samples\SamplePlugin\bin\Debug\SamplePlugin.1.0.2.nupkg";
 
         JObject parameters = JObject.FromObject(new 
         { 

@@ -7,7 +7,7 @@
     </ol>
 </nav>
 
-@if (IsGood)
+@if (IsValid)
 {
     <div class="card mb-3">
         <div class="card-header">
@@ -40,12 +40,15 @@ else
         <Alert Background="danger" Icon="bi bi-exclamation-triangle-fill">
             PackageId <strong>@PluginInfo.PackageId</strong> does not exist in Plugins
         </Alert>
-    }
-
-    @if (IsDuplicateVersion)
+    } else if (IsDuplicateVersion)
     {
         <Alert Background="danger" Icon="bi bi-exclamation-triangle-fill">
             Plugin <strong>@Plugin.PackageId</strong> already has version <strong>@PluginInfo.Version</strong>
+        </Alert>
+    } else if (Version != null)
+    {
+        <Alert Background="success" Icon="bi bi-check2">
+            <strong>@Version.Plugin.Name @Version.Name</strong> successfully uploaded
         </Alert>
     }
 

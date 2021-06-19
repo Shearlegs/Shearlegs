@@ -1,0 +1,29 @@
+﻿@page "/results/{ResultId:int}"
+@using Shearlegs.Web.Pages.Home.ResultPage.Components 
+
+@if (Result != null)
+{
+    <div class="card">
+        <div class="card-header d-flex">
+            <div class="me-auto">
+                <span>Result #@Result.Id</span>
+            </div>
+            <div>
+                <small class="text-muted">@Result.CreateDate</small>
+            </div>            
+        </div>
+        <div class="card-body">
+            @if (Result.ResultType == ResultConstants.TextResult)
+            {
+                <TextResult Result="Result" />
+            } else if (Result.ResultType == ResultConstants.FileResult)
+            {
+                <FileResult Result="Result" />
+            }
+        </div>
+    </div>
+}
+else
+{
+    <h4>Result not found</h4>
+}

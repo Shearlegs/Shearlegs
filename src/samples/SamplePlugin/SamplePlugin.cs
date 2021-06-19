@@ -16,15 +16,14 @@ namespace SamplePlugin
 
         public override Task<IPluginResult> ExecuteAsync()
         {
-            StringBuilder sb = new StringBuilder();
+            string str = string.Join("<br>",
+                "This is start of sample plugin result!",
+                $"Text from plugin parameters: {parameters.Text}",
+                $"Cool Number from plugin parameters: {parameters.CoolNumber}",
+                $"Secret from plugin parameters: {parameters.Secret}",
+                "This is end of sample plugin result!");
 
-            sb.AppendLine("This is start of sample plugin result!");
-            sb.AppendLine("Text from plugin parameters: " + parameters.Text);
-            sb.AppendLine("Cool Number from plugin parameters: " + parameters.CoolNumber);
-            sb.AppendLine("Secret from plugin parameters: " + parameters.Secret);
-            sb.AppendLine("This is end of sample plugin result!");
-
-            return Text(sb.ToString());
+            return Text(str);
         }
     }
 }
