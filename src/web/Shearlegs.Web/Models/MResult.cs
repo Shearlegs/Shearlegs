@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Shearlegs.API.Plugins.Result;
 using Shearlegs.Core.Plugins.Result;
+using Shearlegs.Web.Constants;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,19 @@ namespace Shearlegs.Web.Models
 
         public MVersion Version { get; set; }
         public MUser User { get; set; }
+
+        public string ResultTypeString
+        { 
+            get
+            {
+                return ResultType switch
+                {
+                    ResultConstants.FileResult => "File",
+                    ResultConstants.TextResult => "Text",
+                    _ => "unkown",
+                };
+            } 
+        }
 
         public static MResult Create(IPluginResult pluginResult, string parametersJson, int versionId, int userId)
         {

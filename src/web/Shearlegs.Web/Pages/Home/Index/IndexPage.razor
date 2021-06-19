@@ -1,7 +1,47 @@
 ﻿@page "/"
 
+
+@if (Results != null)
+{
+    <div class="d-md-flex align-items-center mb-3">
+        <h4>Last Results</h4>
+    </div>
+
+    <div class="mb-5">
+        @if (Results.Count() > 0)
+        {
+            <div class="tableFixHead">
+                <table class="table table-hover table-bordered">
+                    <thead>
+                        <tr class="bg-light">
+                            <th>Task</th>
+                            <th>Type</th>
+                            <th>Execute Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <Virtualize Items="FilteredResults" Context="result">
+                            <tr style="cursor: pointer;" @onclick="() => GoToResult(result)">
+                                <td>@result.Version.Plugin.Name</td>
+                                <td>@result.ResultTypeString</td>
+                                <td>@result.CreateDate</td>
+                            </tr>
+                        </Virtualize>
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <p class="text-muted">You don't have any results yet</p>
+        }
+    </div>
+}
+
+
+
 <div class="d-md-flex align-items-center mb-3">
-    <div class="me-auto d-flex align-items-center">
+    <div class="me-auto">
         <h4>Execution Tasks</h4>
     </div>
     <div>
@@ -19,7 +59,6 @@
         <caption>Total Execution Tasks: @SearchedPlugins.Count()</caption>
         <thead>
             <tr>
-                <th scope="col">ID</th>
                 <th scope="col">Name</th>
                 <th scope="col">Description</th>
             </tr>
@@ -27,7 +66,6 @@
         <tbody>
             <Virtualize Items="SearchedPlugins" Context="plugin">
                 <tr style="cursor: pointer;" @onclick="() => GoToPlugin(plugin)">
-                    <th scope="row">@plugin.Id</th>
                     <td>@plugin.Name</td>
                     <td>@plugin.Description</td>
                 </tr>

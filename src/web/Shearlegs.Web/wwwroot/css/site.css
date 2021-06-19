@@ -31,7 +31,7 @@ td, th {
 /* Table scrollable */
 .tableFixHead {
     overflow-y: auto;
-    max-height: 350px;
+    max-height: 200px;
 }
 
     .tableFixHead thead tr {

@@ -18,6 +18,8 @@ namespace Shearlegs.Web.Pages.Home.Index
         public UserService UserService { get; set; }
         [Inject]
         public PluginsRepository PluginsRepository { get; set; }
+        [Inject]
+        public ResultsRepository ResultsRepository { get; set; }
 
 
         private string searchString;
@@ -27,7 +29,10 @@ namespace Shearlegs.Web.Pages.Home.Index
                 || x.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase)
                 ).OrderByDescending(x => x.UpdateDate).ToList();
 
+        public List<MResult> FilteredResults => Results.OrderByDescending(x => x.CreateDate).ToList();
+
         public IEnumerable<MPlugin> Plugins { get; set; }
+        public IEnumerable<MResult> Results { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -36,12 +41,19 @@ namespace Shearlegs.Web.Pages.Home.Index
                 NavigationManager.NavigateTo("/login");
             }
 
+            Results = await ResultsRepository.GetUserResultsAsync(UserService.UserId);
             Plugins = await PluginsRepository.GetPluginsAsync();
+            
         }
 
         private void GoToPlugin(MPlugin plugin)
         {
             NavigationManager.NavigateTo($"/execute/{plugin.Id}");
+        }
+
+        private void GoToResult(MResult result)
+        {
+            NavigationManager.NavigateTo($"/results/{result.Id}");
         }
     }
 }
