@@ -55,6 +55,7 @@ namespace Shearlegs.Web.Pages.Home.ExecutePage
         {
             string json = await JSRuntime.GetFormDataJsonAsync("parameters");
             isExecuting = true;
+            StateHasChanged();
             Result = await PluginService.ExecuteVersionAsync(Version.Id, json);
             isExecuting = false;
         }

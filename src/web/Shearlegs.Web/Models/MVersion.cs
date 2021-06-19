@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Shearlegs.Web.Models
 {
@@ -15,5 +13,7 @@ namespace Shearlegs.Web.Models
         public DateTime CreateDate { get; set; }
 
         public List<MVersionParameter> Parameters { get; set; }
+
+        public MPlugin Plugin { get; set; }
     }
 }

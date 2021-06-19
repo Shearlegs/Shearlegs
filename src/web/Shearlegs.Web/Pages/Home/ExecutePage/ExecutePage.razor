@@ -40,7 +40,7 @@
                     <form name="parameters" @onsubmit="SubmitAsync">
                         @foreach (MVersionParameter parameter in Version.Parameters)
                         {
-                            <ParameterInput Parameter="parameter" />
+                            <ParameterInput Parameter="parameter" @bind-IsDisabled="isExecuting"  />
                         }
 
                         <div class="mt-3">

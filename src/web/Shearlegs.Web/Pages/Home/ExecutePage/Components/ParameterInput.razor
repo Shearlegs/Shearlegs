@@ -1,0 +1,20 @@
+﻿<div class="mb-2">
+    <label class="form-label">@Parameter.Name</label>
+    <input type="@Parameter.InputType" name="@Parameter.Name" value="@Parameter.Value" class="form-control" required="@Parameter.IsRequired" readonly="@IsDisabled" />
+    @if (!string.IsNullOrEmpty(Parameter.Description))
+    {
+        <div class="form-text">@Parameter.Description</div>
+    }
+
+</div>
+
+@code {
+    [Parameter]
+    public MVersionParameter Parameter { get; set; }
+
+    [Parameter]
+    public bool IsDisabled { get; set; }
+    
+    [Parameter]
+    public EventCallback<bool> IsDisabledChanged { get; set; }
+}
