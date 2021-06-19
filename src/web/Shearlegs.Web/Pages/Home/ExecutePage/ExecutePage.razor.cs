@@ -26,6 +26,10 @@ namespace Shearlegs.Web.Pages.Home.ExecutePage
         public IJSRuntime JSRuntime { get; set; }
         [Inject]
         public PluginService PluginService { get; set; }
+        [Inject]
+        public UserService UserService { get; set; }
+        [Inject]
+        public NavigationManager NavigationManager { get; set; }
 
         public MPlugin Plugin { get; set; }
 
@@ -56,8 +60,10 @@ namespace Shearlegs.Web.Pages.Home.ExecutePage
             string json = await JSRuntime.GetFormDataJsonAsync("parameters");
             isExecuting = true;
             StateHasChanged();
-            Result = await PluginService.ExecuteVersionAsync(Version.Id, json);
+            int resultId = await PluginService.ExecuteVersionAsync(UserService.UserId, Version.Id, json);
             isExecuting = false;
+            NavigationManager.NavigateTo($"/results/{resultId}");
+            
         }
     }
 }
