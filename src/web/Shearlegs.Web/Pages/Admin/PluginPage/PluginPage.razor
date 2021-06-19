@@ -58,10 +58,55 @@
                 }
                 else
                 {
-                    <button type="submit" class="btn btn-primary">Update Plugin</button>
+                    <button type="submit" class="btn btn-primary">Save Plugin</button>
                 }
 
             </EditForm>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-header">
+            Secrets
+        </div>
+        <div class="card-body">
+            <div class="tableFixHead">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr class="bg-light">
+                            <th>Name</th>
+                            <th>Value</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <Virtualize Items="Secrets" Context="secret">
+                            <tr>
+                                <td class="fw-bold">@secret.Name</td>
+                                <td>@secret.Value</td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-danger">
+                                        <i class="bi bi-trash-fill"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </Virtualize>
+                        <tr>
+                            <td>
+                                <input class="form-control" />
+                            </td>
+                            <td>
+                                <input class="form-control" />
+                            </td>
+                            <td>
+                                <button class="btn btn-sm btn-primary">
+                                    Add
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 

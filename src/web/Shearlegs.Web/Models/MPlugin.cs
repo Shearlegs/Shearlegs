@@ -29,6 +29,7 @@ namespace Shearlegs.Web.Models
         public MUser UpdateUser { get; set; }
 
         public List<MVersion> Versions { get; set; }
+        public List<MPluginSecret> Secrets { get; set; }
 
         public MPlugin MakeCopy()
         {

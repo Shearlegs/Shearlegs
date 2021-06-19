@@ -2,6 +2,7 @@
 using Shearlegs.Web.Models;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Shearlegs.Web.Database.Repositories
@@ -41,6 +42,8 @@ namespace Shearlegs.Web.Database.Repositories
                 "LEFT JOIN dbo.Versions v ON v.PluginId = p.Id " +
                 "WHERE p.Id = @pluginId";
 
+            const string sql1 = "SELECT * FROM dbo.PluginSecrets WHERE PluginId = @pluginId;";
+
             MPlugin plugin = null;
             await connection.QueryAsync<MPlugin, MUser, MUser, MVersion, MPlugin>(sql, (p, cu, uu, v) => 
             {
@@ -57,6 +60,8 @@ namespace Shearlegs.Web.Database.Repositories
 
                 return null;
             }, new { pluginId });
+
+            plugin.Secrets = (await connection.QueryAsync<MPluginSecret>(sql1, new { pluginId })).ToList();
 
             return plugin;
         }
