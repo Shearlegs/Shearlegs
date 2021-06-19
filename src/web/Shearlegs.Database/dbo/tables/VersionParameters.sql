@@ -6,7 +6,7 @@
     Description NVARCHAR(2000) NULL,
     InputType VARCHAR(255) NOT NULL,
     DataType VARCHAR(255) NOT NULL,
-    Value VARBINARY(MAX) NULL,
+    Value NVARCHAR(MAX) NULL,
     IsArray BIT NOT NULL CONSTRAINT DF_VersionParameters_IsArray DEFAULT 0,
     IsRequired BIT NOT NULL CONSTRAINT DF_VersionParameters_IsRequired DEFAULT 0,
     IsSecret BIT NOT NULL CONSTRAINT DF_VersionParameters_IsSecret DEFAULT 0,

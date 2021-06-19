@@ -1,3 +1,9 @@
 ﻿<div class="p-3 bg-light rounded-3 mb-3 shadow-lg">
-    <p>@(new MarkupString(PluginTextResult.Text))</p>
+    @if (PluginTextResult.IsMarkupString)
+    {
+        @(new MarkupString(PluginTextResult.Text))
+    } else
+    {
+        <p>@PluginTextResult.Text</p>
+    }
 </div>

@@ -1,8 +1,11 @@
-﻿using Shearlegs.API.Exceptions;
+﻿using Newtonsoft.Json;
+using Shearlegs.API.Exceptions;
 using Shearlegs.API.Plugins.Info;
 using Shearlegs.API.Plugins.Parameters;
 using Shearlegs.Web.Extensions;
 using System;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Text;
 
 namespace Shearlegs.Web.Models
 {
@@ -13,7 +16,7 @@ namespace Shearlegs.Web.Models
         public string Description { get; set; }
         public string InputType { get; set; }
         public string DataType { get; set; }
-        public byte[] Value { get; set; }
+        public string Value { get; set; }
         public bool IsArray { get; set; }
         public bool IsRequired { get; set; }
         public bool IsSecret { get; set; }
@@ -45,6 +48,8 @@ namespace Shearlegs.Web.Models
             {
                 throw new ParameterTypeNotSupportedException(info.Type);
             }
+
+            parameter.Value = info.Value?.ToString() ?? null;
 
             return parameter;
         }
