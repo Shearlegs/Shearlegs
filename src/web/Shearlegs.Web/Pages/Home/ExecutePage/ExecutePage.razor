@@ -38,7 +38,7 @@
                 <div class="mb-3">
                     <h4 class="mb-1">Parameters</h4>
                     <form name="parameters" @onsubmit="SubmitAsync">
-                        @foreach (MVersionParameter parameter in Version.Parameters)
+                        @foreach (MVersionParameter parameter in Version.Parameters.Where(x => !x.IsSecret))
                         {
                             <ParameterInput Parameter="parameter" @bind-IsDisabled="isExecuting"  />
                         }

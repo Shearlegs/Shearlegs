@@ -1,4 +1,5 @@
-﻿using Shearlegs.API.Plugins;
+﻿using Newtonsoft.Json.Linq;
+using Shearlegs.API.Plugins;
 using Shearlegs.API.Plugins.Result;
 using Shearlegs.Web.Database.Repositories;
 using Shearlegs.Web.Models;
@@ -24,8 +25,15 @@ namespace Shearlegs.Web.Services
 
         public async Task<int> ExecuteVersionAsync(int userId, int versionId, string parametersJson)
         {
+            JObject jObject = JObject.Parse(parametersJson);
+            IEnumerable<MPluginSecret> secrets = await versionsRepository.GetVersionSecretsAsync(versionId);
+            foreach (MPluginSecret secret in secrets)
+            {
+                jObject.Add(secret.Name, JToken.FromObject(secret.Value));
+            }
+
             byte[] content = await versionsRepository.GetVersionPackageContent(versionId);
-            IPluginResult pluginResult = await pluginManager.ExecutePluginAsync(content, parametersJson);
+            IPluginResult pluginResult = await pluginManager.ExecutePluginAsync(content, jObject.ToString());
             MResult result = MResult.Create(pluginResult, parametersJson, versionId, userId);
             return await resultsRepository.AddResultAsync(result);
         }

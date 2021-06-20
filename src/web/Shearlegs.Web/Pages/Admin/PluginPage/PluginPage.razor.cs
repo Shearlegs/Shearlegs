@@ -24,8 +24,7 @@ namespace Shearlegs.Web.Pages.Admin.PluginPage
         public UserService UserService { get; set; }
 
         public List<MVersion> Versions => Plugin.Versions.OrderByDescending(x => x.CreateDate).ToList();
-        public List<MPluginSecret> Secrets => Plugin.Secrets;
-
+        
         public MPlugin Plugin { get; set; }
         public MPlugin Model { get; set; }
 
@@ -46,6 +45,5 @@ namespace Shearlegs.Web.Pages.Admin.PluginPage
             isLoading = false;
             isUpdated = true;
         }
-
     }
 }

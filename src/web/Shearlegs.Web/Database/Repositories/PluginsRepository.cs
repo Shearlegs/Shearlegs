@@ -103,5 +103,20 @@ namespace Shearlegs.Web.Database.Repositories
                 return p;
             });
         }
+
+        public async Task<MPluginSecret> AddPluginSecretAsync(MPluginSecret secret)
+        {
+            const string sql = "INSERT INTO dbo.PluginSecrets (PluginId, Name, Value, IsArray, CreateUserId) " +
+                "OUTPUT INSERTED.Id, INSERTED.PluginId, INSERTED.Name, INSERTED.Value, INSERTED.IsArray, " +
+                "INSERTED.CreateUserId, INSERTED.CreateDate " +
+                "VALUES (@PluginId, @Name, @Value, @IsArray, @CreateUserId);";
+            return await connection.QuerySingleOrDefaultAsync<MPluginSecret>(sql, secret);
+        }
+
+        public async Task DeletePluginSecretAsync(int secretId)
+        {
+            const string sql = "DELETE FROM dbo.PluginSecrets WHERE Id = @secretId;";
+            await connection.ExecuteAsync(sql, new { secretId });
+        }
     }
 }

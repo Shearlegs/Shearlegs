@@ -73,5 +73,14 @@ namespace Shearlegs.Web.Database.Repositories
             const string sql = "SELECT PackageContent FROM dbo.Versions WHERE Id = @versionId;";
             return await connection.ExecuteScalarAsync<byte[]>(sql, new { versionId });
         }
+
+        public async Task<IEnumerable<MPluginSecret>> GetVersionSecretsAsync(int versionId)
+        {
+            const string sql = "SELECT s.* FROM dbo.Versions v " +
+                "JOIN dbo.Plugins p ON p.Id = v.PluginId " +
+                "JOIN dbo.PluginSecrets s ON p.Id = s.PluginId " +
+                "WHERE v.Id = @versionId;";
+            return await connection.QueryAsync<MPluginSecret>(sql, new { versionId });
+        }
     }
 }
