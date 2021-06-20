@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Components;
 using Shearlegs.Web.Database.Repositories;
 using Shearlegs.Web.Models;
 using System.Threading.Tasks;
 
 namespace Shearlegs.Web.Pages.Home.ResultPage
 {
+    [Authorize]
     public partial class ResultPage
     {
         [Parameter]
@@ -19,7 +21,5 @@ namespace Shearlegs.Web.Pages.Home.ResultPage
         {
             Result = await ResultsRepository.GetResultAsync(ResultId);
         }
-
-
     }
 }

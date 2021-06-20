@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using Shearlegs.API.Plugins;
 using Shearlegs.API.Plugins.Result;
@@ -13,6 +14,7 @@ using System.Threading.Tasks;
 
 namespace Shearlegs.Web.Pages.Home.ExecutePage
 {
+    [Authorize]
     public partial class ExecutePage
     {
         [Parameter]

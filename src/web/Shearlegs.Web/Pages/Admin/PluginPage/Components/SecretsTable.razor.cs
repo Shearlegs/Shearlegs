@@ -54,6 +54,7 @@ namespace Shearlegs.Web.Pages.Admin.PluginPage.Components
             if (Plugin.Secrets.Exists(x => x.Name.Equals(SecretModel.Name, StringComparison.OrdinalIgnoreCase)))
             {
                 isDuplicate = true;
+                return;
             }
 
             SecretModel.PluginId = Plugin.Id;
