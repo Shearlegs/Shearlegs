@@ -28,6 +28,11 @@ namespace SamplePluginExcel
         {
             IEnumerable<InformationSchemaTable> data = await database.GetTablesAsync();
 
+            if (!parameters.FileName.Contains(".xlsx"))
+            {
+                return await Error("File name must contain .xlsx extension");
+            }
+
             string fileName = parameters.FileName;
             string mimeType = ExcelService.MimeType;
             byte[] fileData = await excel.BuildExcelFileAsync(data);

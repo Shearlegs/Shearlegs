@@ -1,0 +1,21 @@
+﻿<div class="p-3 bg-light rounded-3 mb-3 shadow-lg">
+    <div class="mb-3">
+        <h4 class="text-danger">@PluginErrorResult.Message</h4>
+        @if (!string.IsNullOrEmpty(PluginErrorResult.ExceptionMessage))
+        {
+            <p>@PluginErrorResult.ExceptionMessage</p>
+        }
+    </div>
+
+    @if (!string.IsNullOrEmpty(PluginErrorResult.ExceptionString))
+    {
+        @if (!isShow)
+        {
+            <button class="btn btn-secondary btn-sm" @onclick="ShowException">Show Exception</button>
+        }
+        else
+        {
+            <code><pre>@PluginErrorResult.ExceptionString</pre></code>
+        }
+    }
+</div>

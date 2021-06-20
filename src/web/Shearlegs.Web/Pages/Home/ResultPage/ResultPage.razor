@@ -19,6 +19,9 @@
             } else if (Result.ResultType == ResultConstants.FileResult)
             {
                 <FileResult Result="Result" />
+            } else if (Result.ResultType == ResultConstants.ErrorResult)
+            {
+                <ErrorResult Result="Result" />
             }
         </div>
     </div>

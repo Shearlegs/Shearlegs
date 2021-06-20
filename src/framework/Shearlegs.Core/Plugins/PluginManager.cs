@@ -9,6 +9,7 @@ using Shearlegs.API.Plugins.Parameters;
 using Shearlegs.API.Plugins.Result;
 using Shearlegs.Core.AssemblyLoading;
 using Shearlegs.Core.Plugins.Info;
+using Shearlegs.Core.Plugins.Result;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -32,10 +33,35 @@ namespace Shearlegs.Core.Plugins
         {
             using AssemblyContext context = AssemblyContext.Create();
             using MemoryStream ms = new MemoryStream(pluginData);
-            IPluginAssembly plugin = await pluginLoader.LoadPluginAsync(context, ms);
 
-            IPlugin pluginInstance = ActivatePlugin(plugin.Assembly, parametersJson);
-            IPluginResult result = await pluginInstance.ExecuteAsync();
+            IPluginAssembly plugin;
+
+            try
+            {
+                plugin = await pluginLoader.LoadPluginAsync(context, ms);
+            } catch (Exception e)
+            {
+                return new PluginErrorResult("Error loading plugin", e);
+            }
+
+            IPlugin pluginInstance;
+            try
+            {
+               pluginInstance = ActivatePlugin(plugin.Assembly, parametersJson);
+            } catch (Exception e)
+            {
+                return new PluginErrorResult("Error activating plugin", e);
+            }
+            
+            IPluginResult result;
+
+            try
+            {
+                result = await pluginInstance.ExecuteAsync();
+            } catch (Exception e)
+            {
+                return new PluginErrorResult("Error executing plugin", e);
+            }
 
             return result;
         }

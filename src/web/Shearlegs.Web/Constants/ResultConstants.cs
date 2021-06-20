@@ -10,5 +10,6 @@ namespace Shearlegs.Web.Constants
     {
         public const string TextResult = nameof(PluginTextResult);
         public const string FileResult = nameof(PluginFileResult);
+        public const string ErrorResult = nameof(PluginErrorResult);
     }
 }

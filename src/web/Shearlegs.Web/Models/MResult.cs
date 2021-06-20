@@ -30,6 +30,7 @@ namespace Shearlegs.Web.Models
                 {
                     ResultConstants.FileResult => "File",
                     ResultConstants.TextResult => "Text",
+                    ResultConstants.ErrorResult => "Error",
                     _ => "unkown",
                 };
             } 
@@ -47,10 +48,13 @@ namespace Shearlegs.Web.Models
 
             if (pluginResult is PluginTextResult)
             {
-                result.ResultType = nameof(PluginTextResult);
+                result.ResultType = ResultConstants.TextResult;
             } else if (pluginResult is PluginFileResult)
             {
-                result.ResultType = nameof(PluginFileResult);
+                result.ResultType = ResultConstants.FileResult;
+            } else if (pluginResult is PluginErrorResult)
+            {
+                result.ResultType = ResultConstants.ErrorResult;
             }
             return result;
         }
