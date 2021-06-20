@@ -14,6 +14,8 @@ namespace Shearlegs.Web.Constants
             GuestRoleId
         };
 
+        public const string DeveloperAndAdmin = AdminRoleId + "," + DeveloperRoleId;
+
         public const string AdminRoleId = "Admin";
         public const string DeveloperRoleId = "Developer";
         public const string GuestRoleId = "Guest";

@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Shearlegs.API.Plugins;
 using Shearlegs.API.Plugins.Info;
+using Shearlegs.Web.Constants;
 using Shearlegs.Web.Database.Repositories;
 using Shearlegs.Web.Models;
 using Shearlegs.Web.Services;
@@ -11,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace Shearlegs.Web.Pages.Developer.UploadPage
 {
+    [Authorize(Roles = RoleConstants.DeveloperAndAdmin)]
     public partial class UploadPage
     {
         [Inject]
