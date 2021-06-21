@@ -44,14 +44,61 @@ namespace Shearlegs.Web.Database.Repositories
 
         public async Task<MUser> GetUserAsync(int userId)
         {
-            const string sql = "SELECT Id, Name, Role, LastLoginDate, UpdateDate, CreateDate FROM dbo.Users WHERE Id = @userId;";
-            return await connection.QuerySingleOrDefaultAsync<MUser>(sql, new { userId });
+            const string sql = "SELECT u.*, up.*, p.* FROM dbo.Users u " +
+                "LEFT JOIN dbo.UserPlugins up ON u.Id = up.UserId " +
+                "LEFT JOIN dbo.Plugins p ON p.Id = up.PluginId " +
+                "WHERE u.Id = @userId;";
+            MUser user = null;
+            await connection.QueryAsync<MUser, MUserPlugin, MPlugin, MUser>(sql, (u, up, p) => 
+            { 
+                if (user == null)
+                {
+                    user = u;
+                    user.Plugins = new List<MUserPlugin>();
+                }
+
+                if (up != null)
+                {
+                    up.Plugin = p;
+                    user.Plugins.Add(up);
+                }
+
+                return null;
+            }, new { userId });
+            return user;
         }
 
         public async Task UpdateLastLoginDateAsync(int userId)
         {
             const string sql = "UPDATE dbo.Users SET LastLoginDate = SYSDATETIME() WHERE Id = @userId;";
             await connection.ExecuteAsync(sql, new { userId });
+        }
+
+        public async Task<MUserPlugin> AddUserPluginAsync(MUserPlugin userPlugin)
+        {
+            const string sql = "INSERT INTO dbo.UserPlugins (UserId, PluginId, CreateUserId) " +
+                "OUTPUT INSERTED.Id " + 
+                "VALUES (@UserId, @PluginId, @CreateUserId);";
+            return await GetUserPluginAsync(await connection.ExecuteScalarAsync<int>(sql, userPlugin));
+        }
+
+        public async Task<MUserPlugin> GetUserPluginAsync(int userPluginId)
+        {
+            const string sql = "SELECT up.*, p.* FROM dbo.UserPlugins up " +
+                "JOIN dbo.Plugins p ON p.Id = up.PluginId " +
+                "WHERE up.Id = @userPluginId";
+
+            return (await connection.QueryAsync<MUserPlugin, MPlugin, MUserPlugin>(sql, (up, p) => 
+            {
+                up.Plugin = p;
+                return up;
+            }, new { userPluginId })).FirstOrDefault();
+        }
+
+        public async Task DeleteUserPluginAsync(int userPluginId)
+        {
+            const string sql = "DELETE FROM dbo.UserPlugins WHERE Id = @userPluginId;";
+            await connection.ExecuteAsync(sql, new { userPluginId });
         }
     }
 }

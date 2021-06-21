@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
@@ -15,6 +16,8 @@ namespace Shearlegs.Web.Models
         public string Password { get; set; }
 
         public string LastLoginString => LastLoginDate == default ? "Never" : LastLoginDate.ToString();
+
+        public List<MUserPlugin> Plugins { get; set; }
 
         public MUser MakeCopy()
         {

@@ -1,4 +1,5 @@
 ﻿@page "/admin/users/{UserId:int}"
+@using Shearlegs.Web.Pages.Admin.UserPage.Components 
 
 @if (User != null)
 {
@@ -54,6 +55,15 @@
                 }
 
             </EditForm>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-header">
+            Manage Plugins
+        </div>
+        <div class="card-body">
+            <PluginsList User="User" />
         </div>
     </div>
 

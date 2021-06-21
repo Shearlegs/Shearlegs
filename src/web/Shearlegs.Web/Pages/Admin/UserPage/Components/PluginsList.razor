@@ -1,0 +1,59 @@
+﻿
+@if (isNotFound)
+{
+    <Alert Background="danger" Icon="bi bi-exclamation-triangle-fill">
+        Plugin <strong>@packageId</strong> wasn't found
+    </Alert>
+}
+else if (isAlreadyExists)
+{
+    <Alert Background="danger" Icon="bi bi-exclamation-triangle-fill">
+        <strong>@packageId</strong> is already assigned to @User.Name
+    </Alert>
+}
+else if (isSuccess)
+{
+    <Alert Background="success" Icon="bi bi-check2">
+        Successfully assigned <strong>@AddedUserPlugin.Plugin.PackageId</strong> to @User.Name
+    </Alert>
+} else if (isDeleted)
+{
+    <Alert Background="success" Icon="bi bi-check2">
+        Successfully deassigned <strong>@DeletedUserPlugin.Plugin.PackageId</strong> from @User.Name
+    </Alert>
+}
+
+<div class="input-group mb-3" style="max-width: 500px;">
+    <span class="input-group-text">Search Plugin</span>
+    <input class="form-control" list="datalistOptions" id="pluginsDataList" @bind="packageId" placeholder="PackageId">
+    @if (Plugins != null)
+    {
+        <datalist id="datalistOptions">
+            @foreach (MPlugin plugin in FilteredPlugins)
+            {
+                <option value="@plugin.PackageId" />
+            }
+        </datalist>
+    }
+    <button class="btn btn-outline-primary" type="button" @onclick="AddUserPluginAsync">
+        <i class="bi bi-plus-circle-fill"></i>
+    </button>
+</div>
+
+<div class="mb-3">
+    <h6>Assigned plugins:</h6>
+    <div class="tableFixHead" style="max-width: 600px;">
+        <ul class="list-group">
+            @foreach (MUserPlugin userPlugin in User.Plugins.OrderByDescending(x => x.CreateDate))
+            {
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span class="fw-bold">@userPlugin.Plugin.PackageId</span>
+                    <button class="btn btn-sm btn-danger" @onclick="() => DeleteUserPluginAsync(userPlugin)">
+                        <i class="bi bi-trash-fill"></i>
+                    </button>
+                </li>
+            }
+        </ul>
+    </div>
+</div>
+
