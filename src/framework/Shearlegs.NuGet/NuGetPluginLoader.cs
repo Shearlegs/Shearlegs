@@ -8,7 +8,9 @@ using NuGet.Packaging.Core;
 using NuGet.Resolver;
 using NuGet.RuntimeModel;
 using Shearlegs.API.AssemblyLoading;
+using Shearlegs.API.Plugins.Content;
 using Shearlegs.API.Plugins.Loaders;
+using Shearlegs.Core.Plugins.Content;
 using Shearlegs.Core.Plugins.Loaders;
 using System;
 using System.Collections.Generic;
@@ -44,18 +46,18 @@ namespace Shearlegs.NuGet
             frameworkReducer = new FrameworkReducer();
         }
 
-        public async Task<IPluginAssembly> LoadPluginAsync(IAssemblyContext context, Stream pluginStream)
+        public async Task<IPluginLoadResult> LoadPluginAsync(IAssemblyContext context, Stream pluginStream)
         {
             using PackageArchiveReader reader = new PackageArchiveReader(pluginStream);
 
-            IEnumerable<PackageDependencyGroup> groups = await reader.GetPackageDependenciesAsync(CancellationToken.None);
+            IEnumerable<PackageDependencyGroup> dependencyGroups = await reader.GetPackageDependenciesAsync(CancellationToken.None);
 
-            NuGetFramework framework = frameworkReducer.GetNearest(targetFramework, groups.Select(g => g.TargetFramework));
+            NuGetFramework dependencyFramework = frameworkReducer.GetNearest(targetFramework, dependencyGroups.Select(g => g.TargetFramework));
 
             List<PackageDependency> dependencies = new List<PackageDependency>();
-            foreach (PackageDependencyGroup group in groups)
+            foreach (PackageDependencyGroup group in dependencyGroups)
             {
-                if (group.TargetFramework == framework)
+                if (group.TargetFramework == dependencyFramework)
                 {
                     dependencies.AddRange(group.Packages);
                     break;
@@ -78,13 +80,41 @@ namespace Shearlegs.NuGet
 
             PackageIdentity pluginIdentity = await reader.GetIdentityAsync(CancellationToken.None);
 
-            return new PluginAssembly()
+
+            IEnumerable<FrameworkSpecificGroup> contentGroups = await reader.GetContentItemsAsync(CancellationToken.None);
+            NuGetFramework contentFramework = frameworkReducer.GetNearest(targetFramework, contentGroups.Select(g => g.TargetFramework));
+
+            List<IContentFile> contentFiles = new List<IContentFile>();
+            foreach (FrameworkSpecificGroup group in contentGroups)
+            {
+                if (group.TargetFramework != contentFramework)
+                {
+                    continue;
+                }
+
+                foreach (string item in group.Items)
+                {
+                    ZipArchiveEntry entry = reader.GetEntry(item);
+                    using Stream libStream = entry.Open();
+                    using MemoryStream ms = new MemoryStream();
+                    await libStream.CopyToAsync(ms);
+                    ms.Position = 0;
+                    contentFiles.Add(new ContentFile(entry.Name, ms.ToArray()));
+                }
+            }
+
+            IPluginAssembly pluginAssembly = new PluginAssembly()
             {
                 PackageId = pluginIdentity.Id,
                 Version = pluginIdentity.Version.ToString(),
                 IsPrerelease = pluginIdentity.Version.IsPrerelease,
                 Assembly = assemblies.FirstOrDefault()
             };
+
+            IContentFileStore fileStore = new ContentFileStore(contentFiles);
+
+
+            return new PluginLoadResult(pluginAssembly, fileStore);
         }
 
         private RuntimeGraph GetRuntimeGraph(string expandedPath)

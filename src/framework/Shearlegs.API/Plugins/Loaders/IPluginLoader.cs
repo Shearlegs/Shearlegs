@@ -11,6 +11,6 @@ namespace Shearlegs.API.Plugins.Loaders
 {
     public interface IPluginLoader
     {
-        Task<IPluginAssembly> LoadPluginAsync(IAssemblyContext context, Stream pluginStream);
+        Task<IPluginLoadResult> LoadPluginAsync(IAssemblyContext context, Stream pluginStream);
     }
 }

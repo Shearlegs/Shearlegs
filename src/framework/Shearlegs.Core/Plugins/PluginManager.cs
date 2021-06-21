@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using Shearlegs.API.Exceptions;
 using Shearlegs.API.Plugins;
 using Shearlegs.API.Plugins.Attributes;
+using Shearlegs.API.Plugins.Content;
 using Shearlegs.API.Plugins.Info;
 using Shearlegs.API.Plugins.Loaders;
 using Shearlegs.API.Plugins.Parameters;
@@ -34,11 +35,11 @@ namespace Shearlegs.Core.Plugins
             using AssemblyContext context = AssemblyContext.Create();
             using MemoryStream ms = new MemoryStream(pluginData);
 
-            IPluginAssembly plugin;
+            IPluginLoadResult loadResult;
 
             try
             {
-                plugin = await pluginLoader.LoadPluginAsync(context, ms);
+                loadResult = await pluginLoader.LoadPluginAsync(context, ms);
             } catch (Exception e)
             {
                 return new PluginErrorResult("Error loading plugin", e);
@@ -47,7 +48,7 @@ namespace Shearlegs.Core.Plugins
             IPlugin pluginInstance;
             try
             {
-               pluginInstance = ActivatePlugin(plugin.Assembly, parametersJson);
+               pluginInstance = ActivatePlugin(loadResult.PluginAssembly.Assembly, parametersJson, loadResult.FileStore);
             } catch (Exception e)
             {
                 return new PluginErrorResult("Error activating plugin", e);
@@ -71,19 +72,19 @@ namespace Shearlegs.Core.Plugins
             using AssemblyContext context = AssemblyContext.Create();
             using MemoryStream ms = new MemoryStream(pluginData);
 
-            IPluginAssembly plugin = await pluginLoader.LoadPluginAsync(context, ms);
+            IPluginLoadResult loadResult = await pluginLoader.LoadPluginAsync(context, ms);
 
             List<IPluginParameterInfo> parameters = new();
 
             IPluginInfo info = new PluginInfo() 
             {
-                PackageId = plugin.PackageId,
-                Version = plugin.Version,
-                IsPrerelease = plugin.IsPrerelease,
+                PackageId = loadResult.PluginAssembly.PackageId,
+                Version = loadResult.PluginAssembly.Version,
+                IsPrerelease = loadResult.PluginAssembly.IsPrerelease,
                 Parameters = parameters    
             };
 
-            IEnumerable<Type> types = plugin.Assembly.GetTypes().Where(t => t.GetCustomAttribute<ParametersAttribute>() != null);
+            IEnumerable<Type> types = loadResult.PluginAssembly.Assembly.GetTypes().Where(t => t.GetCustomAttribute<ParametersAttribute>() != null);
             if (types.Count() == 0)
             {
                 return info;
@@ -130,7 +131,7 @@ namespace Shearlegs.Core.Plugins
             return info;
         }
 
-        private IPlugin ActivatePlugin(Assembly assembly, string parametersJson)
+        private IPlugin ActivatePlugin(Assembly assembly, string parametersJson, IContentFileStore contentFileStore)
         {
             Type pluginType = assembly.GetTypes().FirstOrDefault(x => x.GetInterface(nameof(IPlugin)) != null);
 
@@ -145,6 +146,7 @@ namespace Shearlegs.Core.Plugins
             // Add plugin as singleton service
             IServiceCollection serviceCollection = new ServiceCollection();
             serviceCollection.AddSingleton(pluginType);
+            serviceCollection.AddSingleton(contentFileStore);
 
             foreach (Type serviceType in services)
             {
