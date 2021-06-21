@@ -4,6 +4,7 @@ using SamplePluginExcel.Services;
 using Shearlegs.API.Plugins.Result;
 using Shearlegs.Core.Plugins;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -28,12 +29,7 @@ namespace SamplePluginExcel
         {
             IEnumerable<InformationSchemaTable> data = await database.GetTablesAsync();
 
-            if (!parameters.FileName.Contains(".xlsx"))
-            {
-                return await Error("File name must contain .xlsx extension");
-            }
-
-            string fileName = parameters.FileName;
+            string fileName = Path.GetFileNameWithoutExtension(parameters.FileName) + ExcelService.Extension;
             string mimeType = ExcelService.MimeType;
             byte[] fileData = await excel.BuildExcelFileAsync(data);
 

@@ -1,12 +1,13 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <GenerateNugetPackage>true</GenerateNugetPackage>
-    <Version>1.0.1</Version>
+    <Version>1.0.4</Version>
   </PropertyGroup>
 
+  
   <ItemGroup>
     <PackageReference Include="Dapper" Version="2.0.90" />
     <PackageReference Include="EPPlus" Version="5.6.4" />
@@ -17,6 +18,12 @@
   <ItemGroup>
     <ProjectReference Include="..\..\framework\Shearlegs.API\Shearlegs.API.csproj" />
     <ProjectReference Include="..\..\framework\Shearlegs.Core\Shearlegs.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="template.xlsx">
+      <Pack>true</Pack>
+    </None>
   </ItemGroup>
 
 </Project>

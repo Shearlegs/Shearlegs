@@ -16,12 +16,19 @@
         <div class="card-body">
             <p>Parameters</p>
             <ul>
-                @foreach (var parameter in PluginInfo.Parameters)
+                @foreach (var parameter in PluginInfo.Parameters.Where(x => !x.IsSecret))
                 {
-                    <li>@parameter.Name (@parameter.Type.Name) - @parameter.Description</li>
+                    <li><strong>@parameter.Name</strong> (@parameter.Type.Name) - @parameter.Description</li>
                 }
-
             </ul>
+            <p>Secrets</p>
+            <ul>
+                @foreach (var secret in PluginInfo.Parameters.Where(x => x.IsSecret))
+                {
+                    <li><strong>@secret.Name</strong> (@secret.Type.Name)</li>
+                }
+            </ul>
+
             @if (!isLoading2)
             {
                 <button class="btn btn-primary" @onclick="UploadVersionAsync">Upload Version</button>
@@ -63,13 +70,13 @@ else
 
     <div class="mb-3">
 
-        @if (!isLoading)
+        <label class="form-label">NuGet Package file</label>
+        <InputFile class="form-control form-control-lg" OnChange="OnInputFileChange" accept=".nupkg" disabled="@isLoading" />
+        @if (isLoading)
         {
-            <label class="form-label">NuGet Package file</label>
-            <InputFile class="form-control form-control-lg" OnChange="OnInputFileChange" accept=".nupkg" />
-        }
-        else
-        {
+            <div class="mb-3">
+                
+            </div>
             <span class="fw-bold">Loading Package...</span>
             <LoadingBar />
         }
