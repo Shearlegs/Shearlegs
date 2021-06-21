@@ -107,7 +107,7 @@ namespace Shearlegs.Core.Plugins
                     Value = property.GetValue(instance),
                     Description = attribute?.Description ?? null,
                     IsRequired = attribute?.IsRequired ?? false,
-                    IsSecret = attribute is SecretAttribute
+                    IsSecret = property.GetCustomAttribute<SecretAttribute>() != null
                 };
                 parameters.Add(parameter);
             }
@@ -122,7 +122,7 @@ namespace Shearlegs.Core.Plugins
                     Value = field.GetValue(instance),
                     Description = attribute?.Description ?? null,
                     IsRequired = attribute?.IsRequired ?? false,
-                    IsSecret = attribute is SecretAttribute
+                    IsSecret = field.GetCustomAttribute<SecretAttribute>() != null
                 };
                 parameters.Add(parameter);
             }
