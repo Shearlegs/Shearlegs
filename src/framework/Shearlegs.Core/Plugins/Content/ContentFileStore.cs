@@ -17,6 +17,8 @@ namespace Shearlegs.Core.Plugins.Content
             this.files = files;
         }
 
+        public IEnumerable<IContentFile> Files => files;
+
         public IContentFile GetFile(string name, StringComparison stringComparison = StringComparison.OrdinalIgnoreCase)
         {
             IContentFile file = files.FirstOrDefault(x => x.Name.Equals(name, stringComparison));

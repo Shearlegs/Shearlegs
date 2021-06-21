@@ -76,12 +76,14 @@ namespace Shearlegs.Core.Plugins
 
             List<IPluginParameterInfo> parameters = new();
 
-            IPluginInfo info = new PluginInfo() 
+            IPluginInfo info = new PluginInfo()
             {
                 PackageId = loadResult.PluginAssembly.PackageId,
                 Version = loadResult.PluginAssembly.Version,
                 IsPrerelease = loadResult.PluginAssembly.IsPrerelease,
-                Parameters = parameters    
+                Parameters = parameters,
+                ContentFiles = loadResult.FileStore.Files.Select(x => new ContentFileInfo(x.Name, x.Data.Length))
+                
             };
 
             IEnumerable<Type> types = loadResult.PluginAssembly.Assembly.GetTypes().Where(t => t.GetCustomAttribute<ParametersAttribute>() != null);

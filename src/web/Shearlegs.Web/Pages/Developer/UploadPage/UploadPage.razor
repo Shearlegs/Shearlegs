@@ -28,6 +28,13 @@
                     <li><strong>@secret.Name</strong> (@secret.Type.Name)</li>
                 }
             </ul>
+            <p>Content Files</p>
+            <ul>
+                @foreach (var contentFile in PluginInfo.ContentFiles)
+                {
+                    <li><strong>@contentFile.Name</strong> (@contentFile.Length.ToString("N0") bytes)</li>
+                }
+            </ul>
 
             @if (!isLoading2)
             {

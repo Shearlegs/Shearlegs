@@ -12,5 +12,6 @@ namespace Shearlegs.API.Plugins.Info
         string Version { get; }
         bool IsPrerelease { get; }
         IEnumerable<IPluginParameterInfo> Parameters { get; }
+        IEnumerable<IContentFileInfo> ContentFiles { get; }
     }
 }

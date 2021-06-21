@@ -14,5 +14,6 @@ namespace Shearlegs.Core.Plugins.Info
         public bool IsPrerelease { get; set; }
 
         public IEnumerable<IPluginParameterInfo> Parameters { get; set; }
+        public IEnumerable<IContentFileInfo> ContentFiles { get; set; }
     }
 }
