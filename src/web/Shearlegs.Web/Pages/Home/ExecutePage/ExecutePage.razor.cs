@@ -38,8 +38,15 @@ namespace Shearlegs.Web.Pages.Home.ExecutePage
         public int VersionId { get; set; }
         public MVersion Version { get; set; }
 
+        private bool hasPermission = true;
+
         protected override async Task OnInitializedAsync()
         {
+            hasPermission = await PluginsRepository.IsUserPluginAsync(UserService.UserId, PluginId);
+            if (!hasPermission)
+            {
+                return;
+            }
             Plugin = await PluginsRepository.GetPluginAsync(PluginId);
             VersionId = Plugin.Versions.OrderByDescending(x => x.CreateDate).FirstOrDefault()?.Id ?? 0;
 

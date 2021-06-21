@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Http;
+using Shearlegs.Web.Constants;
 using Shearlegs.Web.Database.Repositories;
 using Shearlegs.Web.Models;
 using Shearlegs.Web.Services;
@@ -42,8 +43,14 @@ namespace Shearlegs.Web.Pages.Home.Index
             }
 
             Results = await ResultsRepository.GetUserResultsAsync(UserService.UserId);
-            Plugins = await PluginsRepository.GetPluginsAsync();
             
+            if (UserService.IsInRole(RoleConstants.AdminRoleId))
+            {
+                Plugins = await PluginsRepository.GetPluginsAsync();
+            } else
+            {
+                Plugins = await PluginsRepository.GetUserPluginsAsync(UserService.UserId);
+            }            
         }
 
         private void GoToPlugin(MPlugin plugin)

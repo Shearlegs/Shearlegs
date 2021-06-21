@@ -104,6 +104,28 @@ namespace Shearlegs.Web.Database.Repositories
             });
         }
 
+        public async Task<IEnumerable<MPlugin>> GetUserPluginsAsync(int userId)
+        {
+            string sql = "SELECT p.*, cu.Id, cu.Name, uu.Id, uu.Name " +
+                "FROM dbo.Plugins p " +
+                "LEFT JOIN dbo.Users cu ON cu.Id = p.CreateUserId " +
+                "LEFT JOIN dbo.Users uu ON uu.Id = p.UpdateUserId " +
+                "JOIN dbo.UserPlugins up ON up.PluginId = p.Id AND up.UserId = @userId;";                
+
+            return await connection.QueryAsync<MPlugin, MUser, MUser, MPlugin>(sql, (p, cu, uu) =>
+            {
+                p.CreateUser = cu;
+                p.UpdateUser = uu;
+                return p;
+            }, new { userId });
+        }
+
+        public async Task<bool> IsUserPluginAsync(int userId, int pluginId)
+        {
+            const string sql = "SELECT COUNT(*) FROM dbo.UserPlugins WHERE UserId = @userId AND PluginId = @pluginId;";
+            return await connection.ExecuteScalarAsync<bool>(sql, new { userId, pluginId });
+        }
+
         public async Task<MPluginSecret> AddPluginSecretAsync(MPluginSecret secret)
         {
             const string sql = "INSERT INTO dbo.PluginSecrets (PluginId, Name, Value, IsArray, CreateUserId) " +
