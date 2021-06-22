@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using Shearlegs.API.Plugins;
 using Shearlegs.API.Plugins.Result;
+using Shearlegs.Web.Constants;
 using Shearlegs.Web.Database.Repositories;
 using Shearlegs.Web.Extensions;
 using Shearlegs.Web.Models;
@@ -42,11 +43,15 @@ namespace Shearlegs.Web.Pages.Home.ExecutePage
 
         protected override async Task OnInitializedAsync()
         {
-            hasPermission = await PluginsRepository.IsUserPluginAsync(UserService.UserId, PluginId);
-            if (!hasPermission)
+            if (!UserService.IsInRole(RoleConstants.AdminRoleId))
             {
-                return;
+                hasPermission = await PluginsRepository.IsUserPluginAsync(UserService.UserId, PluginId);
+                if (!hasPermission)
+                {
+                    return;
+                }
             }
+            
             Plugin = await PluginsRepository.GetPluginAsync(PluginId);
             VersionId = Plugin.Versions.OrderByDescending(x => x.CreateDate).FirstOrDefault()?.Id ?? 0;
 

@@ -140,8 +140,20 @@ namespace Shearlegs.NuGet
             collection.Load(await reader.GetFilesAsync(CancellationToken.None));
 
             List<Assembly> assemblies = new List<Assembly>();
-            
-            NuGetFramework framework = frameworkReducer.GetNearest(targetFramework, await reader.GetSupportedFrameworksAsync(CancellationToken.None));
+
+            // TODO: find a nicer way to handle this
+
+            IEnumerable<FrameworkSpecificGroup> runtimesItems = await reader.GetItemsAsync("runtimes", CancellationToken.None);
+            IEnumerable<NuGetFramework> frameworks;
+            if (runtimesItems.Any())
+            {
+                frameworks = runtimesItems.Select(x => x.TargetFramework);
+            } else
+            {
+                frameworks = await reader.GetSupportedFrameworksAsync(CancellationToken.None);
+            }
+
+            NuGetFramework framework = frameworkReducer.GetNearest(targetFramework, frameworks);             
 
             ContentItemGroup natives = collection.FindBestItemGroup(
                 conv.Criteria.ForRuntime(RuntimeInformation.RuntimeIdentifier), 
