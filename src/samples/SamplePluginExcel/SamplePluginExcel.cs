@@ -33,7 +33,7 @@ namespace SamplePluginExcel
             string mimeType = ExcelService.MimeType;
             byte[] fileData = await excel.BuildExcelFileAsync(data);
 
-            return await File(fileName, mimeType, fileData);
+            return File(fileName, mimeType, fileData);
         }
     }
 }

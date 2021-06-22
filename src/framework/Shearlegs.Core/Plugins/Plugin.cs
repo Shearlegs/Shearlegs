@@ -1,5 +1,6 @@
 ﻿using Shearlegs.API.Plugins;
 using Shearlegs.API.Plugins.Result;
+using System;
 using System.Threading.Tasks;
 
 namespace Shearlegs.Core.Plugins
@@ -8,7 +9,7 @@ namespace Shearlegs.Core.Plugins
     {
         public virtual Task<IPluginResult> ExecuteAsync()
         {
-            return Text("Result Unspecified");
+            throw new NotImplementedException();
         }
     }
 }

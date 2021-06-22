@@ -1,9 +1,9 @@
 ﻿using Shearlegs.API.Plugins.Attributes;
+using Shearlegs.Core.Plugins;
 
 namespace SamplePluginExcel
 {
-    [Parameters]
-    public class SampleExcelParameters
+    public class SampleExcelParameters : Parameters
     {
         [Parameter(IsRequired = true, Description = "Excel document output file name")]
         public string FileName { get; set; }

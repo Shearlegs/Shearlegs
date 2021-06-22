@@ -1,9 +1,9 @@
 ﻿using Shearlegs.API.Plugins.Attributes;
+using Shearlegs.Core.Plugins;
 
 namespace SamplePlugin
 {
-    [Parameters]
-    public class SampleParameters
+    public class SampleParameters : Parameters
     {
         [Parameter(IsRequired = false, Description = "This is a text parameter description")]
         public string Text { get; set; } = "Hello World!";

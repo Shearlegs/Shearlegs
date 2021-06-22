@@ -86,7 +86,7 @@ namespace Shearlegs.Core.Plugins
                 
             };
 
-            IEnumerable<Type> types = loadResult.PluginAssembly.Assembly.GetTypes().Where(t => t.GetCustomAttribute<ParametersAttribute>() != null);
+            IEnumerable<Type> types = loadResult.PluginAssembly.Assembly.GetTypes().Where(t => t.GetInterface(nameof(IParameters)) != null);
             if (types.Count() == 0)
             {
                 return info;
@@ -143,7 +143,7 @@ namespace Shearlegs.Core.Plugins
             }
 
             IEnumerable<Type> services = assembly.GetTypes().Where(x => x.GetCustomAttribute<ServiceAttribute>() != null);
-            Type parameters = assembly.GetTypes().FirstOrDefault(x => x.GetCustomAttribute<ParametersAttribute>() != null);
+            Type parametersType = assembly.GetTypes().FirstOrDefault(x => x.GetInterface(nameof(IParameters)) != null);
 
             // Add plugin as singleton service
             IServiceCollection serviceCollection = new ServiceCollection();
@@ -155,8 +155,8 @@ namespace Shearlegs.Core.Plugins
                 serviceCollection.Add(new ServiceDescriptor(serviceType, serviceType, serviceType.GetCustomAttribute<ServiceAttribute>().Lifetime));
             }
 
-            if (parameters != null && parametersJson != null)
-                serviceCollection.Add(new ServiceDescriptor(parameters, JsonConvert.DeserializeObject(parametersJson, parameters)));
+            if (parametersType != null && parametersJson != null)
+                serviceCollection.Add(new ServiceDescriptor(parametersType, JsonConvert.DeserializeObject(parametersJson, parametersType)));
 
             IServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();
             return (IPlugin)serviceProvider.GetRequiredService(pluginType);

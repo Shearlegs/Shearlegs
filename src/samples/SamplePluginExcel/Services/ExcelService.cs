@@ -33,9 +33,11 @@ namespace SamplePluginExcel.Services
             using MemoryStream ms = new MemoryStream(file.Data);
             byte[] result;
             using ExcelPackage pckg = new(ms);
-            ExcelWorksheet worksheet = pckg.Workbook.Worksheets.Add(parameters.WorksheetName);
+            ExcelWorksheet worksheet = pckg.Workbook.Worksheets.FirstOrDefault();
+            worksheet.Name = parameters.WorksheetName;
 
             worksheet.Cells.LoadFromCollection(data, true);
+            worksheet.Cells.AutoFitColumns();
 
             result = await pckg.GetAsByteArrayAsync();
 

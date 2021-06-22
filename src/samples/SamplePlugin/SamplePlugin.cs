@@ -23,7 +23,7 @@ namespace SamplePlugin
                 $"Secret from plugin parameters: {parameters.Secret}",
                 "This is end of sample plugin result!");
 
-            return Text(str);
+            return Task.FromResult(Text(str));
         }
     }
 }
