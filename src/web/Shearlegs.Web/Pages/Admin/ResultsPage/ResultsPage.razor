@@ -1,0 +1,48 @@
+﻿@page "/admin/results"
+
+<nav aria-label="breadcrumb mb-3">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">Admin</li>
+        <li class="breadcrumb-item active" aria-current="page">Results</li>
+    </ol>
+</nav>
+
+<div class="d-md-flex align-items-center mb-3">
+    <div class="me-auto d-flex align-items-center">
+        <h4>Results</h4>
+    </div>
+    <div>
+        <div class="input-group">
+            <span class="input-group-text" id="basic-addon1">Search</span>
+            <input type="text" @bind="searchString" @bind:event="oninput" class="form-control" placeholder="ID or User" />
+        </div>
+    </div>
+</div>
+
+
+@if (Results != null)
+{
+    <table class="table table-light table-bordered table-hover mb-3">
+        <caption>Total Results: @SearchedResults.Count()</caption>
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Plugin</th>
+                <th scope="col">Result</th>
+                <th scope="col">User</th>
+                <th scope="col" class="table-hide">Create Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            <Virtualize Items="SearchedResults" Context="result">
+                <tr @onclick="() => GoToResult(result)" style="cursor: pointer;">
+                    <th scope="row">@result.Id</th>
+                    <td>@result.Version.Plugin.Name</td>
+                    <td>@result.ResultTypeString</td>
+                    <td>@result.User.Name</td>
+                    <td class="table-hide">@result.CreateDate</td>
+                </tr>
+            </Virtualize>
+        </tbody>
+    </table>
+}

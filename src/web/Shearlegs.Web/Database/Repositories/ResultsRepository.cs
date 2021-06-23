@@ -26,6 +26,12 @@ namespace Shearlegs.Web.Database.Repositories
             return await connection.ExecuteScalarAsync<int>(sql, result);
         }
 
+        public async Task<bool> IsResultUserAsync(int resultId, int userId)
+        {
+            const string sql = "SELECT COUNT(*) FROM dbo.Results WHERE Id = @resultId AND UserId = @userId;";
+            return await connection.ExecuteScalarAsync<bool>(sql, new { resultId, userId });
+        }
+
         public async Task<MResult> GetResultAsync(int resultId)
         {
             const string sql = "SELECT r.*, v.*, p.*, u.* " +

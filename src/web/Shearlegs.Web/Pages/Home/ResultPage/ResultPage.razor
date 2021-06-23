@@ -1,7 +1,7 @@
 ﻿@page "/results/{ResultId:int}"
 @using Shearlegs.Web.Pages.Home.ResultPage.Components 
 
-@if (Result != null)
+@if (Result != null && hasPermission)
 {
     <div class="card">
         <div class="card-header d-flex">
@@ -24,7 +24,14 @@
                 <ErrorResult Result="Result" />
             }
         </div>
+        <div class="card-footer text-muted text-center">
+            Executed by <span class="fw-bold">@Result.User.Name</span>
+        </div>
     </div>
+}
+else if (!hasPermission)
+{
+    <h4>You don't have permission to view this result</h4>
 }
 else
 {
