@@ -2,7 +2,10 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <PackageDescription>Core service implementations for Shearlegs</PackageDescription>    
   </PropertyGroup>
+
+  <Import Project="$(MSBuildThisFileDirectory)..\..\props\FrameworkProject.props" />
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.1" />
@@ -16,5 +19,5 @@
   <ItemGroup>
     <ProjectReference Include="..\Shearlegs.API\Shearlegs.API.csproj" />
   </ItemGroup>
-
+  
 </Project>

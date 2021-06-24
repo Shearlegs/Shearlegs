@@ -1,0 +1,29 @@
+﻿<Project>
+  <PropertyGroup>
+    <PackageId>$(AssemblyName)</PackageId>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>1.1.0</Version>
+    <Authors>Shearlegs</Authors>
+    <Company>Shearlegs</Company>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <RepositoryUrl>https://github.com/Shearlegs/Shearlegs</RepositoryUrl>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageProjectUrl>https://github.com/Shearlegs</PackageProjectUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageTags>Shearlegs Plugin Framework</PackageTags>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\..\icon.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="..\..\..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+  
+</Project>
