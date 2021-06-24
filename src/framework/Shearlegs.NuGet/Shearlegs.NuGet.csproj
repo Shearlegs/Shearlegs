@@ -11,7 +11,11 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
     <PackageReference Include="Microsoft.Extensions.PlatformAbstractions" Version="1.1.0" />
     <PackageReference Include="Microsoft.NETCore.Platforms" Version="5.0.2" />
-    <PackageReference Include="NuGet.Frameworks" Version="5.9.1" />
+    <PackageReference Include="NuGet.Frameworks" Version="5.10.0" />
+    <PackageReference Include="NuGet.Packaging" Version="5.10.0" />
+    <PackageReference Include="NuGet.Protocol" Version="5.10.0" />
+    <PackageReference Include="NuGet.Resolver" Version="5.10.0" />
+    <PackageReference Include="NuGet.Versioning" Version="5.10.0" />
   </ItemGroup>
 
   <ItemGroup>

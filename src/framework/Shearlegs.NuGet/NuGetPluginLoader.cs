@@ -1,25 +1,21 @@
 ﻿using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.PlatformAbstractions;
 using NuGet.Client;
 using NuGet.ContentModel;
 using NuGet.Frameworks;
 using NuGet.Packaging;
 using NuGet.Packaging.Core;
-using NuGet.Resolver;
 using NuGet.RuntimeModel;
 using Shearlegs.API.AssemblyLoading;
 using Shearlegs.API.Plugins.Content;
 using Shearlegs.API.Plugins.Loaders;
 using Shearlegs.Core.Plugins.Content;
 using Shearlegs.Core.Plugins.Loaders;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 

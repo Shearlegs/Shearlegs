@@ -2,7 +2,7 @@
   <PropertyGroup>
     <PackageId>$(AssemblyName)</PackageId>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.1.0</Version>
+    <Version>1.1.1</Version>
     <Authors>Shearlegs</Authors>
     <Company>Shearlegs</Company>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>

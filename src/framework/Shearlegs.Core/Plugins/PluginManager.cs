@@ -6,7 +6,6 @@ using Shearlegs.API.Plugins.Attributes;
 using Shearlegs.API.Plugins.Content;
 using Shearlegs.API.Plugins.Info;
 using Shearlegs.API.Plugins.Loaders;
-using Shearlegs.API.Plugins.Parameters;
 using Shearlegs.API.Plugins.Result;
 using Shearlegs.Core.AssemblyLoading;
 using Shearlegs.Core.Plugins.Info;
@@ -16,7 +15,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Shearlegs.Core.Plugins
