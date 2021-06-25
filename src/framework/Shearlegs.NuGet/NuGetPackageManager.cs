@@ -94,6 +94,11 @@ namespace Shearlegs.NuGet
                 }                    
             }
 
+            if (configs.Count == 0)
+            {
+                return new PackageIdentity[0];
+            }
+
             var packagesToInstall = GetPackagesToInstall(configs, allPackages);
 
             await InstallPackages(sourceCacheContext, packagesToInstall);
