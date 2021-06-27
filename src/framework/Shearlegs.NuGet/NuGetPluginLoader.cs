@@ -137,23 +137,22 @@ namespace Shearlegs.NuGet
 
             List<Assembly> assemblies = new List<Assembly>();
 
+
+
             // TODO: find a nicer way to handle this
 
+            NuGetFramework framework = NuGetFramework.AnyFramework;
+
             IEnumerable<FrameworkSpecificGroup> runtimesItems = await reader.GetItemsAsync("runtimes", CancellationToken.None);
-            IEnumerable<NuGetFramework> frameworks;
             if (runtimesItems.Any())
             {
-                frameworks = runtimesItems.Select(x => x.TargetFramework);
-            } else
-            {
-                frameworks = await reader.GetSupportedFrameworksAsync(CancellationToken.None);
+                framework = frameworkReducer.GetNearest(targetFramework, runtimesItems.Select(x => x.TargetFramework));
             }
 
-            NuGetFramework framework = frameworkReducer.GetNearest(targetFramework, frameworks);             
-
-            ContentItemGroup natives = collection.FindBestItemGroup(
-                conv.Criteria.ForRuntime(RuntimeInformation.RuntimeIdentifier), 
-                conv.Patterns.NativeLibraries);
+            if (framework == NuGetFramework.AnyFramework)
+            {
+                framework = frameworkReducer.GetNearest(targetFramework, await reader.GetSupportedFrameworksAsync(CancellationToken.None));
+            }
 
             ContentItemGroup group = collection.FindBestItemGroup(
                 conv.Criteria.ForFrameworkAndRuntime(framework, RuntimeInformation.RuntimeIdentifier),
@@ -176,6 +175,10 @@ namespace Shearlegs.NuGet
                     logger.LogInformation($"{assembly.GetName().Name} {assembly.GetName().Version} has been loaded!");
                 }
             }
+
+            ContentItemGroup natives = collection.FindBestItemGroup(
+                conv.Criteria.ForRuntime(RuntimeInformation.RuntimeIdentifier),
+                conv.Patterns.NativeLibraries);
 
             if (natives != null)
             {

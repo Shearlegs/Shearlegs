@@ -15,7 +15,7 @@ namespace Shearlegs.Framework.Test
     [TestClass]
     public class UnitTestSamplePluginExcel
     {
-        const string PluginPath = @"C:\Users\Michal\projects\Github\Shearlegs\Shearlegs\src\samples\SamplePluginExcel\bin\Debug\SamplePluginExcel.1.0.0.nupkg";
+        const string PluginPath = @"C:\Users\Michal\projects\Github\Shearlegs\Shearlegs\src\samples\SamplePluginExcel\bin\Debug\SamplePluginExcel.1.0.9.nupkg";
         const string OutputDirectory = @"C:\Users\Michal\projects\Github\Shearlegs\Shearlegs\src\samples\SamplePluginExcel\bin\Debug\";
 
         JObject parameters = JObject.FromObject(new
@@ -43,10 +43,20 @@ namespace Shearlegs.Framework.Test
             string json = parameters.ToString();
 
             IPluginResult result = await pluginManager.ExecutePluginAsync(pluginData, json);
-            PluginFileResult fileResult = result as PluginFileResult;
+            
+            if (result is PluginFileResult)
+            {
+                PluginFileResult fileResult = result as PluginFileResult;
 
-            string outputPath = Path.Combine(OutputDirectory, fileResult.Name);
-            await File.WriteAllBytesAsync(outputPath, fileResult.Content);
+                string outputPath = Path.Combine(OutputDirectory, fileResult.Name);
+                await File.WriteAllBytesAsync(outputPath, fileResult.Content);
+                Console.WriteLine(outputPath);
+            } else
+            {
+                PluginErrorResult errorResult = result as PluginErrorResult;
+                Console.WriteLine(errorResult.ExceptionString);
+            }
+            
         }
     }
 }
