@@ -7,6 +7,11 @@ namespace Shearlegs.Web.Extensions
 {
     public static class TypeExtensions
     {
+        public static bool IsDateType(this Type type)
+        {
+            return Type.GetTypeCode(type) == TypeCode.DateTime;
+        }
+
         public static bool IsNumericType(this Type type)
         {
             switch (Type.GetTypeCode(type))

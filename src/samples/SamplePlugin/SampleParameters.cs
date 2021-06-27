@@ -1,5 +1,6 @@
 ﻿using Shearlegs.API.Plugins.Attributes;
 using Shearlegs.Core.Plugins;
+using System;
 
 namespace SamplePlugin
 {

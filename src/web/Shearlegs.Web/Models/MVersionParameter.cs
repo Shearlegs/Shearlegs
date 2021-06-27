@@ -44,6 +44,11 @@ namespace Shearlegs.Web.Models
             {
                 parameter.InputType = "checkbox";
                 parameter.Value = info.Value?.ToString() ?? null;
+            }
+            else if (info.Type.IsDateType())
+            {
+                parameter.InputType = "date";
+                parameter.Value = info.Value?.ToString() ?? null;
             } else if (info.Type == typeof(FileParameter))
             {
                 parameter.InputType = "file";

@@ -15,7 +15,7 @@ namespace SamplePlugin
 
         public override Task<IPluginResult> ExecuteAsync()
         {
-            string textResult = $"Your Text parameter input: {parameters.Text}"; 
+            string textResult = $"Your Text parameter input: {parameters.Text} date: [{parameters.TestDate}]"; 
 
             return Task.FromResult(Text(textResult));
         }
