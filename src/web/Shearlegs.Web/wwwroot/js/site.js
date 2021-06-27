@@ -30,15 +30,27 @@ async function GetFormDataJson(formName) {
     for (let [key, prop] of fd) {
 
         if (prop instanceof File) {
-            data[key] = Array.from(new Uint8Array(await readFileAsData(prop)));
-
+            data[key] = {
+                fileName: prop.name,
+                content: Array.from(new Uint8Array(await readFileAsData(prop))),
+                mimeType: prop.type
+            };
         } else {
             data[key] = prop;
         }
-
     }
 
     data = JSON.stringify(data, null, 2);
 
     return data;
+}
+
+async function readFileAsData(file) {
+    let result_base64 = await new Promise((resolve) => {
+        let fileReader = new FileReader();
+
+        fileReader.onload = (e) => resolve(fileReader.result);
+        fileReader.readAsArrayBuffer(file);
+    });
+    return result_base64;
 }

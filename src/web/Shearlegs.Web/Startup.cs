@@ -59,6 +59,7 @@ namespace Shearlegs.Web
             services.AddScoped<HttpContextAccessor>();
             services.AddHttpClient();
             services.AddScoped<HttpClient>();
+            services.AddSignalR(e => e.MaximumReceiveMessageSize = 102400000);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
