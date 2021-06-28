@@ -19,7 +19,7 @@ namespace Shearlegs.Samples.Test
             };
 
             PluginTextResult textResult = await ShearlegsTest.ExecutePluginAsync<SamplePlugin.SamplePlugin, PluginTextResult>(parameters);
-            System.Console.WriteLine(textResult.Text);
+            ShearlegsTest.Results.Print(textResult);
         }
     }
 }

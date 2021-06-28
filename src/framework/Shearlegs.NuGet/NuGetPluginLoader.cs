@@ -33,7 +33,6 @@ namespace Shearlegs.NuGet
         private readonly NuGetFramework targetFramework;
         private readonly FrameworkReducer frameworkReducer;
 
-
         public NuGetPluginLoader(ILogger<NuGetPluginLoader> logger, NuGetPackageManager manager)
         {
             this.logger = logger;

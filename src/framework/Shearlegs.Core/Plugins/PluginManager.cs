@@ -150,9 +150,7 @@ namespace Shearlegs.Core.Plugins
             serviceCollection.AddSingleton(pluginType);
 
             IContentFileStore contentFileStore = CreateContentFileStore(assembly);
-
-            if (contentFileStore != null)
-                serviceCollection.AddSingleton(contentFileStore);
+            serviceCollection.AddSingleton(contentFileStore);                
 
             foreach (Type serviceType in services)
             {
