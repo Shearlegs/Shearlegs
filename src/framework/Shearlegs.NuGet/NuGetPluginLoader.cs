@@ -10,6 +10,7 @@ using Shearlegs.API.Plugins.Content;
 using Shearlegs.API.Plugins.Loaders;
 using Shearlegs.Core.Plugins.Content;
 using Shearlegs.Core.Plugins.Loaders;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
@@ -126,6 +127,49 @@ namespace Shearlegs.NuGet
 
             return null;
         }
+        
+        private async Task<IEnumerable<FrameworkSpecificGroup>> GetRuntimeGroupsAsync(PackageArchiveReader reader)
+        {
+            IEnumerable<string> files = await reader.GetFilesAsync(CancellationToken.None);
+
+            List<string> runtimeFiles = files.Where(x => x.StartsWith("runtimes/", StringComparison.OrdinalIgnoreCase)).ToList();
+            List<NuGetFramework> runtimeFrameworks = new();
+            Dictionary<NuGetFramework, List<string>> groups = new(new NuGetFrameworkFullComparer());
+
+            foreach (string file in runtimeFiles)
+            {
+                string[] parts = file.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+                parts = parts.Reverse().ToArray();
+                NuGetFramework parsedFramework = null;
+
+                foreach (string part in parts)
+                {
+                    NuGetFramework tempFramework = NuGetFramework.ParseFolder(part);
+
+                    if (tempFramework.IsSpecificFramework && tempFramework.IsPackageBased && !tempFramework.IsUnsupported)
+                    {
+                        parsedFramework = tempFramework;
+                        break;
+                    }
+                }
+
+                if (parsedFramework == null)
+                    continue;
+
+                List<string> items = null;
+                if (!groups.TryGetValue(parsedFramework, out items))
+                {
+                    items = new List<string>();
+                    groups.Add(parsedFramework, items);
+                }
+
+                items.Add(file);
+            }
+
+            return groups.Keys.OrderBy(e => e, new NuGetFrameworkSorter())
+                .Select(framework => new FrameworkSpecificGroup(framework, groups[framework].OrderBy(e => e, StringComparer.OrdinalIgnoreCase)));
+        }
+
 
         private async Task<IEnumerable<Assembly>> LoadLibAsync(IAssemblyContext context, PackageArchiveReader reader, string path)
         {
@@ -133,7 +177,6 @@ namespace Shearlegs.NuGet
             ManagedCodeConventions conv = new ManagedCodeConventions(graph);
 
             ContentItemCollection collection = new ContentItemCollection();
-            collection.Load(await reader.GetFilesAsync(CancellationToken.None));
 
             List<Assembly> assemblies = new List<Assembly>();
 
@@ -141,31 +184,36 @@ namespace Shearlegs.NuGet
 
             // TODO: find a nicer way to handle this
 
-            NuGetFramework framework = NuGetFramework.AnyFramework;
+            NuGetFramework framework;
 
-            IEnumerable<FrameworkSpecificGroup> runtimesItems = await reader.GetItemsAsync("runtimes", CancellationToken.None);
-            if (runtimesItems.Any())
+
+            IEnumerable<string> items = null;
+
+            IEnumerable<FrameworkSpecificGroup> runtimeGroups = await GetRuntimeGroupsAsync(reader);
+            if (runtimeGroups.Any())
             {
-                framework = frameworkReducer.GetNearest(targetFramework, runtimesItems.Select(x => x.TargetFramework));
-            }
-
-            if (framework == NuGetFramework.AnyFramework)
+                framework = frameworkReducer.GetNearest(targetFramework, runtimeGroups.Select(x => x.TargetFramework));
+                collection.Load(runtimeGroups.First(x => x.TargetFramework == framework).Items);
+            } else
             {
                 framework = frameworkReducer.GetNearest(targetFramework, await reader.GetSupportedFrameworksAsync(CancellationToken.None));
+                collection.Load(await reader.GetFilesAsync(CancellationToken.None));
             }
 
             ContentItemGroup group = collection.FindBestItemGroup(
-                conv.Criteria.ForFrameworkAndRuntime(framework, RuntimeInformation.RuntimeIdentifier),
-                conv.Patterns.RuntimeAssemblies);
+                  conv.Criteria.ForFrameworkAndRuntime(framework, RuntimeInformation.RuntimeIdentifier),
+                  conv.Patterns.RuntimeAssemblies);
 
-            if (group != null)
+            items = group?.Items?.Select(x => x.Path) ?? null;
+
+            if (items != null)
             {
-                foreach (ContentItem item in group.Items)
+                foreach (string item in items)
                 {
-                    if (!item.Path.EndsWith(".dll"))
+                    if (!item.EndsWith(".dll"))
                         continue;
 
-                    ZipArchiveEntry entry = reader.GetEntry(item.Path);
+                    ZipArchiveEntry entry = reader.GetEntry(item);
                     using Stream libStream = entry.Open();
                     using MemoryStream ms = new MemoryStream();
                     await libStream.CopyToAsync(ms);
