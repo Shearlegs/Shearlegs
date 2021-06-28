@@ -15,15 +15,7 @@ namespace Shearlegs.Test
         public static ShearlegsTestParameters Parameters { get; } = new ShearlegsTestParameters();
         public static ShearlegsTestResults Results { get; } = new ShearlegsTestResults();
 
-        public static IServiceProvider ServiceProvider { get; } = BuildServiceProvider();
-
-        private static IServiceProvider BuildServiceProvider()
-        {
-            IServiceCollection services = new ServiceCollection();
-            services.AddLogging();
-            ShearlegsRuntime.RegisterServices(services);
-            return services.BuildServiceProvider();
-        }
+        public static IServiceProvider ServiceProvider { get; } = ShearlegsRuntime.BuildServiceProvider();
 
         public static async Task<R> ExecutePluginAsync<T, R>(object parameters) where T : IPlugin where R : IPluginResult
         {
