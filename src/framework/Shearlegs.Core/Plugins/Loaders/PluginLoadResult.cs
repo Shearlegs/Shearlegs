@@ -10,14 +10,11 @@ namespace Shearlegs.Core.Plugins.Loaders
 {
     public class PluginLoadResult : IPluginLoadResult
     {
-        public PluginLoadResult(IPluginAssembly pluginAssembly, IContentFileStore fileStore)
+        public PluginLoadResult(IPluginAssembly pluginAssembly)
         {
             PluginAssembly = pluginAssembly;
-            FileStore = fileStore;
         }
 
         public IPluginAssembly PluginAssembly { get; }
-
-        public IContentFileStore FileStore { get; }
     }
 }

@@ -9,7 +9,7 @@ namespace Shearlegs.Core.Plugins.Info
 {
     public class ContentFileInfo : IContentFileInfo
     {
-        public ContentFileInfo(string name, int length)
+        public ContentFileInfo(string name, long length)
         {
             Name = name;
             Length = length;
@@ -17,6 +17,6 @@ namespace Shearlegs.Core.Plugins.Info
 
         public string Name { get; set; }
 
-        public int Length { get; set; }
+        public long Length { get; set; }
     }
 }

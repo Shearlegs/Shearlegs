@@ -77,28 +77,6 @@ namespace Shearlegs.NuGet
 
             PackageIdentity pluginIdentity = await reader.GetIdentityAsync(CancellationToken.None);
 
-            IEnumerable<FrameworkSpecificGroup> contentGroups = await reader.GetContentItemsAsync(CancellationToken.None);
-            NuGetFramework contentFramework = frameworkReducer.GetNearest(targetFramework, contentGroups.Select(g => g.TargetFramework));
-
-            List<IContentFile> contentFiles = new List<IContentFile>();
-            foreach (FrameworkSpecificGroup group in contentGroups)
-            {
-                if (group.TargetFramework != contentFramework)
-                {
-                    continue;
-                }
-
-                foreach (string item in group.Items)
-                {
-                    ZipArchiveEntry entry = reader.GetEntry(item);
-                    using Stream libStream = entry.Open();
-                    using MemoryStream ms = new MemoryStream();
-                    await libStream.CopyToAsync(ms);
-                    ms.Position = 0;
-                    contentFiles.Add(new ContentFile(entry.Name, ms.ToArray()));
-                }
-            }
-
             IPluginAssembly pluginAssembly = new PluginAssembly()
             {
                 PackageId = pluginIdentity.Id,
@@ -106,11 +84,8 @@ namespace Shearlegs.NuGet
                 IsPrerelease = pluginIdentity.Version.IsPrerelease,
                 Assembly = assemblies.FirstOrDefault()
             };
-
-            IContentFileStore fileStore = new ContentFileStore(contentFiles);
-
-
-            return new PluginLoadResult(pluginAssembly, fileStore);
+            
+            return new PluginLoadResult(pluginAssembly);
         }
 
         private async Task<IEnumerable<Assembly>> LoadLibAsync(IAssemblyContext context, PackageArchiveReader reader, string path)

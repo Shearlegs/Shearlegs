@@ -8,6 +8,7 @@ using Shearlegs.API.Plugins.Info;
 using Shearlegs.API.Plugins.Loaders;
 using Shearlegs.API.Plugins.Result;
 using Shearlegs.Core.AssemblyLoading;
+using Shearlegs.Core.Plugins.Content;
 using Shearlegs.Core.Plugins.Info;
 using Shearlegs.Core.Plugins.Result;
 using System;
@@ -46,7 +47,7 @@ namespace Shearlegs.Core.Plugins
             IPlugin pluginInstance;
             try
             {
-               pluginInstance = ActivatePlugin(loadResult.PluginAssembly.Assembly, parametersJson, loadResult.FileStore);
+               pluginInstance = ActivatePlugin(loadResult.PluginAssembly.Assembly, parametersJson);
             } catch (Exception e)
             {
                 return new PluginErrorResult("Error activating plugin", e);
@@ -71,6 +72,7 @@ namespace Shearlegs.Core.Plugins
             using MemoryStream ms = new MemoryStream(pluginData);
 
             IPluginLoadResult loadResult = await pluginLoader.LoadPluginAsync(context, ms);
+            IContentFileStore fileStore = CreateContentFileStore(loadResult.PluginAssembly.Assembly);
 
             List<IPluginParameterInfo> parameters = new();
 
@@ -80,7 +82,7 @@ namespace Shearlegs.Core.Plugins
                 Version = loadResult.PluginAssembly.Version,
                 IsPrerelease = loadResult.PluginAssembly.IsPrerelease,
                 Parameters = parameters,
-                ContentFiles = loadResult.FileStore.Files.Select(x => new ContentFileInfo(x.Name, x.Data.Length))
+                ContentFiles = fileStore.Files.Select(x => new ContentFileInfo(x.Name, x.Content.Length))
                 
             };
 
@@ -131,7 +133,7 @@ namespace Shearlegs.Core.Plugins
             return info;
         }
 
-        private IPlugin ActivatePlugin(Assembly assembly, string parametersJson, IContentFileStore contentFileStore)
+        public IPlugin ActivatePlugin(Assembly assembly, string parametersJson)
         {
             Type pluginType = assembly.GetTypes().FirstOrDefault(x => x.GetInterface(nameof(IPlugin)) != null);
 
@@ -146,7 +148,11 @@ namespace Shearlegs.Core.Plugins
             // Add plugin as singleton service
             IServiceCollection serviceCollection = new ServiceCollection();
             serviceCollection.AddSingleton(pluginType);
-            serviceCollection.AddSingleton(contentFileStore);
+
+            IContentFileStore contentFileStore = CreateContentFileStore(assembly);
+
+            if (contentFileStore != null)
+                serviceCollection.AddSingleton(contentFileStore);
 
             foreach (Type serviceType in services)
             {
@@ -158,6 +164,21 @@ namespace Shearlegs.Core.Plugins
 
             IServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();
             return (IPlugin)serviceProvider.GetRequiredService(pluginType);
+        }
+
+        private IContentFileStore CreateContentFileStore(Assembly assembly)
+        {
+            List<IContentFile> contentFiles = new List<IContentFile>();
+            string[] resourceNames = assembly.GetManifestResourceNames();
+            foreach (string resourceName in resourceNames)
+            {   
+                string name = resourceName.Substring(assembly.GetName().Name.Length + 1);
+                Stream stream = assembly.GetManifestResourceStream(resourceName);
+                stream.Position = 0;
+                ContentFile file = new(name, stream);
+                contentFiles.Add(file);
+            }
+            return new ContentFileStore(contentFiles);
         }
     }
 }

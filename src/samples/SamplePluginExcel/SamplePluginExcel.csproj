@@ -7,6 +7,13 @@
     <Version>1.0.9</Version>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="template.xlsx" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="template.xlsx" />
+  </ItemGroup>
   
   <ItemGroup>
     <PackageReference Include="Dapper" Version="2.0.90" />
@@ -20,10 +27,5 @@
     <ProjectReference Include="..\..\framework\Shearlegs.Core\Shearlegs.Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Include="template.xlsx">
-      <Pack>true</Pack>
-    </None>
-  </ItemGroup>
 
 </Project>

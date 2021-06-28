@@ -9,6 +9,6 @@ namespace Shearlegs.API.Plugins.Info
     public interface IContentFileInfo
     {
         string Name { get; }
-        int Length { get; }
+        long Length { get; }
     }
 }

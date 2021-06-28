@@ -16,13 +16,5 @@ namespace Shearlegs.Runtime
             serviceCollection.AddSingleton<IPluginManager, PluginManager>();
             serviceCollection.AddTransient<IPluginLoader, NuGetPluginLoader>();
         }
-
-        public static IServiceProvider BuildServiceProvider()
-        {
-            IServiceCollection services = new ServiceCollection();
-            services.AddLogging();
-            RegisterServices(services);
-            return services.BuildServiceProvider();
-        }
     }
 }

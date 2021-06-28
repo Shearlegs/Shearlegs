@@ -30,9 +30,8 @@ namespace SamplePluginExcel.Services
         public async Task<byte[]> BuildExcelFileAsync(IEnumerable<InformationSchemaTable> data)
         {
             IContentFile file = fileStore.GetFile("template.xlsx");
-            using MemoryStream ms = new MemoryStream(file.Data);
             byte[] result;
-            using ExcelPackage pckg = new(ms);
+            using ExcelPackage pckg = new(file.Content);
             ExcelWorksheet worksheet = pckg.Workbook.Worksheets.FirstOrDefault();
             worksheet.Name = parameters.WorksheetName;
 

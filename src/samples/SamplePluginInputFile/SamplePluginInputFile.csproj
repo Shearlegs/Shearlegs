@@ -11,4 +11,10 @@
     <ProjectReference Include="..\..\framework\Shearlegs.Core\Shearlegs.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="importFile.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

@@ -40,7 +40,6 @@ namespace Shearlegs.NuGet
 
         private readonly ILogger nugetLogger;
 
-
         public NuGetPackageManager()
         {
             packageDirectory = Path.Combine(Environment.CurrentDirectory, DirectoryConstants.NugetPackagesDirectory);

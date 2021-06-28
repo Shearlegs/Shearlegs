@@ -19,9 +19,9 @@ namespace Shearlegs.Core.Plugins.Content
 
         public IEnumerable<IContentFile> Files => files;
 
-        public IContentFile GetFile(string name, StringComparison stringComparison = StringComparison.OrdinalIgnoreCase)
+        public IContentFile GetFile(string name)
         {
-            IContentFile file = files.FirstOrDefault(x => x.Name.Equals(name, stringComparison));
+            IContentFile file = files.FirstOrDefault(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
             if (file == null)
             {
                 throw new ContentFileNotFoundException(name);
