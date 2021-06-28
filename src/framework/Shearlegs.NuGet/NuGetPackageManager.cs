@@ -10,7 +10,6 @@ using NuGet.Protocol.Core.Types;
 using NuGet.Resolver;
 using NuGet.Versioning;
 using Shearlegs.API.Constants;
-using Shearlegs.NuGet.Helpers;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -24,8 +23,6 @@ namespace Shearlegs.NuGet
     public class NuGetPackageManager
     {
         public const string FrameworkName = "net5.0";
-
-        private readonly ILogger<NuGetPackageManager> logger;
 
         private readonly string packageDirectory;
 
@@ -44,10 +41,8 @@ namespace Shearlegs.NuGet
         private readonly ILogger nugetLogger;
 
 
-        public NuGetPackageManager(ILogger<NuGetPackageManager> logger)
+        public NuGetPackageManager()
         {
-            this.logger = logger;
-
             packageDirectory = Path.Combine(Environment.CurrentDirectory, DirectoryConstants.NugetPackagesDirectory);
 
             settings = Settings.LoadDefaultSettings(packageDirectory);
@@ -57,6 +52,7 @@ namespace Shearlegs.NuGet
             {
                 packageSource
             });
+
             sourceRepositoryProvider = new SourceRepositoryProvider(sourceProvider, Repository.Provider.GetCoreV3());
 
             targetFramework = NuGetFramework.Parse(FrameworkName);

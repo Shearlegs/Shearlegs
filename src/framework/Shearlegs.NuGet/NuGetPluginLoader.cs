@@ -61,7 +61,7 @@ namespace Shearlegs.NuGet
                 }
             }
 
-            // TODO: Install dependencies
+            // Install dependencies
             IEnumerable<PackageIdentity> identities = await manager.InstallDependenciesAsync(dependencies);
 
             // Load dependencies
@@ -76,7 +76,6 @@ namespace Shearlegs.NuGet
             IEnumerable<Assembly> assemblies = await LoadLibAsync(context, reader, null);
 
             PackageIdentity pluginIdentity = await reader.GetIdentityAsync(CancellationToken.None);
-
 
             IEnumerable<FrameworkSpecificGroup> contentGroups = await reader.GetContentItemsAsync(CancellationToken.None);
             NuGetFramework contentFramework = frameworkReducer.GetNearest(targetFramework, contentGroups.Select(g => g.TargetFramework));
@@ -114,82 +113,17 @@ namespace Shearlegs.NuGet
             return new PluginLoadResult(pluginAssembly, fileStore);
         }
 
-        private RuntimeGraph GetRuntimeGraph(string expandedPath)
-        {
-            string runtimeGraphFile = Path.Combine(expandedPath, RuntimeGraph.RuntimeGraphFileName);
-            if (File.Exists(runtimeGraphFile))
-            {
-                using (FileStream stream = File.OpenRead(runtimeGraphFile))
-                {
-                    return JsonRuntimeFormat.ReadRuntimeGraph(stream);
-                }
-            }
-
-            return null;
-        }
-        
-        private async Task<IEnumerable<FrameworkSpecificGroup>> GetRuntimeGroupsAsync(PackageArchiveReader reader)
-        {
-            IEnumerable<string> files = await reader.GetFilesAsync(CancellationToken.None);
-
-            List<string> runtimeFiles = files.Where(x => x.StartsWith("runtimes/", StringComparison.OrdinalIgnoreCase)).ToList();
-            List<NuGetFramework> runtimeFrameworks = new();
-            Dictionary<NuGetFramework, List<string>> groups = new(new NuGetFrameworkFullComparer());
-
-            foreach (string file in runtimeFiles)
-            {
-                string[] parts = file.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
-                parts = parts.Reverse().ToArray();
-                NuGetFramework parsedFramework = null;
-
-                foreach (string part in parts)
-                {
-                    NuGetFramework tempFramework = NuGetFramework.ParseFolder(part);
-
-                    if (tempFramework.IsSpecificFramework && tempFramework.IsPackageBased && !tempFramework.IsUnsupported)
-                    {
-                        parsedFramework = tempFramework;
-                        break;
-                    }
-                }
-
-                if (parsedFramework == null)
-                    continue;
-
-                List<string> items = null;
-                if (!groups.TryGetValue(parsedFramework, out items))
-                {
-                    items = new List<string>();
-                    groups.Add(parsedFramework, items);
-                }
-
-                items.Add(file);
-            }
-
-            return groups.Keys.OrderBy(e => e, new NuGetFrameworkSorter())
-                .Select(framework => new FrameworkSpecificGroup(framework, groups[framework].OrderBy(e => e, StringComparer.OrdinalIgnoreCase)));
-        }
-
-
         private async Task<IEnumerable<Assembly>> LoadLibAsync(IAssemblyContext context, PackageArchiveReader reader, string path)
         {
-            RuntimeGraph graph = GetRuntimeGraph(Directory.GetCurrentDirectory());
-            ManagedCodeConventions conv = new ManagedCodeConventions(graph);
+            RuntimeGraph graph = NuGetHelper.GetRuntimeGraph(Directory.GetCurrentDirectory());
+            ManagedCodeConventions conv = new(graph);
+            ContentItemCollection collection = new();
 
-            ContentItemCollection collection = new ContentItemCollection();
-
-            List<Assembly> assemblies = new List<Assembly>();
-
-
-
-            // TODO: find a nicer way to handle this
+            List<Assembly> assemblies = new();
 
             NuGetFramework framework;
 
-
-            IEnumerable<string> items = null;
-
-            IEnumerable<FrameworkSpecificGroup> runtimeGroups = await GetRuntimeGroupsAsync(reader);
+            IEnumerable<FrameworkSpecificGroup> runtimeGroups = await NuGetHelper.GetRuntimeGroupsAsync(reader);
             if (runtimeGroups.Any())
             {
                 framework = frameworkReducer.GetNearest(targetFramework, runtimeGroups.Select(x => x.TargetFramework));
@@ -204,16 +138,14 @@ namespace Shearlegs.NuGet
                   conv.Criteria.ForFrameworkAndRuntime(framework, RuntimeInformation.RuntimeIdentifier),
                   conv.Patterns.RuntimeAssemblies);
 
-            items = group?.Items?.Select(x => x.Path) ?? null;
-
-            if (items != null)
+            if (group != null)
             {
-                foreach (string item in items)
+                foreach (ContentItem item in group.Items)
                 {
-                    if (!item.EndsWith(".dll"))
+                    if (!item.Path.EndsWith(".dll"))
                         continue;
 
-                    ZipArchiveEntry entry = reader.GetEntry(item);
+                    ZipArchiveEntry entry = reader.GetEntry(item.Path);
                     using Stream libStream = entry.Open();
                     using MemoryStream ms = new MemoryStream();
                     await libStream.CopyToAsync(ms);
@@ -234,8 +166,9 @@ namespace Shearlegs.NuGet
                 {
                     if (!item.Path.EndsWith(".dll"))
                         continue;
+
                     string itemPath = Path.Combine(path, item.Path);
-                    NativeLibrary.Load(itemPath);                    
+                    NativeLibrary.Load(itemPath);
                 }
             }
 

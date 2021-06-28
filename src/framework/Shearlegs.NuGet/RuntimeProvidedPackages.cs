@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Shearlegs.NuGet.Helpers
+namespace Shearlegs.NuGet
 {
     /// <summary>
     /// Contains a pre-determined list of NuGet packages that are provided by the run-time, and
