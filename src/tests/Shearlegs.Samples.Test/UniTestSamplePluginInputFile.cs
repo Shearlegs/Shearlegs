@@ -1,7 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SamplePluginInputFile;
 using Shearlegs.Core.Plugins.Result;
-using Shearlegs.Test;
+using Shearlegs.Testing;
 using System.IO;
 using System.Threading.Tasks;
 

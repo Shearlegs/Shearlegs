@@ -2,8 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <PackageDescription>Shearlegs Testing Framework</PackageDescription>
   </PropertyGroup>
 
+  <Import Project="$(MSBuildThisFileDirectory)..\..\props\FrameworkProject.props" />
+  
   <ItemGroup>
     <ProjectReference Include="..\Shearlegs.Runtime\Shearlegs.Runtime.csproj" />
   </ItemGroup>

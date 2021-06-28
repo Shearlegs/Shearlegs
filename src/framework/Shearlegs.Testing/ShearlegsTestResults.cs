@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Shearlegs.Test
+namespace Shearlegs.Testing
 {
     public class ShearlegsTestResults
     {

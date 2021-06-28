@@ -7,11 +7,10 @@ using System;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace Shearlegs.Test
+namespace Shearlegs.Testing
 {
     public class ShearlegsTest
     {
-        public static ShearlegsTestHelper Helper { get; } = new ShearlegsTestHelper();
         public static ShearlegsTestParameters Parameters { get; } = new ShearlegsTestParameters();
         public static ShearlegsTestResults Results { get; } = new ShearlegsTestResults();
 

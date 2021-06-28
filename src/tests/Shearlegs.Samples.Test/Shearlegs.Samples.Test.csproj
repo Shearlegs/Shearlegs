@@ -15,7 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\framework\Shearlegs.Runtime\Shearlegs.Runtime.csproj" />
-    <ProjectReference Include="..\..\framework\Shearlegs.Test\Shearlegs.Test.csproj" />
+    <ProjectReference Include="..\..\framework\Shearlegs.Testing\Shearlegs.Testing.csproj" />
     <ProjectReference Include="..\..\samples\SamplePluginExcel\SamplePluginExcel.csproj" />
     <ProjectReference Include="..\..\samples\SamplePluginInputFile\SamplePluginInputFile.csproj" />
     <ProjectReference Include="..\..\samples\SamplePlugin\SamplePlugin.csproj" />

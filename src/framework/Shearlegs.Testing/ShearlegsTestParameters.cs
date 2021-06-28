@@ -1,7 +1,7 @@
 ﻿using Shearlegs.API.Plugins.Parameters;
 using System.IO;
 
-namespace Shearlegs.Test
+namespace Shearlegs.Testing
 {
     public class ShearlegsTestParameters
     {
