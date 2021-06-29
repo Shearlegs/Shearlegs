@@ -1,0 +1,23 @@
+﻿@if (ResultType == ResultConstants.FileResult)
+{
+    <span class="text-success fw-bold">
+        File
+    </span>
+}
+else if (ResultType == ResultConstants.TextResult)
+{
+    <span class="text-success fw-bold">
+        Text
+    </span>
+}
+else if (ResultType == ResultConstants.ErrorResult)
+{
+    <span class="text-danger fw-bold">
+        Error
+    </span>
+}
+
+@code {
+    [Parameter]
+    public string ResultType { get; set; }
+}

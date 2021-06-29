@@ -38,7 +38,7 @@
                 <tr @onclick="() => GoToResult(result)" style="cursor: pointer;">
                     <th scope="row">@result.Id</th>
                     <td>@result.Version.Plugin.Name</td>
-                    <td>@result.ResultTypeString</td>
+                    <td><ResultText ResultType="@result.ResultType" /></td>
                     <td>@result.User.Name</td>
                     <td class="table-hide">@result.CreateDate</td>
                 </tr>

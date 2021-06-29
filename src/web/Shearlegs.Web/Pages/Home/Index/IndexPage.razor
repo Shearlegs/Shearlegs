@@ -3,38 +3,47 @@
 
 @if (Results != null)
 {
-    <div class="d-md-flex align-items-center mb-3">
-        <h4>Last Results</h4>
-    </div>
-
-    <div class="mb-5">
+    <div class="mb-5 card">
+        <div class="card-header fw-bold">
+            Last Results
+        </div>
+        <div class="card-body">
+            @if (Results.Count() > 0)
+            {
+                <div class="tableFixHead">
+                    <table class="table table-hover table-bordered">
+                        <thead>
+                            <tr class="bg-light">
+                                <th>Task</th>
+                                <th>Type</th>
+                                <th>Execute Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <Virtualize Items="FilteredResults" Context="result" OverscanCount="50">
+                                <tr style="cursor: pointer;" @onclick="() => GoToResult(result)">
+                                    <td>@result.Version.Plugin.Name</td>
+                                    <td><ResultText ResultType="@result.ResultType" /></td>
+                                    <td>@result.CreateDate</td>
+                                </tr>
+                            </Virtualize>
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <p class="text-muted">You don't have any results yet</p>
+            }
+        </div>
         @if (Results.Count() > 0)
         {
-            <div class="tableFixHead">
-                <table class="table table-hover table-bordered">
-                    <thead>
-                        <tr class="bg-light">
-                            <th>Task</th>
-                            <th>Type</th>
-                            <th>Execute Date</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <Virtualize Items="FilteredResults" Context="result">
-                            <tr style="cursor: pointer;" @onclick="() => GoToResult(result)">
-                                <td>@result.Version.Plugin.Name</td>
-                                <td>@result.ResultTypeString</td>
-                                <td>@result.CreateDate</td>
-                            </tr>
-                        </Virtualize>
-                    </tbody>
-                </table>
+            <div class="card-footer">
+                Total Results: @Results.Count()
             </div>
-        }
-        else
-        {
-            <p class="text-muted">You don't have any results yet</p>
-        }
+        } 
+        
+        
     </div>
 }
 
