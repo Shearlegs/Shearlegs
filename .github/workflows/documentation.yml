@@ -25,5 +25,5 @@ jobs:
       with:
         publish_dir: docs/_site
         personal_token: ${{ secrets.GH_PAT }}
-        external_repository: shearlegs/shearlegs-docs
+        external_repository: shearlegs/shearlegs.github.io
         publish_branch: gh-pages
