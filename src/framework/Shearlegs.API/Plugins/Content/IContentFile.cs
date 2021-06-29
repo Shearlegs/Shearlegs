@@ -11,5 +11,9 @@ namespace Shearlegs.API.Plugins.Content
     {
         string Name { get; }
         Stream Content { get; }
+
+        Task<byte[]> GetBytesAsync();
+        Task<string> GetTextAsync();
+        Task<string> GetTextAsync(Encoding encoding);
     }
 }
