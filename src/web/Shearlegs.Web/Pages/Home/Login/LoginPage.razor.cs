@@ -6,6 +6,7 @@ using Microsoft.JSInterop;
 using Shearlegs.Web.Extensions;
 using Shearlegs.Web.Helpers;
 using Shearlegs.Web.Models.Params;
+using Shearlegs.Web.Services;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -24,7 +25,7 @@ namespace Shearlegs.Web.Pages.Home.Login
         public IJSRuntime JSRuntime { get; set; }
 
         [Inject]
-        public HttpContextAccessor Accessor { get; set; }
+        public UserService UserService { get; set; }
 
         public LoginParams LoginParams { get; set; } = new LoginParams();
 
@@ -40,7 +41,7 @@ namespace Shearlegs.Web.Pages.Home.Login
 
         protected override void OnInitialized()
         {
-            if (Accessor.HttpContext.User.Identity?.IsAuthenticated ?? false)
+            if (UserService.IsAuthenticated)
             {
                 NavigationManager.NavigateTo("/");
             }
