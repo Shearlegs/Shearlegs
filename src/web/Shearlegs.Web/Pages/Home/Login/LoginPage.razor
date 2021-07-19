@@ -3,25 +3,38 @@
 @layout LoginLayout
 
 <main class="form-signin text-center">
-    <form action="signin" method="post">
-        <img class="mb-2" src="/img/icon.png" alt="" width="100" height="100">
-        <h3 class="h3 mb-3 fw-normal">Login to Continue</h3>
+    <img class="mb-2" src="/img/icon.png" alt="" width="100" height="100">
 
-        @if (IsWrong)
-        {
-            <Alert Background="danger" Icon="bi bi-exclamation-circle-fill" Text="Wrong username or password." />
-        }
+    @if (UserService.IsDefaultAuthType)
+    {
+        <form action="signin" method="post">
+            <h3 class="h3 mb-3 fw-normal">Login to Continue</h3>
 
-        <div class="form-floating">
-            <input name="username" type="text" class="form-control" id="floatingInput" @bind="@LoginParams.Name" @bind:event="oninput" placeholder="Your username">
-            <label for="floatingInput">Username</label>
-        </div>
-        <div class="form-floating">
-            <input name="password" type="password" class="form-control" id="floatingPassword" @bind="@LoginParams.Password" @bind:event="oninput" placeholder="Your password">
-            <label for="floatingPassword">Password</label>
-        </div>
+            @if (IsWrong)
+            {
+                <Alert Background="danger" Icon="bi bi-exclamation-circle-fill" Text="Wrong username or password." />
+            }
 
-        <button class="w-100 btn btn-lg btn-primary" type="submit" disabled="@IsInvalid"><i class="bi bi-door-open"></i> Login</button>
-        <p class="mt-5 mb-3 text-muted">&copy; 2020-@DateTime.UtcNow.Year</p>
-    </form>
+            <div class="form-floating">
+                <input name="username" type="text" class="form-control" id="floatingInput" @bind="@LoginParams.Name" @bind:event="oninput" placeholder="Your username">
+                <label for="floatingInput">Username</label>
+            </div>
+            <div class="form-floating">
+                <input name="password" type="password" class="form-control" id="floatingPassword" @bind="@LoginParams.Password" @bind:event="oninput" placeholder="Your password">
+                <label for="floatingPassword">Password</label>
+            </div>
+
+            <button class="w-100 btn btn-lg btn-primary" type="submit" disabled="@IsInvalid"><i class="bi bi-door-open"></i> Login</button>
+        </form> 
+    }
+    else if (UserService.IsWindowsAuthType)
+    {
+        <form action="windowsauth" method="post">
+            <h5 class="h5 mb-3 fw-normal">Welcome, @UserService.Username!</h5>
+            <button class="w-100 btn btn-lg btn-primary" type="submit"><i class="bi bi-door-open"></i> Continue</button>
+        </form>
+    }
+
+    <p class="mt-5 mb-3 text-muted">&copy; 2020-@DateTime.UtcNow.Year</p>
+        
 </main>

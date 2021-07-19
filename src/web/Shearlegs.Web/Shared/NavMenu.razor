@@ -42,7 +42,18 @@
                                 @context.User.Identity.Name
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="/signout">Sign Out</a></li>
+                                @if (UserService.IsWindowsAuthType)
+                                {
+                                    <li>
+                                        <form action="windowsauth" method="post">
+                                            <button class="dropdown-item" type="submit">Refresh</button>
+                                        </form>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li><a class="dropdown-item" href="/signout">Sign Out</a></li>
+                                }
                             </ul>
                         </li>
                     </Authorized>
@@ -54,3 +65,16 @@
         </div>
     </div>
 </nav>
+
+@code {
+    [Inject]
+    public UserService UserService { get; set; }
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
+
+
+    public void Refresh()
+    {
+        NavigationManager.NavigateTo(NavigationManager.Uri, true);
+    }
+}

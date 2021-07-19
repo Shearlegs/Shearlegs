@@ -39,9 +39,9 @@ namespace Shearlegs.Web.Pages.Home.Login
             } 
         }
 
-        protected override void OnInitialized()
+        protected override async Task OnInitializedAsync()
         {
-            if (UserService.IsAuthenticated)
+            if (UserService.HasUserId)
             {
                 NavigationManager.NavigateTo("/");
             }

@@ -2,9 +2,11 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Shearlegs.Web.Constants;
 using Shearlegs.Web.Database.Repositories;
 using Shearlegs.Web.Models;
 using Shearlegs.Web.Models.Params;
+using Shearlegs.Web.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,23 +20,16 @@ namespace Shearlegs.Web.Controllers
     public class AuthenticationController : ControllerBase
     {
         private readonly UsersRepository usersRepository;
+        private readonly UserService userService;
 
-        public AuthenticationController(UsersRepository usersRepository)
+        public AuthenticationController(UsersRepository usersRepository, UserService userService)
         {
             this.usersRepository = usersRepository;
+            this.userService = userService;
         }
 
-        [ResponseCache(NoStore = true, Duration = 0)]
-        [HttpPost("~/signin")]
-        public async Task<IActionResult> SignInAsync([FromForm] string username, [FromForm] string password)
+        private async Task SignInUserAsync(MUser user)
         {
-            MUser user = await usersRepository.GetUserAsync(username, password);
-
-            if (user == null)
-            {
-                return Redirect("/login?isWrong=true");
-            }
-
             List<Claim> claims = new()
             {
                 new Claim(ClaimTypes.Name, user.Name),
@@ -56,7 +51,44 @@ namespace Shearlegs.Web.Controllers
             };
 
             await usersRepository.UpdateLastLoginDateAsync(user.Id);
-            await HttpContext.SignInAsync(claimsPrincipal, authProperties);            
+            await HttpContext.SignInAsync(claimsPrincipal, authProperties);
+        }
+
+        [ResponseCache(NoStore = true, Duration = 0)]
+        [HttpPost("~/windowsauth")]
+        public async Task<IActionResult> WindowsAuthAsync()
+        {
+            if (!userService.IsWindowsAuthType)
+                return NoContent();
+
+            MUser user = await usersRepository.GetUserAsync(userService.Username);
+            if (user == null)
+            {
+                user = await usersRepository.AddUserAsync(new MUser() 
+                { 
+                    Name = userService.Username,
+                    Role = RoleConstants.GuestRoleId
+                });
+            }
+
+            await SignInUserAsync(user);
+            await usersRepository.UpdateLastLoginDateAsync(user.Id);
+            
+            return Redirect("/");
+        }
+
+        [ResponseCache(NoStore = true, Duration = 0)]
+        [HttpPost("~/signin")]
+        public async Task<IActionResult> SignInAsync([FromForm] string username, [FromForm] string password)
+        {
+            MUser user = await usersRepository.GetUserAsync(username, password);
+
+            if (user == null)
+            {
+                return Redirect("/login?isWrong=true");
+            }
+
+            await SignInUserAsync(user);
             return Redirect("/");
         }
 

@@ -9,16 +9,16 @@ using System.Threading.Tasks;
 
 namespace Shearlegs.Web.Database.Repositories
 {
-    public class UsersRepository
+    public class UsersRepository : IUsersRepository
     {
-        private readonly SqlConnection connection;
+        protected readonly SqlConnection connection;
 
         public UsersRepository(SqlConnection connection)
         {
             this.connection = connection;
         }
 
-        public async Task<MUser> GetUserAsync(string name, string password)
+        public virtual async Task<MUser> GetUserAsync(string name, string password)
         {
             const string sql = "dbo.GetUser";
             return await connection.QuerySingleOrDefaultAsync<MUser>(sql, new { name, password }, commandType: CommandType.StoredProcedure);
@@ -40,6 +40,12 @@ namespace Shearlegs.Web.Database.Repositories
         {
             const string sql = "SELECT Id, Name, Role, LastLoginDate, UpdateDate, CreateDate FROM dbo.Users;";
             return await connection.QueryAsync<MUser>(sql);
+        }
+
+        public virtual async Task<MUser> GetUserAsync(string username)
+        {
+            const string sql = "SELECT Id, Name, Role, LastLoginDate, UpdateDate, CreateDate FROM dbo.Users WHERE Name = @username";
+            return await connection.QuerySingleOrDefaultAsync<MUser>(sql, new { username });
         }
 
         public async Task<MUser> GetUserAsync(int userId)

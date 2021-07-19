@@ -37,11 +37,6 @@ namespace Shearlegs.Web.Pages.Home.Index
 
         protected override async Task OnInitializedAsync()
         {
-            if (!UserService.IsAuthenticated)
-            {
-                NavigationManager.NavigateTo("/login");
-            }
-
             Results = await ResultsRepository.GetUserResultsAsync(UserService.UserId);
             
             if (UserService.IsInRole(RoleConstants.AdminRoleId))
