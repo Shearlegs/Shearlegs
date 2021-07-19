@@ -28,7 +28,7 @@ namespace Shearlegs.Web.Pages.Admin.Users
 
         public List<MUser> SearchedUsers 
             => Users.Where(x => string.IsNullOrEmpty(searchString) || x.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
-                .OrderByDescending(x => x.LastLoginDate).ToList();
+                .OrderByDescending(x => x.CreateDate).ToList();
 
         protected override async Task OnInitializedAsync()
         {

@@ -4,6 +4,8 @@ using Shearlegs.Web.Constants;
 using Shearlegs.Web.Database.Repositories;
 using Shearlegs.Web.Models;
 using Shearlegs.Web.Pages.Admin.Users.Components;
+using Shearlegs.Web.Services;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Shearlegs.Web.Pages.Admin.UserPage
@@ -16,6 +18,8 @@ namespace Shearlegs.Web.Pages.Admin.UserPage
 
         [Inject]
         public UsersRepository UsersRepository { get; set; }
+        [Inject]
+        public UserService UserService { get; set; }
 
         public MUser User { get; set; }
 
@@ -32,9 +36,10 @@ namespace Shearlegs.Web.Pages.Admin.UserPage
         public async Task UpdateUserAsync()
         {
             isLoading = true;
+            List<MUserPlugin> plugins = User.Plugins;
             User = await UsersRepository.UpdateUserAsync(Model);
+            User.Plugins = plugins;
             Model = User.MakeCopy();
-            await Task.Delay(1000); 
             isLoading = false;
             isUpdated = true;
         }

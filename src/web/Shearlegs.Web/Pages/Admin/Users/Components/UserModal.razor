@@ -23,11 +23,14 @@
                             }
                         </InputSelect>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">Password</label>
-                        <InputText type="password" @bind-Value="@Model.Password" class="form-control" required />
-                        <div class="form-text">The password must have above 8 characters</div>
-                    </div>
+                    @if (UserService.IsDefaultAuthType)
+                    {
+                        <div class="mb-3">
+                            <label class="form-label">Password</label>
+                            <InputText type="password" @bind-Value="@Model.Password" class="form-control" required />
+                            <div class="form-text">The password must have above 8 characters</div>
+                        </div>
+                    }
 
                     <DataAnnotationsValidator />
                     <ValidationSummary />

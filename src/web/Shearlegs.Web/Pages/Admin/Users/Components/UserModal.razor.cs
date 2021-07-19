@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using Shearlegs.Web.Constants;
 using Shearlegs.Web.Database.Repositories;
 using Shearlegs.Web.Extensions;
 using Shearlegs.Web.Models;
+using Shearlegs.Web.Services;
 using Shearlegs.Web.Shared.Components;
 using System;
 using System.Collections.Generic;
@@ -15,11 +17,13 @@ namespace Shearlegs.Web.Pages.Admin.Users.Components
     {
         [Inject]
         public UsersRepository UsersRepository { get; set; }
+        [Inject]
+        public UserService UserService { get; set; }
 
         [Parameter]
         public EventCallback<MUser> OnUserCreated { get; set; }
 
-        public MUser Model { get; set; } = new MUser();
+        public MUser Model { get; set; } = new MUser() { Role = RoleConstants.GuestRoleId };
 
         public override string ModalId => nameof(UserModal);
 
