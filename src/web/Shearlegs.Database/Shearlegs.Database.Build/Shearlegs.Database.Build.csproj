@@ -7,5 +7,9 @@
   <ItemGroup>
     <Content Include="..\**\*.sql" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <PostDeploy Include="..\Script.PostDeployment.sql" />
+  </ItemGroup>
 
 </Project>
