@@ -26,16 +26,13 @@ namespace Shearlegs.Web.Services
         {
             get
             {
-                if (!IsAuthenticated)
-                    return 0;
-
                 int.TryParse(accessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier), out int userId);
                 return userId;
             }
         }
 
         public string Role => accessor.HttpContext.User.FindFirstValue(ClaimTypes.Role);
-        public bool IsAuthenticated => accessor.HttpContext?.User?.Identity?.IsAuthenticated ?? false;
+        public bool IsAuthenticated => accessor.HttpContext.User.Identity?.IsAuthenticated ?? false;
 
         public bool IsWindowsAuthType => configuration.GetValue<string>("AuthenticationType") == "Windows";
         public bool IsDefaultAuthType => configuration.GetValue<string>("AuthenticationType") == "Default";
