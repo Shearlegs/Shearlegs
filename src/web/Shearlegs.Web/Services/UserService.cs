@@ -21,6 +21,8 @@ namespace Shearlegs.Web.Services
             this.configuration = configuration;            
         }
 
+        public bool IsDemo => configuration.GetValue<bool>("IsDemo");
+
         public string Username => accessor.HttpContext.User.Identity.Name;
         public int UserId
         {

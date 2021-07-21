@@ -15,6 +15,14 @@
                 <Alert Background="danger" Icon="bi bi-exclamation-circle-fill" Text="Wrong username or password." />
             }
 
+            @if (UserService.IsDemo)
+            {
+                <Alert Background="secondary">
+                    <strong>Username:</strong> demo<br />
+                    <strong>Password:</strong> demo2021
+                </Alert>
+            } 
+
             <div class="form-floating">
                 <input name="username" type="text" class="form-control" id="floatingInput" @bind="@LoginParams.Name" @bind:event="oninput" placeholder="Your username">
                 <label for="floatingInput">Username</label>
