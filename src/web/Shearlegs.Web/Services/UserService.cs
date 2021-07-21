@@ -35,7 +35,7 @@ namespace Shearlegs.Web.Services
         }
 
         public string Role => accessor.HttpContext.User.FindFirstValue(ClaimTypes.Role);
-        public bool IsAuthenticated => accessor.HttpContext.User?.Identity?.IsAuthenticated ?? false;
+        public bool IsAuthenticated => accessor.HttpContext?.User?.Identity?.IsAuthenticated ?? false;
 
         public bool IsWindowsAuthType => configuration.GetValue<string>("AuthenticationType") == "Windows";
         public bool IsDefaultAuthType => configuration.GetValue<string>("AuthenticationType") == "Default";
