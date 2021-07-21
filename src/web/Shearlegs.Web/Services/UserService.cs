@@ -26,6 +26,9 @@ namespace Shearlegs.Web.Services
         {
             get
             {
+                if (!IsAuthenticated)
+                    return 0;
+
                 int.TryParse(accessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier), out int userId);
                 return userId;
             }
