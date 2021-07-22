@@ -1,7 +1,11 @@
-﻿<nav class="navbar navbar-expand-lg navbar-light bg-light">
+﻿@inject ConfigService Config
+@inject UserService UserService
+@inject NavigationManager NavigationManager
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
         <a class="navbar-brand" href="/">
-            <img src="/img/icon.png" alt="Shearlegs" width="40" height="40">
+            <img src="@Config.IconPath" alt="Shearlegs" width="40" height="40">
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -65,16 +69,3 @@
         </div>
     </div>
 </nav>
-
-@code {
-    [Inject]
-    public UserService UserService { get; set; }
-    [Inject]
-    public NavigationManager NavigationManager { get; set; }
-
-
-    public void Refresh()
-    {
-        NavigationManager.NavigateTo(NavigationManager.Uri, true);
-    }
-}

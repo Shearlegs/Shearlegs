@@ -1,6 +1,16 @@
 ﻿@inherits LayoutComponentBase
-
-    <NavMenu />
+@inject ConfigService Config
+<NavMenu />
 <div class="container mt-3">
     @Body
 </div>
+
+
+@if (Config.IsDemo)
+{
+    <footer class="border-top footer text-muted bg-white">
+        <div class="container">
+            Shearlegs Demo - Go back to <a href="https://shearlegs.com">shearlegs.com</a>
+        </div>
+    </footer>
+}

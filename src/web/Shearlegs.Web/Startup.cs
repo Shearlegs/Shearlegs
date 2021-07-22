@@ -39,6 +39,7 @@ namespace Shearlegs.Web
             ShearlegsRuntime.RegisterServices(services);
             services.AddTransient<PluginService>();
             services.AddScoped<UserService>();
+            services.AddTransient<ConfigService>();
 
             services.Configure<CookiePolicyOptions>(options =>
             {
