@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Shearlegs.Web.Database.Repositories
 {
-    public class UsersRepository : IUsersRepository
+    public class UsersRepository
     {
         protected readonly SqlConnection connection;
 
@@ -27,24 +27,26 @@ namespace Shearlegs.Web.Database.Repositories
         public async Task<MUser> AddUserAsync(MUser user)
         {
             const string sql = "dbo.CreateUser";
-            return await connection.QuerySingleOrDefaultAsync<MUser>(sql, new { user.Name, user.Password, user.Role }, commandType: CommandType.StoredProcedure);
+            return await connection.QuerySingleOrDefaultAsync<MUser>(sql, new { user.Name, user.Password, user.Role, user.AuthenticationType }, 
+                commandType: CommandType.StoredProcedure);
         }
 
         public async Task<MUser> UpdateUserAsync(MUser user)
         {
             const string sql = "dbo.UpdateUser";
-            return await connection.QuerySingleOrDefaultAsync<MUser>(sql, new { user.Id, user.Name, user.Password, user.Role }, commandType: CommandType.StoredProcedure);
+            return await connection.QuerySingleOrDefaultAsync<MUser>(sql, new { user.Id, user.Name, user.Password, user.Role }, 
+                commandType: CommandType.StoredProcedure);
         }
 
         public async Task<IEnumerable<MUser>> GetUsersAsync()
         {
-            const string sql = "SELECT Id, Name, Role, LastLoginDate, UpdateDate, CreateDate FROM dbo.Users;";
+            const string sql = "SELECT Id, Name, Role, AuthenticationType, LastLoginDate, UpdateDate, CreateDate FROM dbo.Users;";
             return await connection.QueryAsync<MUser>(sql);
         }
 
         public virtual async Task<MUser> GetUserAsync(string username)
         {
-            const string sql = "SELECT Id, Name, Role, LastLoginDate, UpdateDate, CreateDate FROM dbo.Users WHERE Name = @username";
+            const string sql = "SELECT Id, Name, Role, AuthenticationType, LastLoginDate, UpdateDate, CreateDate FROM dbo.Users WHERE Name = @username";
             return await connection.QuerySingleOrDefaultAsync<MUser>(sql, new { username });
         }
 

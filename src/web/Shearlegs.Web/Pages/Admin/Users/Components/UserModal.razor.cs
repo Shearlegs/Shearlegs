@@ -19,11 +19,27 @@ namespace Shearlegs.Web.Pages.Admin.Users.Components
         public UsersRepository UsersRepository { get; set; }
         [Inject]
         public UserService UserService { get; set; }
+        [Inject]
+        public ConfigService ConfigService { get; set; }
 
         [Parameter]
         public EventCallback<MUser> OnUserCreated { get; set; }
 
-        public MUser Model { get; set; } = new MUser() { Role = RoleConstants.GuestRoleId };
+        public MUser Model { get; set; }
+
+        private void ResetModel()
+        {
+            Model = new MUser() 
+            { 
+                Role = RoleConstants.GuestRoleId, 
+                AuthenticationType = ConfigService.EnabledAuthenticationTypes.FirstOrDefault() 
+            };
+        }
+
+        protected override void OnParametersSet()
+        {
+            ResetModel();
+        }
 
         public override string ModalId => nameof(UserModal);
 
@@ -35,7 +51,7 @@ namespace Shearlegs.Web.Pages.Admin.Users.Components
             isLoading = false;
             await HideAsync();
             await OnUserCreated.InvokeAsync(user);
-            Model = new MUser();
+            ResetModel();
         }
     }
 }

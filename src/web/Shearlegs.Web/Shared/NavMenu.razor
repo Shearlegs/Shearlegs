@@ -46,18 +46,7 @@
                                 @context.User.Identity.Name
                             </a>
                             <ul class="dropdown-menu">
-                                @if (UserService.IsWindowsAuthType)
-                                {
-                                    <li>
-                                        <form action="windowsauth" method="post">
-                                            <button class="dropdown-item" type="submit">Refresh</button>
-                                        </form>
-                                    </li>
-                                }
-                                else
-                                {
-                                    <li><a class="dropdown-item" href="/signout">Sign Out</a></li>
-                                }
+                                <li><a class="dropdown-item" href="/signout">Sign Out</a></li>
                             </ul>
                         </li>
                     </Authorized>

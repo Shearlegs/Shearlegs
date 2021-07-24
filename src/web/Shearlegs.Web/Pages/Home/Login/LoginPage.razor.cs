@@ -41,7 +41,7 @@ namespace Shearlegs.Web.Pages.Home.Login
 
         protected override async Task OnInitializedAsync()
         {
-            if (UserService.HasUserId)
+            if (UserService.IsCookieAuthType)
             {
                 NavigationManager.NavigateTo("/");
             }

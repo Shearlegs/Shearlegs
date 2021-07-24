@@ -10,14 +10,16 @@ BEGIN
 	BEGIN TRAN;
 
 	UPDATE dbo.Users
-	SET Role = @Role,
+	SET 
+		Role = @Role,
 		UpdateDate = SYSDATETIME()
-	WHERE Id = @Id;
+	WHERE 
+		Id = @Id;
 
 	IF @Password IS NOT NULL
 		UPDATE dbo.Users SET PasswordHash = PWDENCRYPT(@Password) WHERE Id = @Id;
 
-	SELECT Id, Name, Role, LastLoginDate, UpdateDate, CreateDate FROM dbo.Users WHERE Id = @Id;
+	SELECT Id, Name, Role, AuthenticationType, LastLoginDate, UpdateDate, CreateDate FROM dbo.Users WHERE Id = @Id;
 
 	COMMIT;
 

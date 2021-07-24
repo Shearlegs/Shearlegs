@@ -10,6 +10,7 @@ namespace Shearlegs.Web.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public string Role { get; set; }
+        public string AuthenticationType { get; set; }
         public DateTime LastLoginDate { get; set; }
         public DateTime CreateDate { get; set; }
 
@@ -26,6 +27,7 @@ namespace Shearlegs.Web.Models
                 Id = Id,
                 Name = Name,
                 Role = Role,
+                AuthenticationType = AuthenticationType,
                 LastLoginDate = LastLoginDate,
                 CreateDate = CreateDate,
                 Password = Password

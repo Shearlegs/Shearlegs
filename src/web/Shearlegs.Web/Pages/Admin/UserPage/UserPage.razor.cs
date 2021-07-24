@@ -19,7 +19,7 @@ namespace Shearlegs.Web.Pages.Admin.UserPage
         [Inject]
         public UsersRepository UsersRepository { get; set; }
         [Inject]
-        public UserService UserService { get; set; }
+        public ConfigService ConfigService { get; set; }
 
         public MUser User { get; set; }
 
@@ -36,6 +36,7 @@ namespace Shearlegs.Web.Pages.Admin.UserPage
         public async Task UpdateUserAsync()
         {
             isLoading = true;
+            isUpdated = false;
             List<MUserPlugin> plugins = User.Plugins;
             User = await UsersRepository.UpdateUserAsync(Model);
             User.Plugins = plugins;

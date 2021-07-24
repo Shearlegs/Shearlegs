@@ -35,12 +35,19 @@
                     <label class="form-label">Role</label>
                     <InputSelect class="form-select" @bind-Value="@Model.Role">
                         @foreach (string role in RoleConstants.Roles)
-                            {
+                        {
                             <option value="@role">@role</option>
-                            }
+                        }
                     </InputSelect>
                 </div>
-                @if (UserService.IsDefaultAuthType)
+                <div class="mb-3">
+                    <label class="form-label">Authentication Type</label>
+                    <InputSelect class="form-select" @bind-Value="@Model.AuthenticationType" disabled>
+                        <option value="@Model.AuthenticationType">@Model.AuthenticationType</option>
+                    </InputSelect>
+                </div>
+
+                @if (Model.AuthenticationType == AuthenticationConstants.DefaultAuthenticationType)
                 {
                     <div class="mb-3">
                         <label class="form-label">Password (optional)</label>

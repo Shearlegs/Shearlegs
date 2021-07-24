@@ -21,11 +21,13 @@ namespace Shearlegs.Web.Controllers
     {
         private readonly UsersRepository usersRepository;
         private readonly UserService userService;
+        private readonly ConfigService configService;
 
-        public AuthenticationController(UsersRepository usersRepository, UserService userService)
+        public AuthenticationController(UsersRepository usersRepository, UserService userService, ConfigService configService)
         {
             this.usersRepository = usersRepository;
             this.userService = userService;
+            this.configService = configService;
         }
 
         private async Task SignInUserAsync(MUser user)
@@ -58,8 +60,11 @@ namespace Shearlegs.Web.Controllers
         [HttpPost("~/windowsauth")]
         public async Task<IActionResult> WindowsAuthAsync()
         {
-            if (!userService.IsWindowsAuthType)
+            if (!configService.IsWindowsAuthEnabled)
                 return NoContent();
+
+            if (!userService.IsWindowsAuthType)
+                return BadRequest();
 
             MUser user = await usersRepository.GetUserAsync(userService.Username);
             if (user == null)
@@ -81,6 +86,9 @@ namespace Shearlegs.Web.Controllers
         [HttpPost("~/signin")]
         public async Task<IActionResult> SignInAsync([FromForm] string username, [FromForm] string password)
         {
+            if (!configService.IsDefaultAuthEnabled)
+                return NoContent();
+
             MUser user = await usersRepository.GetUserAsync(username, password);
 
             if (user == null)

@@ -17,7 +17,7 @@ namespace Shearlegs.Web.Shared
 
         protected override async Task OnInitializedAsync()
         {
-            if (!UserService.HasUserId)
+            if (!UserService.IsCookieAuthType)
             {
                 NavigationManager.NavigateTo("/login");
             }

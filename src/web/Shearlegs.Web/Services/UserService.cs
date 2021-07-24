@@ -1,46 +1,37 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
-using Shearlegs.Web.Database;
+using Shearlegs.Web.Constants;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using System.Security.Principal;
-using System.Threading.Tasks;
 
 namespace Shearlegs.Web.Services
 {
     public class UserService
     {
         private readonly IHttpContextAccessor accessor;
-        private readonly IConfiguration configuration;
 
-        public UserService(IHttpContextAccessor accessor, IConfiguration configuration)
+        public UserService(IHttpContextAccessor accessor)
         {
             this.accessor = accessor;
-            this.configuration = configuration;            
         }
-
-        public bool IsDemo => configuration.GetValue<bool>("IsDemo");
 
         public string Username => accessor.HttpContext.User.Identity.Name;
         public int UserId
         {
             get
             {
+                if (!IsCookieAuthType)
+                    return 0;
+
                 int.TryParse(accessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier), out int userId);
                 return userId;
             }
         }
-
         public string Role => accessor.HttpContext.User.FindFirstValue(ClaimTypes.Role);
+
         public bool IsAuthenticated => accessor.HttpContext.User.Identity?.IsAuthenticated ?? false;
-
-        public bool IsWindowsAuthType => configuration.GetValue<string>("AuthenticationType") == "Windows";
-        public bool IsDefaultAuthType => configuration.GetValue<string>("AuthenticationType") == "Default";
-
-        public bool HasUserId => UserId != 0;
-
-        public bool IsInRole(string role) => accessor.HttpContext.User.IsInRole(role);
+        public bool IsWindowsAuthType => IsAuthenticated && AuthenticationConstants.WindowsAuthTypes.Contains(accessor.HttpContext.User.Identity?.AuthenticationType ?? null);
+        public bool IsCookieAuthType => IsAuthenticated && (accessor.HttpContext.User.Identity?.AuthenticationType ?? null) == "Cookies";
+        public bool IsInRole(string role) => IsAuthenticated && accessor.HttpContext.User.IsInRole(role);
     }
 }
