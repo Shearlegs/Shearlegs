@@ -60,6 +60,7 @@ namespace Shearlegs.Web.Pages.Developer.UploadPage
         public async Task UploadVersionAsync()
         {
             isLoading2 = true;
+            StateHasChanged();
             MVersion version = new()
             {
                 PluginId = Plugin.Id,
