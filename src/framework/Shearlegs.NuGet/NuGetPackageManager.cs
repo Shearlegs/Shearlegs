@@ -83,15 +83,14 @@ namespace Shearlegs.NuGet
             {
                 PackageConfiguration config = PackageConfiguration.FromPackageDependency(dependency);
                 
-
-                PackageIdentity packageIdentity = await GetPackageIdentityAsync(config, sourceCacheContext);
-                if (packageIdentity is null)
-                {
-                    throw new InvalidOperationException($"Cannot find package {config.Package}.");
-                }
-
                 if (!DependencySuppliedByHost(dependency))
                 {
+                    PackageIdentity packageIdentity = await GetPackageIdentityAsync(config, sourceCacheContext);
+                    if (packageIdentity is null)
+                    {
+                        throw new InvalidOperationException($"Cannot find package {config.Package}.");
+                    }
+
                     configs.Add(config);
                     await GetPackageDependencies(packageIdentity, sourceCacheContext, allPackages);
                 }                    
