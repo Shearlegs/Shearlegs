@@ -71,9 +71,10 @@ namespace Shearlegs.Web.Pages.Home.ExecutePage
         private bool isExecuting = false;
         public async Task SubmitAsync()
         {
-            string json = await JSRuntime.GetFormDataJsonAsync("parameters");
             isExecuting = true;
             StateHasChanged();
+
+            string json = await JSRuntime.GetFormDataJsonAsync("parameters");            
             int resultId = await PluginService.ExecuteVersionAsync(UserService.UserId, Version.Id, json);
             isExecuting = false;
             NavigationManager.NavigateTo($"/results/{resultId}");
