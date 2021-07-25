@@ -40,7 +40,7 @@ namespace Shearlegs.NuGet
 
         public NuGetPackageManager()
         {
-            packagesDirectory = Path.Combine(Environment.CurrentDirectory, DirectoryConstants.NugetPackagesDirectory);
+            packagesDirectory = Path.Combine(Directory.GetCurrentDirectory(), DirectoryConstants.NugetPackagesDirectory);
             const string nugetFile = "NuGet.Config";
 
             string nugetConfig = Path.Combine(packagesDirectory, nugetFile);
