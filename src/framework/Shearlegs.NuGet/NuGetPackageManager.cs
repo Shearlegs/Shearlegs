@@ -24,12 +24,10 @@ namespace Shearlegs.NuGet
     {
         public const string FrameworkName = "net5.0";
 
-        private readonly string packageDirectory;
+        private readonly string packagesDirectory;
 
         private readonly ISettings settings;
-        private readonly PackageSource packageSource;
 
-        private readonly PackageSourceProvider sourceProvider;
         private readonly SourceRepositoryProvider sourceRepositoryProvider;
 
         private readonly NuGetFramework targetFramework;
@@ -42,23 +40,33 @@ namespace Shearlegs.NuGet
 
         public NuGetPackageManager()
         {
-            packageDirectory = Path.Combine(Environment.CurrentDirectory, DirectoryConstants.NugetPackagesDirectory);
+            packagesDirectory = Path.Combine(Environment.CurrentDirectory, DirectoryConstants.NugetPackagesDirectory);
+            const string nugetFile = "NuGet.Config";
 
-            settings = Settings.LoadDefaultSettings(packageDirectory);
-            packageSource = new("https://api.nuget.org/v3/index.json", "NuGet.org");
-
-            sourceProvider = new PackageSourceProvider(settings, new PackageSource[]
+            string nugetConfig = Path.Combine(packagesDirectory, nugetFile);
+            if (!File.Exists(nugetConfig))
             {
-                packageSource
-            });
+                string nl = Environment.NewLine;
 
+                File.WriteAllText(nugetConfig,
+                    $"<?xml version=\"1.0\" encoding=\"utf-8\"?>{nl}"
+                    + $"<configuration>{nl}"
+                    + $"    <packageSources>{nl}"
+                    + $"        <add key=\"nuget.org\" value=\"https://api.nuget.org/v3/index.json\" protocolVersion=\"3\" />{nl}"
+                    + $"    </packageSources>{nl}"
+                    + "</configuration>");
+            }
+
+            settings = Settings.LoadDefaultSettings(packagesDirectory, nugetFile, null);
+
+            PackageSourceProvider sourceProvider = new(settings);
             sourceRepositoryProvider = new SourceRepositoryProvider(sourceProvider, Repository.Provider.GetCoreV3());
 
             targetFramework = NuGetFramework.Parse(FrameworkName);
 
             dependencyContext = DependencyContext.Default;
 
-            packagePathResolver = new PackagePathResolver(packageDirectory);
+            packagePathResolver = new PackagePathResolver(packagesDirectory);
 
             nugetLogger = new NullLogger();
         }
@@ -118,7 +126,7 @@ namespace Shearlegs.NuGet
 
         private async Task InstallPackages(SourceCacheContext sourceCacheContext, IEnumerable<SourcePackageDependencyInfo> packagesToInstall)
         {
-            var packagePathResolver = new PackagePathResolver(packageDirectory, true);
+            var packagePathResolver = new PackagePathResolver(packagesDirectory, true);
             var packageExtractionContext = new PackageExtractionContext(
                 PackageSaveMode.Defaultv3,
                 XmlDocFileSaveMode.Skip,
