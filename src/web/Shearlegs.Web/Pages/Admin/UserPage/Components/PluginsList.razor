@@ -41,19 +41,27 @@ else if (isSuccess)
 </div>
 
 <div class="mb-3">
-    <h6>Assigned plugins:</h6>
-    <div class="tableFixHead" style="max-width: 600px;">
-        <ul class="list-group">
-            @foreach (MUserPlugin userPlugin in User.Plugins.OrderByDescending(x => x.CreateDate))
-            {
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <span class="fw-bold">@userPlugin.Plugin.PackageId</span>
-                    <button class="btn btn-sm btn-danger" @onclick="() => DeleteUserPluginAsync(userPlugin)">
-                        <i class="bi bi-trash-fill"></i>
-                    </button>
-                </li>
-            }
-        </ul>
-    </div>
+    <h5 class="">Assigned plugins:</h5>
+    @if (User.Plugins.Count == 0)
+    {
+        <p class="text-muted">This user doesn't have any assigned plugins</p>
+    }
+    else
+    {
+        <div class="tableFixHead" style="max-width: 600px;">
+            <ul class="list-group">
+                @foreach (MUserPlugin userPlugin in User.Plugins.OrderByDescending(x => x.CreateDate))
+                {
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span class="fw-bold">@userPlugin.Plugin.PackageId</span>
+                        <button class="btn btn-sm btn-danger" @onclick="() => DeleteUserPluginAsync(userPlugin)">
+                            <i class="bi bi-trash-fill"></i>
+                        </button>
+                    </li>
+                }
+            </ul>
+        </div>
+    }
+
 </div>
 
