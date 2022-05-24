@@ -1,0 +1,29 @@
+version: '3'
+services:
+  mssql-server:
+    image: "mcr.microsoft.com/mssql/server"
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "Password!123"
+      MSSQL_PID: "Express"
+    ports:
+      - "14340:1433"
+  database:
+    build:  
+      context: .
+      dockerfile: Database.Dockerfile
+      args:
+        CONNECTION_STRING: "Server=mssql-server;Database=Shearlegs;Uid=sa;Password=Password!123"
+    depends_on:
+      - mssql-server
+  shearlegs-web:
+    build: .
+    ports:
+      - "5085:80"
+    depends_on: 
+      - mssql-server
+      - database
+    environment:
+      ConnectionStrings__Default: "Server=mssql-server;Database=Shearlegs;Uid=sa;Password=Password!123"
+      AuthenticationTypes__Default: "true"
+      AuthenticationTypes__Windows: "false"
