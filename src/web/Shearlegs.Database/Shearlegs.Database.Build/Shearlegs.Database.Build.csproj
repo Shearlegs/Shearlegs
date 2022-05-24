@@ -5,11 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="..\**\*.sql" />
+	<Content Include="../dbo/tables/*.sql" />
+	<Content Include="../dbo/procedures/*.sql" />
   </ItemGroup>
   
   <ItemGroup>
-    <PostDeploy Include="..\Script.PostDeployment.sql" />
+    <PostDeploy Include="../Script.PostDeployment.sql" />
   </ItemGroup>
 
 </Project>

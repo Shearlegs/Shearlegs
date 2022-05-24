@@ -6,7 +6,11 @@
     <DeployScriptFileName>Shearlegs.Database.sql</DeployScriptFileName>
     <TargetConnectionString>Data Source=.;Integrated Security=True;Persist Security Info=False;Pooling=False;MultipleActiveResultSets=False;Connect Timeout=60;Encrypt=False;TrustServerCertificate=False</TargetConnectionString>
     <BlockOnPossibleDataLoss>True</BlockOnPossibleDataLoss>
-    <IgnoreColumnOrder>True</IgnoreColumnOrder>
+    <IgnoreColumnOrder>False</IgnoreColumnOrder>
     <ProfileVersionNumber>1</ProfileVersionNumber>
+    <DropConstraintsNotInSource>False</DropConstraintsNotInSource>
+    <DropDmlTriggersNotInSource>False</DropDmlTriggersNotInSource>
+    <DropExtendedPropertiesNotInSource>False</DropExtendedPropertiesNotInSource>
+    <DropIndexesNotInSource>False</DropIndexesNotInSource>
   </PropertyGroup>
 </Project>
