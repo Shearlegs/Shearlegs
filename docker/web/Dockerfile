@@ -14,5 +14,8 @@ FROM mcr.microsoft.com/dotnet/aspnet:5.0
 WORKDIR /app
 EXPOSE 80
 
+RUN apt-get update -y
+RUN apt-get install -y libgdiplus
+
 COPY --from=build-env /app/out .
 ENTRYPOINT ["dotnet", "Shearlegs.Web.dll"]
