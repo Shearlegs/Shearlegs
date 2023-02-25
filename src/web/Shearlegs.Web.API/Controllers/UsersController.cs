@@ -2,7 +2,7 @@
 using RESTFulSense.Controllers;
 using Shearlegs.Web.API.Models.Users;
 using Shearlegs.Web.API.Models.Users.Exceptions;
-using Shearlegs.Web.API.Services.Users;
+using Shearlegs.Web.API.Services.Foundations.Users;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

@@ -2,5 +2,6 @@
 {
     public interface IEncryptionBroker
     {
+        bool VerifyPassword(string passwordText, string passwordHash);
     }
 }

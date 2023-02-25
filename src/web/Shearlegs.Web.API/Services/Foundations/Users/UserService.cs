@@ -3,6 +3,7 @@ using Shearlegs.Web.API.Brokers.Validations;
 using Shearlegs.Web.API.Models.Users;
 using Shearlegs.Web.API.Models.Users.Exceptions;
 using Shearlegs.Web.API.Models.Users.Params;
+using Shearlegs.Web.API.Services.Foundations.Users;
 using Shearlegs.Web.API.Utilities.StoredProcedures;
 using System.Collections.Generic;
 using System.Threading.Tasks;

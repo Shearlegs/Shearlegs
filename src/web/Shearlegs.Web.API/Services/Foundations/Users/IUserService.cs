@@ -3,7 +3,7 @@ using Shearlegs.Web.API.Models.Users.Params;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Shearlegs.Web.API.Services.Users
+namespace Shearlegs.Web.API.Services.Foundations.Users
 {
     public interface IUserService
     {
