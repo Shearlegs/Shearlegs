@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectVersion>4.1</ProjectVersion>
     <ProjectGuid>{2bd25756-cb67-4a0e-ae2d-4d420db26cbc}</ProjectGuid>
-    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql160DatabaseSchemaProvider</DSP>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql150DatabaseSchemaProvider</DSP>
     <OutputType>Database</OutputType>
     <RootPath>
     </RootPath>
@@ -63,5 +63,8 @@
   <ItemGroup>
     <Build Include="dbo\tables\Users.sql" />
     <Build Include="dbo\procedures\AddUser.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Shearlegs.Web.Database.publish.xml" />
   </ItemGroup>
 </Project>
