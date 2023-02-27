@@ -10,7 +10,7 @@ namespace Shearlegs.Web.API.Models.Users
         public string Name { get; set; }
         public UserRole Role { get; set; }
         public UserAuthenticationType AuthenticationType { get; set; }
-        public DateTimeOffset LastLoginDate  { get; set; }
+        public DateTimeOffset? LastLoginDate  { get; set; }
         public DateTimeOffset UpdateDate { get; set; }
         public DateTimeOffset CreateDate { get; set; }
 

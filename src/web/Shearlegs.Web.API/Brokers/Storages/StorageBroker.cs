@@ -1,10 +1,15 @@
 ﻿using Dapper;
 using Microsoft.Extensions.Configuration;
 using Shearlegs.Web.API.Utilities.StoredProcedures;
+using Swashbuckle.AspNetCore.SwaggerGen;
+using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Data.SqlClient;
+using System.Dynamic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace Shearlegs.Web.API.Brokers.Storages
@@ -24,12 +29,15 @@ namespace Shearlegs.Web.API.Brokers.Storages
             DynamicParameters p = new();
             p.AddDynamicParams(parameters);
             p.Add(name: "@ReturnValue", dbType: DbType.Int32, direction: ParameterDirection.ReturnValue);
+
             return p;
         }
 
         private int GetReturnValue(DynamicParameters p)
         {
-            return p.Get<int>("@ReturnValue");
+            int? returnValue = p.Get<int?>("@ReturnValue");
+
+            return  returnValue.HasValue ? returnValue.Value : 0;
         }
 
         private async ValueTask<StoredProcedureResult<IEnumerable<T>>> QueryStoredProcedureAsync<T>(string procedureName, object param) 
@@ -55,7 +63,7 @@ namespace Shearlegs.Web.API.Brokers.Storages
         {
             DynamicParameters parameters = StoredProcedureParameters(param);
 
-            dynamic resultset = await connection.QuerySingleOrDefaultAsync(procedureName, parameters, commandType: CommandType.StoredProcedure);
+            DbDataReader reader = await connection.ExecuteReaderAsync(procedureName, parameters, commandType: CommandType.StoredProcedure);
 
             StoredProcedureResult<T> result = new()
             {
@@ -64,7 +72,12 @@ namespace Shearlegs.Web.API.Brokers.Storages
 
             if (result.ReturnValue == 0)
             {
-                result.Result = (T)resultset;
+                Func<IDataReader, T> parser = reader.GetRowParser<T>(typeof(T));
+
+                while (await reader.ReadAsync())
+                {
+                    result.Result = parser(reader);
+                }                
             }
 
             return result;

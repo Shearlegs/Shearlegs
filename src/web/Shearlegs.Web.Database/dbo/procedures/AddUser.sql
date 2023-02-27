@@ -1,7 +1,7 @@
 ﻿CREATE PROCEDURE dbo.AddUser
 	@Name NVARCHAR(255),
 	@Role TINYINT,
-	@AutenticationType TINYINT,
+	@AuthenticationType TINYINT,
 	@PasswordHash NVARCHAR(128)
 AS
 BEGIN
@@ -15,7 +15,7 @@ BEGIN
 
 	INSERT INTO dbo.Users ([Name], [Role], AuthenticationType, PasswordHash)
 	OUTPUT INSERTED.*
-	VALUES (@Name, @Role, @AutenticationType, @PasswordHash);
+	VALUES (@Name, @Role, @AuthenticationType, @PasswordHash);
 	
 	RETURN 0;
 END
