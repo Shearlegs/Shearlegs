@@ -6,8 +6,7 @@ namespace Shearlegs.Web.API.Services.Processings.Users
 {
     public interface IUserProcessingService
     {
-        ValueTask<User> AddUserWithPasswordAsync(AddUserWithPasswordParams @params);
-        ValueTask<User> AddUserWithWindowsAsync(AddUserWithWindowsParams @params);
+        ValueTask<User> CreateUserAsync(CreateUserParams @params);
         ValueTask<User> RetrieveUserByNameAndPasswordAsync(string username, string passwordText);
     }
 }

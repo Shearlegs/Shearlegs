@@ -77,37 +77,18 @@ namespace Shearlegs.Web.API.Controllers
             }
         }
 
-        [HttpPost("register/password")]
-        public async ValueTask<IActionResult> AddUserWithPassword([FromBody] AddUserWithPasswordParams @params)
+        [HttpPost("create")]
+        public async ValueTask<IActionResult> AddUserWithPassword([FromBody] CreateUserParams @params)
         {
             try
             {
-                User user = await userProcessingService.AddUserWithPasswordAsync(@params);
+                User user = await userProcessingService.CreateUserAsync(@params);
 
                 return Ok(user);
-            } catch (AddUserValidationException exception)
+            } catch (CreateUserValidationException exception)
             {
                 return BadRequest(exception);
             } catch (AlreadyExistsUserException exception)
-            {
-                return Conflict(exception);
-            }
-        }
-
-        [HttpPost("register/windows")]
-        public async ValueTask<IActionResult> AddUserWithWindows([FromBody] AddUserWithWindowsParams @params)
-        {
-            try
-            {
-                User user = await userProcessingService.AddUserWithWindowsAsync(@params);
-
-                return Ok(user);
-            }
-            catch (AddUserValidationException exception)
-            {
-                return BadRequest(exception);
-            }
-            catch (AlreadyExistsUserException exception)
             {
                 return Conflict(exception);
             }
