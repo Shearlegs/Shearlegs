@@ -63,6 +63,9 @@
   <ItemGroup>
     <Build Include="dbo\tables\Users.sql" />
     <Build Include="dbo\procedures\AddUser.sql" />
+    <Build Include="dbo\tables\Plugins.sql" />
+    <Build Include="dbo\procedures\AddPlugin.sql" />
+    <Build Include="dbo\procedures\GetPlugins.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shearlegs.Web.Database.publish.xml" />

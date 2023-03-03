@@ -11,6 +11,7 @@ using System.Dynamic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using static Dapper.SqlMapper;
 
 namespace Shearlegs.Web.API.Brokers.Storages
 {
@@ -40,20 +41,28 @@ namespace Shearlegs.Web.API.Brokers.Storages
             return  returnValue.HasValue ? returnValue.Value : 0;
         }
 
-        private async ValueTask<StoredProcedureResult<IEnumerable<T>>> QueryStoredProcedureAsync<T>(string procedureName, object param) 
+
+        private async ValueTask<StoredProcedureResult<List<T>>> QueryStoredProcedureAsync<T>(string procedureName, object param) 
         {
             DynamicParameters parameters = StoredProcedureParameters(param);
 
-            IEnumerable<dynamic> resultset = await connection.QueryAsync(procedureName, parameters, commandType: CommandType.StoredProcedure);
+            DbDataReader reader = await connection.ExecuteReaderAsync(procedureName, parameters, commandType: CommandType.StoredProcedure);
 
-            StoredProcedureResult<IEnumerable<T>> result = new()
+            StoredProcedureResult<List<T>> result = new()
             {
-                ReturnValue = GetReturnValue(parameters)
+                ReturnValue = GetReturnValue(parameters),
+                Result = new List<T>()
             };
 
             if (result.ReturnValue == 0)
             {
-                result.Result = resultset.Cast<T>();
+                Func<IDataReader, T> parser = reader.GetRowParser<T>(typeof(T));
+                    
+                while (await reader.ReadAsync())
+                {
+                    T obj = parser(reader);
+                    result.Result.Add(obj);
+                }
             }
 
             return result;
