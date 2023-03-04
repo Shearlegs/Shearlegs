@@ -67,6 +67,10 @@
     <Build Include="dbo\procedures\AddPlugin.sql" />
     <Build Include="dbo\procedures\GetPlugins.sql" />
     <Build Include="dbo\procedures\UpdatePlugin.sql" />
+    <Build Include="dbo\tables\Versions.sql" />
+    <Build Include="dbo\tables\VersionParameters.sql" />
+    <Build Include="dbo\procedures\AddVersion.sql" />
+    <Build Include="dbo\procedures\GetVersions.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shearlegs.Web.Database.publish.xml" />

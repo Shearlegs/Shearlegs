@@ -3,6 +3,9 @@
 	@PackageId VARCHAR(255) NULL
 AS
 BEGIN
+	SET NOCOUNT ON;
+	SET XACT_ABORT ON;
+
 	IF @PluginId IS NOT NULL
 	BEGIN
 		SELECT p.*, uu.*, cu.* FROM dbo.Plugins p 

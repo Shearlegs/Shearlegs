@@ -3,7 +3,9 @@ using RESTFulSense.Controllers;
 using Shearlegs.Web.API.Models.Plugins;
 using Shearlegs.Web.API.Models.Plugins.Exceptions;
 using Shearlegs.Web.API.Models.Plugins.Params;
+using Shearlegs.Web.API.Models.Versions;
 using Shearlegs.Web.API.Services.Foundations.Plugins;
+using Shearlegs.Web.API.Services.Foundations.Versions;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -15,10 +17,12 @@ namespace Shearlegs.Web.API.Controllers
     public class PluginsController : RESTFulController
     {
         private readonly IPluginService pluginService;
+        private readonly IVersionService versionService;
 
-        public PluginsController(IPluginService pluginService)
+        public PluginsController(IPluginService pluginService, IVersionService versionService)
         {
             this.pluginService = pluginService;
+            this.versionService = versionService;
         }
 
         [HttpGet("{pluginId}")]
@@ -56,6 +60,14 @@ namespace Shearlegs.Web.API.Controllers
             IEnumerable<Plugin> plugins = await pluginService.RetrieveAllPluginsAsync();
 
             return Ok(plugins);
+        }
+
+        [HttpGet("{pluginId}/versions")]
+        public async ValueTask<IActionResult> GetVersionsByPluginId(int pluginId)
+        {
+            IEnumerable<Version> versions = await versionService.RetrieveVersionsByPluginIdAsync(pluginId);
+
+            return Ok(versions);
         }
 
         [HttpPost("add")]
