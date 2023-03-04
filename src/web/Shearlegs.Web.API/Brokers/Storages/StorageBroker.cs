@@ -41,6 +41,24 @@ namespace Shearlegs.Web.API.Brokers.Storages
             return  returnValue.HasValue ? returnValue.Value : 0;
         }
 
+        private async ValueTask<StoredProcedureResult> ExecuteStoredProcedureAsync(string procedureName, object param)
+        {
+            DynamicParameters dp;
+            if (param is DynamicParameters)
+            {
+                dp = (DynamicParameters)param;                
+            } else
+            {
+                dp = StoredProcedureParameters(param);
+            }
+
+            await connection.ExecuteAsync(procedureName, dp, commandType: CommandType.StoredProcedure);
+
+            StoredProcedureResult result = new();
+            result.ReturnValue = GetReturnValue(dp);
+
+            return result;
+        }
 
         private async ValueTask<StoredProcedureResult<List<T>>> QueryStoredProcedureAsync<T>(string procedureName, object param) 
         {

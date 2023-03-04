@@ -1,6 +1,9 @@
 ﻿using Shearlegs.Web.API.Brokers.Storages;
 using Shearlegs.Web.API.Models.Plugins;
+using Shearlegs.Web.API.Models.Plugins.Exceptions;
 using Shearlegs.Web.API.Models.Plugins.Params;
+using Shearlegs.Web.API.Models.Plugins.Results;
+using Shearlegs.Web.API.Utilities.StoredProcedures;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -29,7 +32,14 @@ namespace Shearlegs.Web.API.Services.Foundations.Plugins
                 PluginId = pluginId
             };
 
-            return await storageBroker.GetPluginAsync(@params);
+            Plugin plugin = await storageBroker.GetPluginAsync(@params);
+
+            if (plugin == null)
+            {
+                throw new NotFoundPluginException();
+            }
+
+            return plugin;
         }
 
         public async ValueTask<Plugin> RetrievePluginByPackageId(string packageId)
@@ -39,7 +49,26 @@ namespace Shearlegs.Web.API.Services.Foundations.Plugins
                 PackageId = packageId
             };
 
-            return await storageBroker.GetPluginAsync(@params);
+            Plugin plugin = await storageBroker.GetPluginAsync(@params);
+
+            if (plugin == null)
+            {
+                throw new NotFoundPluginException();
+            }
+
+            return plugin;
+        }
+
+        public async ValueTask<Plugin> AddPluginAsync(AddPluginParams @params)
+        {
+            AddPluginResult result = await storageBroker.AddPluginAsync(@params);
+
+            if (result.StoredProcedureResult.ReturnValue == 1)
+            {
+                throw new AlreadyExistsPluginException();
+            }
+
+            return await RetrievePluginByIdAsync(result.PluginId.GetValueOrDefault());
         }
     }
 }

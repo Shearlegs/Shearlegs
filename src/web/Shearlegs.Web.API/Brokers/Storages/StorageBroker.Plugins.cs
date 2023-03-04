@@ -1,7 +1,10 @@
 ﻿using Dapper;
+using Microsoft.AspNetCore.Connections.Features;
 using Shearlegs.Web.API.Models.Plugins;
 using Shearlegs.Web.API.Models.Plugins.Params;
+using Shearlegs.Web.API.Models.Plugins.Results;
 using Shearlegs.Web.API.Models.Users;
+using Shearlegs.Web.API.Utilities.StoredProcedures;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -37,6 +40,21 @@ namespace Shearlegs.Web.API.Brokers.Storages
 
         //    return await GetPluginAsync(@params);
         //}
+
+        public async ValueTask<AddPluginResult> AddPluginAsync(AddPluginParams @params)
+        {
+            const string sql = "dbo.AddPlugin";
+
+            DynamicParameters dp = StoredProcedureParameters(@params);
+
+            dp.Add("@PluginId", dbType: DbType.Int32, direction: ParameterDirection.Output);
+
+            AddPluginResult result = new();
+            result.StoredProcedureResult = await ExecuteStoredProcedureAsync(sql, dp);
+            result.PluginId = dp.Get<int?>("@PluginId");
+
+            return result;
+        }
 
         public async ValueTask<Plugin> GetPluginAsync(GetPluginsParams @params)
         {
