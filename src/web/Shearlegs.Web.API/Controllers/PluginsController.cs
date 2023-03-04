@@ -71,5 +71,20 @@ namespace Shearlegs.Web.API.Controllers
                 return Conflict(exception);
             }
         }
+
+        [HttpPost("update")]
+        public async ValueTask<IActionResult> UpdatePlugin([FromBody] UpdatePluginParams @params)
+        {
+            try
+            {
+                Plugin plugin = await pluginService.UpdatePluginAsync(@params);
+
+                return Ok(plugin);
+            }
+            catch (NotFoundPluginException exception)
+            {
+                return NotFound(exception);
+            }
+        }
     }
 }

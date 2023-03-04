@@ -70,5 +70,17 @@ namespace Shearlegs.Web.API.Services.Foundations.Plugins
 
             return await RetrievePluginByIdAsync(result.PluginId.GetValueOrDefault());
         }
+
+        public async ValueTask<Plugin> UpdatePluginAsync(UpdatePluginParams @params)
+        {
+            StoredProcedureResult result = await storageBroker.UpdatePluginAsync(@params);
+
+            if (result.ReturnValue == 1)
+            {
+                throw new NotFoundPluginException();
+            }
+
+            return await RetrievePluginByIdAsync(@params.PluginId);
+        }
     }
 }

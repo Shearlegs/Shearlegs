@@ -11,5 +11,6 @@ namespace Shearlegs.Web.API.Services.Foundations.Plugins
         ValueTask<IEnumerable<Plugin>> RetrieveAllPluginsAsync();
         ValueTask<Plugin> RetrievePluginByIdAsync(int pluginId);
         ValueTask<Plugin> RetrievePluginByPackageId(string packageId);
+        ValueTask<Plugin> UpdatePluginAsync(UpdatePluginParams @params);
     }
 }

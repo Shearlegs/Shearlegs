@@ -56,6 +56,13 @@ namespace Shearlegs.Web.API.Brokers.Storages
             return result;
         }
 
+        public async ValueTask<StoredProcedureResult> UpdatePluginAsync(UpdatePluginParams @params)
+        {
+            const string sql = "dbo.UpdatePlugin";
+
+            return await ExecuteStoredProcedureAsync(sql, @params);
+        }
+
         public async ValueTask<Plugin> GetPluginAsync(GetPluginsParams @params)
         {
             const string sql = "dbo.GetPlugins";

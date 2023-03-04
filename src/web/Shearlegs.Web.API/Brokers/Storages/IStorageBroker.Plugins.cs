@@ -12,5 +12,6 @@ namespace Shearlegs.Web.API.Brokers.Storages
         ValueTask<AddPluginResult> AddPluginAsync(AddPluginParams @params);
         ValueTask<Plugin> GetPluginAsync(GetPluginsParams @params);
         ValueTask<IEnumerable<Plugin>> GetPluginsAsync(GetPluginsParams @params);
+        ValueTask<StoredProcedureResult> UpdatePluginAsync(UpdatePluginParams @params);
     }
 }
