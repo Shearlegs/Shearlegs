@@ -8,6 +8,7 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 builder.Services.AddBrokers();
 builder.Services.AddFoundations();
 builder.Services.AddProcessings();
+builder.Services.AddOrchestrations();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

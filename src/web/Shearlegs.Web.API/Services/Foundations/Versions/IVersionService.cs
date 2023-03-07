@@ -10,6 +10,7 @@ namespace Shearlegs.Web.API.Services.Foundations.Versions
         ValueTask<Version> AddVersionAsync(AddVersionParams @params);
         ValueTask<IEnumerable<Version>> RetrieveAllVersionsAsync();
         ValueTask<Version> RetrieveVersionByIdAsync(int versionId);
+        ValueTask<VersionContent> RetrieveVersionContentByIdAsync(int versionId);
         ValueTask<IEnumerable<Version>> RetrieveVersionsByPluginIdAsync(int pluginId);
     }
 }

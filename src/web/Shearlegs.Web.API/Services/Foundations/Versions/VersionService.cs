@@ -18,6 +18,18 @@ namespace Shearlegs.Web.API.Services.Foundations.Versions
             this.storageBroker = storageBroker;
         }
 
+        public async ValueTask<VersionContent> RetrieveVersionContentByIdAsync(int versionId)
+        {
+            VersionContent versionContent = await storageBroker.SelectVersionContentByIdAsync(versionId);
+
+            if (versionContent == null)
+            {
+                throw new NotFoundVersionException();
+            }
+
+            return versionContent;
+        }
+
         public async ValueTask<Version> RetrieveVersionByIdAsync(int versionId)
         {
             GetVersionsParams @params = new()

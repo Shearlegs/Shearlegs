@@ -15,6 +15,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\framework\Shearlegs.API\Shearlegs.API.csproj" />
+    <ProjectReference Include="..\..\framework\Shearlegs.Core\Shearlegs.Core.csproj" />
     <ProjectReference Include="..\Shearlegs.Web.Shared\Shearlegs.Web.Shared.csproj" />
   </ItemGroup>
 

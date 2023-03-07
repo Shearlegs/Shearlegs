@@ -59,6 +59,23 @@ namespace Shearlegs.Web.API.Services.Foundations.Plugins
             return plugin;
         }
 
+        public async ValueTask<Plugin> RetrievePluginByVersionIdAsync(int versionId)
+        {
+            GetPluginsParams @params = new()
+            {
+                VersionId = versionId
+            };
+
+            Plugin plugin = await storageBroker.GetPluginAsync(@params);
+
+            if (plugin == null)
+            {
+                throw new NotFoundPluginException();
+            }
+
+            return plugin;
+        }
+
         public async ValueTask<Plugin> AddPluginAsync(AddPluginParams @params)
         {
             AddPluginResult result = await storageBroker.AddPluginAsync(@params);

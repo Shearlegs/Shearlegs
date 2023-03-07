@@ -4,5 +4,6 @@
     {
         public int? PluginId { get; set; }
         public string PackageId { get; set; }
+        public int? VersionId { get; set; }
     }
 }

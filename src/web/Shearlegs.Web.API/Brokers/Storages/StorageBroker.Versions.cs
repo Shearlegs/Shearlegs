@@ -13,6 +13,13 @@ namespace Shearlegs.Web.API.Brokers.Storages
 {
     public partial class StorageBroker
     {
+        public async ValueTask<VersionContent> SelectVersionContentByIdAsync(int versionId)
+        {
+            const string sql = "SELECT Content FROM dbo.Versions WHERE Id = @versionId;";
+
+            return await connection.QuerySingleOrDefaultAsync<VersionContent>(sql);
+        }
+
         public async ValueTask<AddVersionResult> AddVersionAsync(AddVersionParams @params)
         {
             const string sql = "dbo.AddVersion";

@@ -14,33 +14,6 @@ namespace Shearlegs.Web.API.Brokers.Storages
 {
     public partial class StorageBroker
     {
-        //public async ValueTask<IEnumerable<Plugin>> SelectAllPluginsAsync()
-        //{
-        //    GetPluginsParams @params = new();
-
-        //    return await GetPluginsAsync(@params);
-        //}
-
-        //public async ValueTask<Plugin> SelectPluginByIdAsync(int pluginId)
-        //{
-        //    GetPluginsParams @params = new()
-        //    {
-        //        PluginId = pluginId
-        //    };
-
-        //    return await GetPluginAsync(@params);
-        //}
-
-        //public async ValueTask<Plugin> SelectPluginByPackageIdAsync(string packageId)
-        //{
-        //    GetPluginsParams @params = new()
-        //    {
-        //        PackageId = packageId
-        //    };
-
-        //    return await GetPluginAsync(@params);
-        //}
-
         public async ValueTask<AddPluginResult> AddPluginAsync(AddPluginParams @params)
         {
             const string sql = "dbo.AddPlugin";
