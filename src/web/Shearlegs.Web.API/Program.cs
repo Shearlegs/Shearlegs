@@ -5,6 +5,7 @@ using Shearlegs.Web.API.Extensions;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddDependencies();
 builder.Services.AddBrokers();
 builder.Services.AddFoundations();
 builder.Services.AddProcessings();

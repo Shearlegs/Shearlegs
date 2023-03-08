@@ -3,8 +3,10 @@ using RESTFulSense.Controllers;
 using Shearlegs.Web.API.Models.Plugins;
 using Shearlegs.Web.API.Models.Plugins.Exceptions;
 using Shearlegs.Web.API.Models.Plugins.Params;
+using Shearlegs.Web.API.Models.PluginSecrets;
 using Shearlegs.Web.API.Models.Versions;
 using Shearlegs.Web.API.Services.Foundations.Plugins;
+using Shearlegs.Web.API.Services.Foundations.PluginSecrets;
 using Shearlegs.Web.API.Services.Foundations.Versions;
 using System.Collections;
 using System.Collections.Generic;
@@ -18,11 +20,13 @@ namespace Shearlegs.Web.API.Controllers
     {
         private readonly IPluginService pluginService;
         private readonly IVersionService versionService;
+        private readonly IPluginSecretService pluginSecretService;
 
-        public PluginsController(IPluginService pluginService, IVersionService versionService)
+        public PluginsController(IPluginService pluginService, IVersionService versionService, IPluginSecretService pluginSecretService)
         {
             this.pluginService = pluginService;
             this.versionService = versionService;
+            this.pluginSecretService = pluginSecretService;
         }
 
         [HttpGet("{pluginId}")]
@@ -68,6 +72,14 @@ namespace Shearlegs.Web.API.Controllers
             IEnumerable<Version> versions = await versionService.RetrieveVersionsByPluginIdAsync(pluginId);
 
             return Ok(versions);
+        }
+
+        [HttpGet("{pluginId}/secrets")]
+        public async ValueTask<IActionResult> GetPluginSecretsByPluginId(int pluginId)
+        {
+            IEnumerable<PluginSecret> pluginSecrets = await pluginSecretService.RetrievePluginSecretsByPluginIdAsync(pluginId);
+
+            return Ok(pluginSecrets);
         }
 
         [HttpPost("add")]

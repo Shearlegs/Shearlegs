@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc.ViewComponents;
 using Microsoft.Extensions.DependencyInjection;
+using Shearlegs.Runtime;
 using Shearlegs.Web.API.Brokers.Encryptions;
 using Shearlegs.Web.API.Brokers.Serializations;
 using Shearlegs.Web.API.Brokers.Shearlegs;
 using Shearlegs.Web.API.Brokers.Storages;
 using Shearlegs.Web.API.Brokers.Validations;
 using Shearlegs.Web.API.Services.Foundations.Plugins;
+using Shearlegs.Web.API.Services.Foundations.PluginSecrets;
 using Shearlegs.Web.API.Services.Foundations.ShearlegsFrameworks;
 using Shearlegs.Web.API.Services.Foundations.Users;
 using Shearlegs.Web.API.Services.Foundations.Versions;
@@ -19,6 +21,13 @@ namespace Shearlegs.Web.API.Extensions
 {
     public static class IServiceCollectionExtensions
     {
+        public static IServiceCollection AddDependencies(this IServiceCollection services)
+        {
+            ShearlegsRuntime.RegisterServices(services);
+
+            return services;
+        }
+
         public static IServiceCollection AddBrokers(this IServiceCollection services)
         {
             services.AddTransient<IStorageBroker, StorageBroker>();
@@ -36,6 +45,7 @@ namespace Shearlegs.Web.API.Extensions
             services.AddTransient<IPluginService, PluginService>();
             services.AddTransient<IVersionService, VersionService>();
             services.AddTransient<IShearlegsFrameworkService, ShearlegsFrameworkService>();
+            services.AddTransient<IPluginSecretService, PluginSecretService>();
 
             return services;
         }
