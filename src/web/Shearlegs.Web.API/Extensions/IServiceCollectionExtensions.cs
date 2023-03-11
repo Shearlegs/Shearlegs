@@ -8,6 +8,7 @@ using Shearlegs.Web.API.Brokers.Storages;
 using Shearlegs.Web.API.Brokers.Validations;
 using Shearlegs.Web.API.Services.Foundations.Plugins;
 using Shearlegs.Web.API.Services.Foundations.PluginSecrets;
+using Shearlegs.Web.API.Services.Foundations.Results;
 using Shearlegs.Web.API.Services.Foundations.ShearlegsFrameworks;
 using Shearlegs.Web.API.Services.Foundations.Users;
 using Shearlegs.Web.API.Services.Foundations.Versions;
@@ -46,6 +47,7 @@ namespace Shearlegs.Web.API.Extensions
             services.AddTransient<IVersionService, VersionService>();
             services.AddTransient<IShearlegsFrameworkService, ShearlegsFrameworkService>();
             services.AddTransient<IPluginSecretService, PluginSecretService>();
+            services.AddTransient<IResultService, ResultService>();
 
             return services;
         }

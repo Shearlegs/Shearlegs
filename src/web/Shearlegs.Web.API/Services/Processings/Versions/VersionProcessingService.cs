@@ -1,7 +1,9 @@
-﻿using Shearlegs.Web.API.Brokers.Serializations;
+﻿using Microsoft.AspNetCore.Http;
+using Shearlegs.Web.API.Brokers.Serializations;
 using Shearlegs.Web.API.Models.Versions;
 using Shearlegs.Web.API.Models.Versions.Params;
 using Shearlegs.Web.API.Services.Foundations.Versions;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace Shearlegs.Web.API.Services.Processings.Versions
@@ -15,6 +17,16 @@ namespace Shearlegs.Web.API.Services.Processings.Versions
         {
             this.versionService = versionService;
             this.serializationBroker = serializationBroker;
+        }
+
+        public async ValueTask<Version> RetrieveVersionByIdAsync(int versionId)
+        {
+            return await versionService.RetrieveVersionByIdAsync(versionId);
+        }
+
+        public async ValueTask<VersionContent> RetrieveVersionContentByIdAsync(int versionId)
+        {
+            return await versionService.RetrieveVersionContentByIdAsync(versionId);
         }
 
         public async ValueTask<Version> CreateVersionAsync(CreateVersionParams @params)

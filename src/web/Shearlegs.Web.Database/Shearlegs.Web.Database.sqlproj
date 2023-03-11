@@ -75,6 +75,9 @@
     <Build Include="dbo\procedures\GetPluginSecrets.sql" />
     <Build Include="dbo\procedures\AddPluginSecret.sql" />
     <Build Include="dbo\procedures\UpdatePluginSecret.sql" />
+    <Build Include="dbo\procedures\AddResult.sql" />
+    <Build Include="dbo\procedures\UpdateResult.sql" />
+    <Build Include="dbo\procedures\UpdateResultStatus.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shearlegs.Web.Database.publish.xml" />

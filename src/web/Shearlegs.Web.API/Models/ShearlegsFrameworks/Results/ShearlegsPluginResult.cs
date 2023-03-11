@@ -2,5 +2,6 @@
 {
     public abstract class ShearlegsPluginResult
     {
+        public abstract string ResultType { get; }
     }
 }

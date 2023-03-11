@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using RESTFulSense.Controllers;
 using Shearlegs.Web.API.Models.Plugins.Exceptions;
 using Shearlegs.Web.API.Models.Versions;
 using Shearlegs.Web.API.Models.Versions.Exceptions;
 using Shearlegs.Web.API.Models.Versions.Params;
 using Shearlegs.Web.API.Services.Foundations.Versions;
+using Shearlegs.Web.API.Services.Orchestrations.Versions;
 using Shearlegs.Web.API.Services.Processings.Versions;
 using System.Collections;
 using System.Collections.Generic;
@@ -18,11 +20,16 @@ namespace Shearlegs.Web.API.Controllers
     {
         private readonly IVersionService versionService;
         private readonly IVersionProcessingService versionProcessingService;
+        private readonly IVersionOrchestrationService versionOrchestrationService;
 
-        public VersionsController(IVersionService versionService, IVersionProcessingService versionProcessingService)
+        public VersionsController(
+            IVersionService versionService, 
+            IVersionProcessingService versionProcessingService, 
+            IVersionOrchestrationService versionOrchestrationService)
         {
             this.versionService = versionService;
             this.versionProcessingService = versionProcessingService;
+            this.versionOrchestrationService = versionOrchestrationService;
         }
 
         [HttpGet("{versionId}")]
@@ -47,12 +54,12 @@ namespace Shearlegs.Web.API.Controllers
             return Ok(versions);
         }
 
-        [HttpPost("create")]
-        public async ValueTask<IActionResult> CreateVersion([FromBody] CreateVersionParams @params)
+        [HttpPost("upload")]
+        public async ValueTask<IActionResult> UploadVersion(IFormFile formFile)
         {
             try
             {
-                Version version = await versionProcessingService.CreateVersionAsync(@params);
+                Version version = await versionOrchestrationService.UploadVersionAsync(formFile);
 
                 return Ok(version);
             } catch (NotFoundPluginException exception)
