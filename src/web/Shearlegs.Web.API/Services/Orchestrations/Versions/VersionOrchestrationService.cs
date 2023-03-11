@@ -40,7 +40,7 @@ namespace Shearlegs.Web.API.Services.Orchestrations.Versions
             Version version = await versionService.RetrieveVersionByIdAsync(@params.VersionId);
             Plugin plugin = await pluginService.RetrievePluginByVersionIdAsync(@params.VersionId);
 
-            VersionContent versionContent = await versionService.RetrieveVersionContentByIdAsync(@params.VersionId);
+            VersionContent versionContent = await versionService.RetrieveVersionContentByIdAsync(version.Id);
             IEnumerable<PluginSecret> pluginSecrets = await pluginSecretService.RetrievePluginSecretsByPluginIdAsync(plugin.Id);
 
             JObject jObject = JObject.Parse(@params.ParametersJson);
@@ -53,7 +53,7 @@ namespace Shearlegs.Web.API.Services.Orchestrations.Versions
             ExecuteShearlegsPluginParams executeShearlegsPluginParams = new()
             {
                 PluginData = versionContent.Content,
-                ParametersJson = @params.ParametersJson
+                ParametersJson = jObject.ToString()
             };
 
             ShearlegsPluginResult result = await shearlegsFrameworkService.ExecuteShearlegsPluginAsync(executeShearlegsPluginParams);
