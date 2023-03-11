@@ -54,6 +54,14 @@ namespace Shearlegs.Web.API.Controllers
             return Ok(versions);
         }
 
+        [HttpPost("execute")]
+        public async ValueTask<IActionResult> ExecuteAsync([FromBody] ExecuteVersionParams @params)
+        {
+            await versionOrchestrationService.ExecuteVersionAsync(@params);
+
+            return Ok();
+        }
+
         [HttpPost("upload")]
         public async ValueTask<IActionResult> UploadVersion(IFormFile formFile)
         {

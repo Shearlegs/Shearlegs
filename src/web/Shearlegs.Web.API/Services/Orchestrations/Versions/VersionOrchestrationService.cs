@@ -148,7 +148,7 @@ namespace Shearlegs.Web.API.Services.Orchestrations.Versions
                 ResultId = result.Id,
                 Status = resultStatus,
                 ResultData = shearlegsResultData,
-                ResultType = result.ResultType
+                ResultType = shearlegsResult.ResultType
             };
 
             result = await resultService.UpdateResultAsync(updateResultParams);

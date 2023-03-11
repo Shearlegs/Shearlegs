@@ -11,7 +11,7 @@ BEGIN
 	IF @ResultId IS NOT NULL
 	BEGIN
 		SELECT r.*, u.*, v.*, p.* FROM dbo.Results r 
-		JOIN dbo.Users u ON u.Id = r.UserId
+		LEFT JOIN dbo.Users u ON u.Id = r.UserId
 		JOIN dbo.Versions v ON v.Id = r.VersionId
 		JOIN dbo.Plugins p ON p.Id = v.PluginId
 		WHERE r.Id = @ResultId;
@@ -19,7 +19,7 @@ BEGIN
 	ELSE IF @PluginId IS NOT NULL
 	BEGIN
 		SELECT r.*, u.*, v.*, p.* FROM dbo.Results r 
-		JOIN dbo.Users u ON u.Id = r.UserId
+		LEFT JOIN dbo.Users u ON u.Id = r.UserId
 		JOIN dbo.Versions v ON v.Id = r.VersionId
 		JOIN dbo.Plugins p ON p.Id = v.PluginId
 		WHERE v.PluginId = @PluginId;
@@ -27,7 +27,7 @@ BEGIN
 	ELSE IF @VersionId IS NOT NULL
 	BEGIN
 		SELECT r.*, u.*, v.*, p.* FROM dbo.Results r 
-		JOIN dbo.Users u ON u.Id = r.UserId
+		LEFT JOIN dbo.Users u ON u.Id = r.UserId
 		JOIN dbo.Versions v ON v.Id = r.VersionId
 		JOIN dbo.Plugins p ON p.Id = v.PluginId
 		WHERE v.Id = @VersionId;
@@ -43,7 +43,7 @@ BEGIN
 	ELSE
 	BEGIN
 		SELECT r.*, u.*, v.*, p.* FROM dbo.Results r 
-		JOIN dbo.Users u ON u.Id = r.UserId
+		LEFT JOIN dbo.Users u ON u.Id = r.UserId
 		JOIN dbo.Versions v ON v.Id = r.VersionId
 		JOIN dbo.Plugins p ON p.Id = v.PluginId;
 	END;

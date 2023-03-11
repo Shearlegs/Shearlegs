@@ -17,7 +17,7 @@ namespace Shearlegs.Web.API.Brokers.Storages
         {
             const string sql = "SELECT Content FROM dbo.Versions WHERE Id = @versionId;";
 
-            return await connection.QuerySingleOrDefaultAsync<VersionContent>(sql);
+            return await connection.QuerySingleOrDefaultAsync<VersionContent>(sql, new { versionId });
         }
 
         public async ValueTask<AddVersionResult> AddVersionAsync(AddVersionParams @params)
