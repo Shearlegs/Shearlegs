@@ -14,5 +14,7 @@ namespace Shearlegs.Web.API.Brokers.Storages
         ValueTask<StoredProcedureResult> UpdateResultStatusAsync(UpdateResultStatusParams @params);
         ValueTask<IEnumerable<Result>> GetResultsAsync(GetResultsParams @params);
         ValueTask<Result> GetResultAsync(GetResultsParams @params);
+        ValueTask<ResultContentData> SelectResultContentDataByIdAsync(int resultId);
+        ValueTask<ResultParametersData> SelectResultParametersDataByIdAsync(int resultId);
     }
 }

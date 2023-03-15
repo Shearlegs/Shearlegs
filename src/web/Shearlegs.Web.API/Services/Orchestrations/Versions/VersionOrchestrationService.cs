@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.DataProtection;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
+﻿using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Shearlegs.Web.API.Models.Plugins;
@@ -16,10 +14,8 @@ using Shearlegs.Web.API.Services.Foundations.Plugins;
 using Shearlegs.Web.API.Services.Foundations.PluginSecrets;
 using Shearlegs.Web.API.Services.Foundations.Results;
 using Shearlegs.Web.API.Services.Foundations.ShearlegsFrameworks;
-using Shearlegs.Web.API.Services.Foundations.Versions;
 using Shearlegs.Web.API.Services.Processings.Versions;
 using Shearlegs.Web.Shared.Enums;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -86,8 +82,7 @@ namespace Shearlegs.Web.API.Services.Orchestrations.Versions
                     Description = shearlegsPluginParameterInfo.Description,
                     IsSecret = shearlegsPluginParameterInfo.IsSecret,
                     IsArray = shearlegsPluginParameterInfo.IsArray,
-                    IsRequired = shearlegsPluginParameterInfo.IsRequired,
-                    InputType = "delete_me"
+                    IsRequired = shearlegsPluginParameterInfo.IsRequired
                 });
             }
 

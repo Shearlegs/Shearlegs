@@ -4,7 +4,6 @@
     VersionId INT NOT NULL CONSTRAINT FK_VersionParameters_VersionId FOREIGN KEY REFERENCES dbo.Versions(Id),
     [Name] NVARCHAR(255) NOT NULL,
     [Description] NVARCHAR(2000) NULL,
-    InputType VARCHAR(255) NOT NULL,
     DataType VARCHAR(255) NOT NULL,
     DefaultValue NVARCHAR(MAX) NULL,
     IsArray BIT NOT NULL,

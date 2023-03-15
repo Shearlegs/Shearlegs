@@ -15,6 +15,20 @@ namespace Shearlegs.Web.API.Brokers.Storages
 {
     public partial class StorageBroker
     {
+        public async ValueTask<ResultParametersData> SelectResultParametersDataByIdAsync(int resultId)
+        {
+            const string sql = "SELECT ParametersData FROM dbo.Results WHERE Id = @resultId;";
+
+            return await connection.QuerySingleOrDefaultAsync<ResultParametersData>(sql, new { resultId });
+        }
+
+        public async ValueTask<ResultContentData> SelectResultContentDataByIdAsync(int resultId)
+        {
+            const string sql = "SELECT ResultData, ResultType FROM dbo.Results WHERE Id = @resultId;";
+
+            return await connection.QuerySingleOrDefaultAsync<ResultContentData>(sql, new { resultId });
+        }
+
         public async ValueTask<AddResultResult> AddResultAsync(AddResultParams @params)
         {
             const string sql = "dbo.AddResult";

@@ -13,8 +13,7 @@ BEGIN
 	
 	DECLARE @Parameters TABLE (
 		[Name] NVARCHAR(255) NOT NULL, 
-		[Description] NVARCHAR(2000) NOT NULL, 
-		InputType VARCHAR(255) NOT NULL,
+		[Description] NVARCHAR(2000) NOT NULL,
 		DataType VARCHAR(255) NOT NULL,
 		DefaultValue NVARCHAR(MAX) NULL,
 		IsArray BIT NOT NULL,
@@ -25,7 +24,6 @@ BEGIN
 	SELECT 
 		[Name],
 		[Description],
-		InputType,
 		DataType,
 		DefaultValue,
 		IsArray,
@@ -35,7 +33,6 @@ BEGIN
 	WITH (   
 		[Name] NVARCHAR(255) '$.Name',
 		[Description] NVARCHAR(2000) '$.Description',
-		InputType VARCHAR(255) '$.InputType',
 		DataType VARCHAR(255) '$.DataType',
 		DefaultValue NVARCHAR(MAX) '$.DefaultValue',
 		IsArray BIT '$.IsArray',
@@ -60,12 +57,11 @@ BEGIN
 
 	SET @VersionId = SCOPE_IDENTITY();
 
-	INSERT INTO dbo.VersionParameters (VersionId, [Name], [Description], InputType, DataType, DefaultValue, IsArray, IsRequired, IsSecret)
+	INSERT INTO dbo.VersionParameters (VersionId, [Name], [Description], DataType, DefaultValue, IsArray, IsRequired, IsSecret)
 	SELECT
 		@VersionId,
 		[Name],
 		[Description],
-		InputType,
 		DataType,
 		DefaultValue,
 		IsArray,

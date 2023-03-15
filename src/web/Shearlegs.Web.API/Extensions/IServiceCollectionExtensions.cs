@@ -13,6 +13,7 @@ using Shearlegs.Web.API.Services.Foundations.ShearlegsFrameworks;
 using Shearlegs.Web.API.Services.Foundations.Users;
 using Shearlegs.Web.API.Services.Foundations.Versions;
 using Shearlegs.Web.API.Services.Orchestrations.Versions;
+using Shearlegs.Web.API.Services.Processings.Results;
 using Shearlegs.Web.API.Services.Processings.Users;
 using Shearlegs.Web.API.Services.Processings.Versions;
 using Shearlegs.Web.API.Services.Users;
@@ -56,6 +57,7 @@ namespace Shearlegs.Web.API.Extensions
         {
             services.AddTransient<IUserProcessingService, UserProcessingService>();
             services.AddTransient<IVersionProcessingService, VersionProcessingService>();
+            services.AddTransient<IResultProcessingService, ResultProcessingService>();
 
             return services;
         }

@@ -18,6 +18,30 @@ namespace Shearlegs.Web.API.Services.Foundations.Results
             this.storageBroker = storageBroker;
         }
 
+        public async ValueTask<ResultParametersData> RetrieveResultParametersDataByIdAsync(int resultId)
+        {
+            ResultParametersData parametersData  = await storageBroker.SelectResultParametersDataByIdAsync(resultId);
+
+            if (parametersData == null)
+            {
+                throw new NotFoundResultException();
+            }
+
+            return parametersData;
+        }
+
+        public async ValueTask<ResultContentData> RetrieveResultContentDataByIdAsync(int resultId)
+        {
+            ResultContentData contentData = await storageBroker.SelectResultContentDataByIdAsync(resultId);
+
+            if (contentData == null)
+            {
+                throw new NotFoundResultException();
+            }
+
+            return contentData;
+        }
+
         public async ValueTask<Result> RetrieveResultByIdAsync(int resultId)
         {
             GetResultsParams @params = new()
