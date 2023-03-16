@@ -125,13 +125,7 @@ namespace Shearlegs.Web.API.Services.Orchestrations.Versions
             IEnumerable<PluginSecret> pluginSecrets = await pluginSecretService.RetrievePluginSecretsByPluginIdAsync(result.Plugin.Id);
 
             ResultParameters resultParameters = await resultService.RetrieveResultParametersByIdAsync(resultId);
-
-            JObject jObject = JObject.Parse(resultParameters.ParametersJson);
-
-            foreach (PluginSecret pluginSecret in pluginSecrets)
-            {
-                jObject.Add(pluginSecret.Name, JToken.FromObject(pluginSecret.Value));
-            }
+            string parametersWithSecrets = AppendPluginSecretsToParameters(resultParameters.ParametersJson, pluginSecrets);
 
             UpdateResultStatusParams updateResultStatusParams = new()
             {
@@ -144,7 +138,7 @@ namespace Shearlegs.Web.API.Services.Orchestrations.Versions
             ExecuteShearlegsPluginParams executeShearlegsPluginParams = new()
             {
                 PluginData = versionContent.Content,
-                ParametersJson = jObject.ToString()
+                ParametersJson = parametersWithSecrets
             };
 
             ShearlegsPluginResult shearlegsResult = await shearlegsFrameworkService.ExecuteShearlegsPluginAsync(executeShearlegsPluginParams);
@@ -162,7 +156,6 @@ namespace Shearlegs.Web.API.Services.Orchestrations.Versions
             };
 
             result = await resultService.UpdateResultAsync(updateResultParams);
-
         }
     }
 }

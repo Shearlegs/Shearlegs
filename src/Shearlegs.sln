@@ -53,6 +53,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shearlegs.Web.Shared", "web
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shearlegs.Web.Security", "web\Shearlegs.Web.Security\Shearlegs.Web.Security.csproj", "{A4F52003-8D8B-4606-BAF4-840BD7D9C720}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shearlegs.Web.APIClient", "web\Shearlegs.Web.APIClient\Shearlegs.Web.APIClient.csproj", "{88D46605-A066-4D2B-B492-EA0F4E9EAC44}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -127,6 +129,10 @@ Global
 		{A4F52003-8D8B-4606-BAF4-840BD7D9C720}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A4F52003-8D8B-4606-BAF4-840BD7D9C720}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A4F52003-8D8B-4606-BAF4-840BD7D9C720}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88D46605-A066-4D2B-B492-EA0F4E9EAC44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88D46605-A066-4D2B-B492-EA0F4E9EAC44}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88D46605-A066-4D2B-B492-EA0F4E9EAC44}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88D46605-A066-4D2B-B492-EA0F4E9EAC44}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -148,6 +154,7 @@ Global
 		{2BD25756-CB67-4A0E-AE2D-4D420DB26CBC} = {F102BF80-5ABD-4D52-BB37-88682A2EEC0D}
 		{18571D65-65F5-4ED0-B81C-35CF7E436753} = {F102BF80-5ABD-4D52-BB37-88682A2EEC0D}
 		{A4F52003-8D8B-4606-BAF4-840BD7D9C720} = {F102BF80-5ABD-4D52-BB37-88682A2EEC0D}
+		{88D46605-A066-4D2B-B492-EA0F4E9EAC44} = {F102BF80-5ABD-4D52-BB37-88682A2EEC0D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5890E640-FD43-4010-A0A7-89172C487104}
