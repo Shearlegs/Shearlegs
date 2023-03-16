@@ -12,5 +12,13 @@ namespace Shearlegs.Web.API.Services.Processings.Results
                 ParametersJson = Encoding.UTF8.GetString(resultParametersData.ParametersData)
             };
         }
+
+        private ResultContent MapResultContentDataToResultContent(ResultContentData resultContentData) 
+        {
+            return new ResultContent()
+            {
+                ContentJson = Encoding.UTF8.GetString(resultContentData.ResultData)
+            };
+        }
     }
 }

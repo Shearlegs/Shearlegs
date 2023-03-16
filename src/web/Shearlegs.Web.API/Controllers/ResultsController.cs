@@ -59,5 +59,20 @@ namespace Shearlegs.Web.API.Controllers
                 return NotFound(exception);
             }
         }
+
+        [HttpGet("{resultId}/content")]
+        public async ValueTask<IActionResult> GetResultContentById(int resultId)
+        {
+            try
+            {
+                ResultContent resultContent = await resultProcessingService.RetrieveResultContentByIdAsync(resultId);
+
+                return Content(resultContent.ContentJson, "application/json");
+            }
+            catch (NotFoundResultException exception)
+            {
+                return NotFound(exception);
+            }
+        }
     }
 }

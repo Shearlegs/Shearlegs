@@ -13,7 +13,9 @@ using Shearlegs.Web.API.Models.Versions.Params;
 using Shearlegs.Web.API.Services.Foundations.Plugins;
 using Shearlegs.Web.API.Services.Foundations.PluginSecrets;
 using Shearlegs.Web.API.Services.Foundations.Results;
+using Shearlegs.Web.API.Services.Foundations.Schedulings;
 using Shearlegs.Web.API.Services.Foundations.ShearlegsFrameworks;
+using Shearlegs.Web.API.Services.Processings.Results;
 using Shearlegs.Web.API.Services.Processings.Versions;
 using Shearlegs.Web.Shared.Enums;
 using System.Collections.Generic;
@@ -23,26 +25,29 @@ using System.Threading.Tasks;
 
 namespace Shearlegs.Web.API.Services.Orchestrations.Versions
 {
-    public class VersionOrchestrationService : IVersionOrchestrationService
+    public partial class VersionOrchestrationService : IVersionOrchestrationService
     {
         private readonly IVersionProcessingService versionService;
         private readonly IPluginService pluginService;
         private readonly IShearlegsFrameworkService shearlegsFrameworkService;
         private readonly IPluginSecretService pluginSecretService;
-        private readonly IResultService resultService;
+        private readonly IResultProcessingService resultService;
+        private readonly ISchedulingService schedulingService;
 
         public VersionOrchestrationService(
             IVersionProcessingService versionService,
             IPluginService pluginService,
             IShearlegsFrameworkService shearlegsFrameworkService,
             IPluginSecretService pluginSecretService,
-            IResultService resultService)
+            IResultProcessingService resultService,
+            ISchedulingService schedulingService)
         {
             this.versionService = versionService;
             this.pluginService = pluginService;
             this.shearlegsFrameworkService = shearlegsFrameworkService;
             this.pluginSecretService = pluginSecretService;
             this.resultService = resultService;
+            this.schedulingService = schedulingService;
         }
 
         public async ValueTask<Version> UploadVersionAsync(IFormFile formFile)
@@ -91,13 +96,12 @@ namespace Shearlegs.Web.API.Services.Orchestrations.Versions
             return version;            
         }
 
-        public async ValueTask ExecuteVersionAsync(ExecuteVersionParams @params)
+        public async ValueTask QueueExecuteVersionAsync(ExecuteVersionParams @params)
         {
+            ValidateExecuteVersionParams(@params);
+
             Version version = await versionService.RetrieveVersionByIdAsync(@params.VersionId);
             Plugin plugin = await pluginService.RetrievePluginByVersionIdAsync(@params.VersionId);
-
-            VersionContent versionContent = await versionService.RetrieveVersionContentByIdAsync(version.Id);
-            IEnumerable<PluginSecret> pluginSecrets = await pluginSecretService.RetrievePluginSecretsByPluginIdAsync(plugin.Id);
 
             byte[] parametersData = Encoding.UTF8.GetBytes(@params.ParametersJson);
 
@@ -110,8 +114,19 @@ namespace Shearlegs.Web.API.Services.Orchestrations.Versions
             };
 
             Result result = await resultService.AddResultAsync(addResultParams);
+            string jobId = await schedulingService.EnqueueAsync(() => ExecuteResultAsync(result.Id));            
+        }
 
-            JObject jObject = JObject.Parse(@params.ParametersJson);
+        public async Task ExecuteResultAsync(int resultId)
+        {
+            Result result = await resultService.RetrieveResultByIdAsync(resultId);
+
+            VersionContent versionContent = await versionService.RetrieveVersionContentByIdAsync(result.Version.Id);
+            IEnumerable<PluginSecret> pluginSecrets = await pluginSecretService.RetrievePluginSecretsByPluginIdAsync(result.Plugin.Id);
+
+            ResultParameters resultParameters = await resultService.RetrieveResultParametersByIdAsync(resultId);
+
+            JObject jObject = JObject.Parse(resultParameters.ParametersJson);
 
             foreach (PluginSecret pluginSecret in pluginSecrets)
             {
@@ -134,7 +149,7 @@ namespace Shearlegs.Web.API.Services.Orchestrations.Versions
 
             ShearlegsPluginResult shearlegsResult = await shearlegsFrameworkService.ExecuteShearlegsPluginAsync(executeShearlegsPluginParams);
 
-            string shearlegsResultJson = JsonConvert.SerializeObject(result);
+            string shearlegsResultJson = JsonConvert.SerializeObject(shearlegsResult);
             byte[] shearlegsResultData = Encoding.UTF8.GetBytes(shearlegsResultJson);
             ResultStatus resultStatus = shearlegsResult.ResultType == "Error" ? ResultStatus.Failed : ResultStatus.Completed;
 
@@ -147,6 +162,7 @@ namespace Shearlegs.Web.API.Services.Orchestrations.Versions
             };
 
             result = await resultService.UpdateResultAsync(updateResultParams);
+
         }
     }
 }

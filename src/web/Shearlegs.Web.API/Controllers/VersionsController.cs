@@ -57,9 +57,15 @@ namespace Shearlegs.Web.API.Controllers
         [HttpPost("execute")]
         public async ValueTask<IActionResult> ExecuteAsync([FromBody] ExecuteVersionParams @params)
         {
-            await versionOrchestrationService.ExecuteVersionAsync(@params);
+            try
+            {
+                await versionOrchestrationService.QueueExecuteVersionAsync(@params);
 
-            return Ok();
+                return Ok();
+            } catch (ExecuteVersionParamsValidationException exception)
+            {
+                return BadRequest(exception);
+            }            
         }
 
         [HttpPost("upload")]

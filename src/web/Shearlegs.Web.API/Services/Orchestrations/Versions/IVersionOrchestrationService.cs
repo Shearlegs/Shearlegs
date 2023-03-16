@@ -7,7 +7,7 @@ namespace Shearlegs.Web.API.Services.Orchestrations.Versions
 {
     public interface IVersionOrchestrationService
     {
-        ValueTask ExecuteVersionAsync(ExecuteVersionParams @params);
+        ValueTask QueueExecuteVersionAsync(ExecuteVersionParams @params);
         ValueTask<Version> UploadVersionAsync(IFormFile formFile);
     }
 }
