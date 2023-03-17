@@ -1,0 +1,35 @@
+﻿@page "/account/login"
+@layout LoginLayout
+
+<MudPaper Class="mx-auto my-auto pa-3" MaxWidth="350px" Width="100%">
+    <div class="d-flex justify-content-center">
+        <MudImage Class="mx-auto" Src="/images/icon.png" ObjectFit="ObjectFit.Fill" ObjectPosition="ObjectPosition.Center" Width="125" Height="125" />
+    </div>
+    
+    @*<div class="mb-3">
+        <MudText Align="Align.Center" Typo="Typo.h5">
+            Shearlegs Software
+        </MudText>
+    </div>*@
+    
+    <div class="mb-3">
+        <MudForm>
+            <div class="mb-3">
+                <MudTextField T="string" Label="Username" />
+            </div>
+            <div class="mb-3">
+                <MudTextField T="string" Label="Password" InputType="InputType.Password" />
+            </div>            
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true">
+                <MudIcon Icon="@Icons.Material.Filled.Login" />
+                Login
+            </MudButton>
+        </MudForm>
+    </div>
+
+    <div>
+        <MudText Typo="Typo.caption" Align="Align.Center" Color="Color.Surface">
+            © 2020-@DateTime.Now.Year Shearlegs Software
+        </MudText>
+    </div>
+</MudPaper>

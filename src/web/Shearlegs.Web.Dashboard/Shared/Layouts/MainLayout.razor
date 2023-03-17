@@ -1,7 +1,7 @@
 ﻿@using Shearlegs.Web.Dashboard.Constants;
 @inherits LayoutComponentBase
 
-<MudThemeProvider @bind-IsDarkMode="@_isDarkMode" Theme="ShearlegsTheme.MudTheme" />
+<MudThemeProvider @bind-IsDarkMode="@isDarkTheme" Theme="ShearlegsTheme.MudTheme" />
 <MudDialogProvider />
 <MudSnackbarProvider />
 
@@ -9,17 +9,17 @@
     <MudAppBar Elevation="0">
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
         <MudSpacer />
-        <Condition Evaluation="_isDarkMode">
+        <Condition Evaluation="isDarkTheme">
             <Match>
-                <MudIconButton Icon="@Icons.Material.Outlined.WbSunny" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => EnableLightMode())" />
+                <MudIconButton Icon="@Icons.Material.Outlined.WbSunny" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => ToggleDarkTheme())" />
             </Match>
             <NotMatch>
-                <MudIconButton Icon="@Icons.Material.Outlined.Bedtime" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => EnableDarkMode())" />
+                <MudIconButton Icon="@Icons.Material.Outlined.Bedtime" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => ToggleDarkTheme())" />
             </NotMatch>
         </Condition>
         <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Href="https://github.com/Shearlegs/Shearlegs/" Target="_blank" />
     </MudAppBar>
-    <MudDrawer @bind-Open="_drawerOpen" Elevation="1">
+    <MudDrawer @bind-Open="isDrawerOpen" Elevation="1">
         <MudDrawerHeader Class="d-flex align-center">
             <div>
                 <MudImage Src="/images/icon.svg" Width="50" Height="50" />
@@ -28,6 +28,7 @@
                 <MudText Typo="Typo.h6">Shearlegs</MudText>
             </div>            
         </MudDrawerHeader>
+        <MudDivider />
         <NavMenu />
     </MudDrawer>
     <MudMainContent>
@@ -37,23 +38,3 @@
     </MudMainContent>
 </MudLayout>
 
-@code {
-    private bool _isDarkMode;
-
-    bool _drawerOpen = true;
-
-    void DrawerToggle()
-    {
-        _drawerOpen = !_drawerOpen;
-    }
-
-    void EnableDarkMode()
-    {
-        _isDarkMode = true;
-    }
-
-    void EnableLightMode()
-    {
-        _isDarkMode = false;
-    }
-}
