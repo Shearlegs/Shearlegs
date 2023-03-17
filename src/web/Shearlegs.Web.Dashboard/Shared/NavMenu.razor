@@ -1,5 +1,28 @@
 ﻿<MudNavMenu>
-    <MudNavLink Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Home</MudNavLink>
-    <MudNavLink Href="counter" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Add">Counter</MudNavLink>
-    <MudNavLink Href="fetchdata" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.List">Fetch data</MudNavLink>
+    <MudNavGroup Title="User" Expanded="true">
+        <MudNavLink Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">
+            Home
+        </MudNavLink>
+        <MudNavLink Href="/user/results" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Task">
+            Your results
+        </MudNavLink>
+        <MudNavLink Href="user/uploadversion" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.FileUpload">
+            Upload version
+        </MudNavLink>
+    </MudNavGroup>
+    <MudNavGroup Title="Management" Expanded="true">
+        <MudNavLink Href="/management/results" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Task">
+            Results
+        </MudNavLink>
+        <MudNavLink Href="/management/plugins" Match="NavLinkMatch.Prefix" Icon="@Icons.Custom.FileFormats.FileCode">
+            Plugins
+        </MudNavLink>
+        <MudNavLink Href="/management/users" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.PeopleAlt">
+            Users
+        </MudNavLink>
+        <MudNavLink Href="/management/settings" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Settings">
+            Settings
+        </MudNavLink>
+    </MudNavGroup>
+    
 </MudNavMenu>

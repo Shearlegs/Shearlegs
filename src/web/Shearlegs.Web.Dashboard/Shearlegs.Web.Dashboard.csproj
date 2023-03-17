@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="C:\Users\Michal\.nuget\packages\prettyblazor\1.2.0\contentFiles\any\net5.0\License.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MudBlazor" Version="6.0.13" />
     <PackageReference Include="PrettyBlazor" Version="1.2.0" />
   </ItemGroup>
