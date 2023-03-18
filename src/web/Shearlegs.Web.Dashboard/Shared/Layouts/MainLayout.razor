@@ -9,15 +9,19 @@
     <MudAppBar Elevation="0">
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
         <MudSpacer />
-        <Condition Evaluation="isDarkTheme">
+        <Condition Evaluation="userState.IsAuthenticated">
             <Match>
-                <MudIconButton Icon="@Icons.Material.Outlined.WbSunny" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => ToggleDarkTheme())" />
+                
+                <MudButton StartIcon="@Icons.Material.Outlined.Person" Color="Color.Inherit">
+                    @userState.User.Name
+                </MudButton>
             </Match>
             <NotMatch>
-                <MudIconButton Icon="@Icons.Material.Outlined.Bedtime" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => ToggleDarkTheme())" />
+                <MudButton Href="/account/login" StartIcon="@Icons.Material.Outlined.Login" Color="Color.Inherit">
+                    Login
+                </MudButton>
             </NotMatch>
-        </Condition>
-        <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Href="https://github.com/Shearlegs/Shearlegs/" Target="_blank" />
+        </Condition>        
     </MudAppBar>
     <MudDrawer @bind-Open="isDrawerOpen" Elevation="1">
         <MudDrawerHeader Class="d-flex align-center">

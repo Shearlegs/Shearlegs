@@ -13,18 +13,40 @@
     </div>*@
     
     <div class="mb-3">
-        <MudForm>
+        <Condition Evaluation="LoginUserRequestException != null">
+            <Match>
+                <MudAlert Severity="Severity.Error" Variant="Variant.Outlined" Dense="true">
+                    Invalid username or password
+                </MudAlert>
+            </Match>
+        </Condition>
+        
+
+        <EditForm Model="LoginUserRequest" OnValidSubmit="HandleLoginAsync">
             <div class="mb-3">
-                <MudTextField T="string" Label="Username" />
+                <MudTextField T="string" Label="Username" @bind-Value="LoginUserRequest.Username" />
             </div>
             <div class="mb-3">
-                <MudTextField T="string" Label="Password" InputType="InputType.Password" />
+                <MudTextField T="string" Label="Password" InputType="InputType.Password" @bind-Value="LoginUserRequest.Password" />
             </div>            
-            <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true">
-                <MudIcon Icon="@Icons.Material.Filled.Login" />
-                Login
+            <MudButton Disabled="LoginUserRequestProcessing" 
+                Variant="Variant.Filled" 
+                Color="Color.Primary" 
+                FullWidth="true" 
+                ButtonType="ButtonType.Submit">
+
+                <Condition Evaluation="LoginUserRequestProcessing">
+                    <Match>
+                        <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+                        <MudText Class="ms-2">Processing</MudText>
+                    </Match>
+                    <NotMatch>
+                        <MudIcon Icon="@Icons.Material.Filled.Login" Class="ms-n1" Size="Size.Small" />
+                        <MudText Class="ms-2">Login</MudText>
+                    </NotMatch>
+                </Condition>
             </MudButton>
-        </MudForm>
+        </EditForm>
     </div>
 
     <div>

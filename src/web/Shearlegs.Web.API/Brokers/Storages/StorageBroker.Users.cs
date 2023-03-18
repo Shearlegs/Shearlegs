@@ -13,8 +13,6 @@ namespace Shearlegs.Web.API.Brokers.Storages
         {
             const string sql = "SELECT * FROM dbo.Users";
 
-            var reader = await connection.QueryMultipleAsync(sql);
-
             return await connection.QueryAsync<User>(sql);
         }
 

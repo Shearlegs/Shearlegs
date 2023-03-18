@@ -1,4 +1,5 @@
-﻿using Shearlegs.Web.APIClient.Services.Users;
+﻿using Shearlegs.Web.APIClient.Models.Exceptions;
+using Shearlegs.Web.APIClient.Services.Users;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
@@ -20,15 +21,27 @@ namespace Shearlegs.Web.APIClient
 
         internal async ValueTask<T> GetFromJsonAsync<T>(string requestUri)
         {
-            return await httpClient.GetFromJsonAsync<T>(requestUri);
+            try
+            {
+                return await httpClient.GetFromJsonAsync<T>(requestUri);
+            } catch (HttpRequestException exception)
+            {
+                throw new ShearlegsWebAPIRequestException(exception.Message);
+            }            
         }
 
         internal async ValueTask<T> PostAsJsonAsync<T>(string requestUri, object value)
         {
-            HttpResponseMessage responseMessage = await httpClient.PostAsJsonAsync(requestUri, value);
-            responseMessage.EnsureSuccessStatusCode();
+            try
+            {
+                HttpResponseMessage responseMessage = await httpClient.PostAsJsonAsync(requestUri, value);
+                responseMessage.EnsureSuccessStatusCode();
 
-            return await responseMessage.Content.ReadFromJsonAsync<T>();
+                return await responseMessage.Content.ReadFromJsonAsync<T>();
+            } catch (HttpRequestException exception)
+            {
+                throw new ShearlegsWebAPIRequestException(exception.Message);
+            }
         }
     }
 }
