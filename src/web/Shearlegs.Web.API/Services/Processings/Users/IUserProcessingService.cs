@@ -8,5 +8,6 @@ namespace Shearlegs.Web.API.Services.Processings.Users
     {
         ValueTask<User> CreateUserAsync(CreateUserParams @params);
         ValueTask<User> RetrieveUserByNameAndPasswordAsync(string username, string passwordText);
+        ValueTask<User> RetrieveUserByNameAsync(string username);
     }
 }

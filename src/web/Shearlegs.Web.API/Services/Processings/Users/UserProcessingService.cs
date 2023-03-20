@@ -22,6 +22,11 @@ namespace Shearlegs.Web.API.Services.Processings.Users
             this.validationBroker = validationBroker;
         }
 
+        public async ValueTask<User> RetrieveUserByNameAsync(string username)
+        {
+            return await userService.RetrieveUserByNameAsync(username);
+        }
+
         public async ValueTask<User> CreateUserAsync(CreateUserParams @params)
         {
             ValidateCreateUserParams(@params);
