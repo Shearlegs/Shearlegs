@@ -23,21 +23,15 @@ builder.Services.AddScoped<UserState>();
 builder.Services.AddScoped<ShearlegsWebAPIClient>(services => 
 {
     IHttpContextAccessor httpContextAcccesor = services.GetRequiredService<IHttpContextAccessor>();
-
-    HttpClientHandler httpClientHandler = new HttpClientHandler()
-    {
-        CookieContainer = new CookieContainer()
-    };
-
     IRequestCookieCollection requestCookies = httpContextAcccesor.HttpContext.Request.Cookies;
-    string username = requestCookies["Username"];
+    string jwtToken = requestCookies["JWT"];
 
-    HttpClient httpClient = new(httpClientHandler)
+    HttpClient httpClient = new()
     {
         BaseAddress = new Uri("https://localhost:44300")
     };
 
-    return new ShearlegsWebAPIClient(httpClient, username);
+    return new ShearlegsWebAPIClient(httpClient, jwtToken);
 });
 
 var app = builder.Build();

@@ -10,8 +10,7 @@
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
         <MudSpacer />
         <Condition Evaluation="userState.IsAuthenticated">
-            <Match>
-                
+            <Match>                
                 <MudButton StartIcon="@Icons.Material.Outlined.Person" Color="Color.Inherit">
                     @userState.User.Name
                 </MudButton>

@@ -1,8 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
+﻿using Shearlegs.Web.APIClient.Models.Exceptions;
 using Shearlegs.Web.APIClient.Models.Users;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace Shearlegs.Web.Dashboard
 {
@@ -12,12 +9,14 @@ namespace Shearlegs.Web.Dashboard
 
         protected override async Task OnInitializedAsync()
         {
-            User user = await client.Account.GetUserAsync();
+            try
+            {
+                User user = await client.Account.GetUserAsync();
+            } catch (ShearlegsWebAPIRequestException exception)
+            {
+                Console.WriteLine(exception.Message);
+            }
 
-            string jsonString = JsonSerializer.Serialize(user);
-
-            await Console.Out.WriteLineAsync(jsonString);
-            await Task.Delay(1000);
             IsInitialized = true;
         }
     }

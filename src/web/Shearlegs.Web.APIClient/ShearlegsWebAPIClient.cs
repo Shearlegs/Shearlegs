@@ -10,14 +10,15 @@ namespace Shearlegs.Web.APIClient
     public class ShearlegsWebAPIClient
     {
         private readonly HttpClient httpClient;
-        private readonly string username;
 
-        public ShearlegsWebAPIClient(HttpClient httpClient, string username)
+        public ShearlegsWebAPIClient(HttpClient httpClient, string jwtToken = null)
         {
             this.httpClient = httpClient;
-            this.username = username;
 
-            httpClient.DefaultRequestHeaders.Add("Username", username);
+            if (!string.IsNullOrEmpty(jwtToken))
+            {
+                httpClient.DefaultRequestHeaders.Authorization = new("Bearer", jwtToken);
+            }            
 
             Users = new(this);
             Account = new(this);
