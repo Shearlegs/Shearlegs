@@ -1,4 +1,4 @@
-﻿namespace Shearlegs.Web.API.Models.UserAuthentications
+﻿namespace Shearlegs.Web.APIClient.Models.UserAuthentications
 {
     public class UserAuthenticationToken
     {

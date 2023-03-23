@@ -1,7 +1,6 @@
-﻿using MudBlazor;
-using Shearlegs.Web.APIClient.Models.Exceptions;
-using Shearlegs.Web.APIClient.Models.Users;
-using Shearlegs.Web.APIClient.Models.Users.Requests;
+﻿using Shearlegs.Web.APIClient.Models.Exceptions;
+using Shearlegs.Web.APIClient.Models.UserAuthentications;
+using Shearlegs.Web.APIClient.Models.UserAuthentications.Requests;
 
 namespace Shearlegs.Web.Dashboard.Pages.Accounts
 {
@@ -18,8 +17,12 @@ namespace Shearlegs.Web.Dashboard.Pages.Accounts
 
             try
             {
-                User user = await client.Users.LoginUserAsync(LoginUserRequest);
-                userState.SetUser(user);
+                UserAuthenticationToken authenticationToken = await client.UserAuthentication.LoginUserAsync(LoginUserRequest);
+
+                client.UpdateAuthorization(authenticationToken.Token);
+                userState.SetAuthenticatedUser(authenticationToken.AuthenticatedUser);
+                DateTimeOffset expireDate = authenticationToken.AuthenticatedUser.UserSession.ExpireDate;
+                await cookieBroker.SetValue("JWT", authenticationToken.Token, expireDate);
 
                 navigationManager.NavigateTo("/");
             } catch (ShearlegsWebAPIRequestException exception)

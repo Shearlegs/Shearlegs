@@ -63,6 +63,11 @@ namespace Shearlegs.Web.API.Services.Orchestrations.UserAuthentications
 
             return new UserAuthenticationToken()
             {
+                AuthenticatedUser = new()
+                {
+                    User = user,
+                    UserSession = userSession
+                },
                 Token = token
             };
         }

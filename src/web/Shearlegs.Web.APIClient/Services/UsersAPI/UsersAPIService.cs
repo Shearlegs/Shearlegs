@@ -1,4 +1,5 @@
-﻿using Shearlegs.Web.APIClient.Models.Users;
+﻿using Shearlegs.Web.APIClient.Models.UserAuthentications.Requests;
+using Shearlegs.Web.APIClient.Models.Users;
 using Shearlegs.Web.APIClient.Models.Users.Requests;
 using System;
 using System.Collections.Generic;
@@ -36,13 +37,6 @@ namespace Shearlegs.Web.APIClient.Services.Users
             string requestUri = $"/users/{userId}";
 
             return await client.GetFromJsonAsync<User>(requestUri);
-        }
-
-        public async ValueTask<User> LoginUserAsync(LoginUserRequest request)
-        {
-            string requestUri = "/users/login/password";
-
-            return await client.PostAsJsonAsync<User>(requestUri, request);
         }
 
         public async ValueTask<User> CreateUserAsync(CreateUserRequest request)

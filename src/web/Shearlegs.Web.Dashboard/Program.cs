@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Hosting.StaticWebAssets;
 using MudBlazor.Services;
 using Shearlegs.Web.APIClient;
+using Shearlegs.Web.Dashboard.Brokers.Cookies;
 using Shearlegs.Web.Dashboard.Services;
 using System.Net;
 
@@ -15,6 +16,7 @@ StaticWebAssetsLoader.UseStaticWebAssets(builder.Environment, builder.Configurat
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddMudServices();
+builder.Services.AddScoped<ICookieBroker, CookieBroker>();
 
 builder.Services.AddScoped<ProtectedLocalStorage>();
 builder.Services.AddHttpContextAccessor();

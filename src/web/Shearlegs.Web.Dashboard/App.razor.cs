@@ -1,4 +1,5 @@
 ﻿using Shearlegs.Web.APIClient.Models.Exceptions;
+using Shearlegs.Web.APIClient.Models.UserAuthentications;
 using Shearlegs.Web.APIClient.Models.Users;
 
 namespace Shearlegs.Web.Dashboard
@@ -11,9 +12,11 @@ namespace Shearlegs.Web.Dashboard
         {
             try
             {
-                User user = await client.Account.GetUserAsync();
+                AuthenticatedUser authenticatedUser = await client.UserAuthentication.GetAuthenticatedUserAsync();
+                userState.SetAuthenticatedUser(authenticatedUser);
             } catch (ShearlegsWebAPIRequestException exception)
             {
+                Console.WriteLine("user is not authenticated");
                 Console.WriteLine(exception.Message);
             }
 

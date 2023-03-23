@@ -1,5 +1,5 @@
 ﻿using Shearlegs.Web.APIClient.Models.Exceptions;
-using Shearlegs.Web.APIClient.Services.AccountAPI;
+using Shearlegs.Web.APIClient.Services.UserAuthenticationAPI;
 using Shearlegs.Web.APIClient.Services.Users;
 using System.Net.Http;
 using System.Net.Http.Json;
@@ -17,15 +17,20 @@ namespace Shearlegs.Web.APIClient
 
             if (!string.IsNullOrEmpty(jwtToken))
             {
-                httpClient.DefaultRequestHeaders.Authorization = new("Bearer", jwtToken);
+                UpdateAuthorization(jwtToken);
             }            
 
             Users = new(this);
-            Account = new(this);
+            UserAuthentication = new(this);
+        }
+
+        public void UpdateAuthorization(string jwtToken)
+        {
+            httpClient.DefaultRequestHeaders.Authorization = new("Bearer", jwtToken);
         }
 
         public UsersAPIService Users { get; }
-        public AccountAPIService Account { get; }
+        public UserAuthenticationAPIService UserAuthentication { get; }
 
         internal async ValueTask<T> GetFromJsonAsync<T>(string requestUri)
         {
@@ -47,6 +52,19 @@ namespace Shearlegs.Web.APIClient
 
                 return await responseMessage.Content.ReadFromJsonAsync<T>();
             } catch (HttpRequestException exception)
+            {
+                throw new ShearlegsWebAPIRequestException(exception.Message);
+            }
+        }
+
+        internal async ValueTask PostAsync(string requestUri, object value)
+        {
+            try
+            {
+                HttpResponseMessage responseMessage = await httpClient.PostAsJsonAsync(requestUri, value);
+                responseMessage.EnsureSuccessStatusCode();
+            }
+            catch (HttpRequestException exception)
             {
                 throw new ShearlegsWebAPIRequestException(exception.Message);
             }
