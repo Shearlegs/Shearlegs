@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 namespace Shearlegs.Web.API.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("plugins")]
     public class PluginsController : RESTFulController
     {
         private readonly IPluginService pluginService;

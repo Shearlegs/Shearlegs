@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace Shearlegs.Web.API.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("users")]
     public class UsersController : RESTFulController
     {
         private readonly IUserService userService;
@@ -58,23 +58,6 @@ namespace Shearlegs.Web.API.Controllers
             IEnumerable<User> user = await userService.RetrieveAllUsersAsync();
 
             return Ok(user);
-        }
-
-        [HttpPost("login/password")]
-        public async ValueTask<IActionResult> GetUserByNameAndPassword([FromBody] GetUserByNameAndPasswordParams @params)
-        {
-            try
-            {
-                User user = await userProcessingService.RetrieveUserByNameAndPasswordAsync(@params.Username, @params.Password);
-
-                return Ok(user);
-            } catch (NotFoundUserException exception)
-            {
-                return NotFound(exception);
-            } catch (InvalidPasswordUserException exception)
-            {
-                return BadRequest(exception);
-            }
         }
 
         [HttpPost("create")]

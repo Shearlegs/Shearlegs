@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
+using Shearlegs.Web.API.Utilities.StoredProcedures;
 
 namespace Shearlegs.Web.API.Brokers.Storages
 {
@@ -20,15 +21,20 @@ namespace Shearlegs.Web.API.Brokers.Storages
             CreateUserSessionResult result = new();
 
             DynamicParameters param = StoredProcedureParameters(@params);
-            param.Add("@UserId", dbType: DbType.Int32, direction: ParameterDirection.Output);
             param.Add("@SessionId", dbType: DbType.Guid, direction: ParameterDirection.Output);
 
             result.StoredProcedureResult = await ExecuteStoredProcedureAsync(sql, param);
 
-            result.UserId = param.Get<int?>("@UserId");
             result.SessionId = param.Get<Guid?>("@SessionId");
 
             return result;
+        }
+
+        public async ValueTask<StoredProcedureResult> RevokeUserSessionAsync(RevokeUserSessionParams @params)
+        {
+            const string sql = "dbo.RevokeUserSession";
+
+            return await ExecuteStoredProcedureAsync(sql, @params);
         }
 
         public async ValueTask<UserSession> GetUserSessionAsync(GetUserSessionsParams @params)

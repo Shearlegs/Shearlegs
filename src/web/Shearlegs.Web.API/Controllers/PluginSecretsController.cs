@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Shearlegs.Web.API.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("plugins/secrets")]
     public class PluginSecretsController : RESTFulController
     {
         private readonly IPluginSecretService pluginSecretService;

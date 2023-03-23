@@ -1,24 +1,26 @@
 ﻿CREATE PROCEDURE dbo.CreateUserSession
-	@Username NVARCHAR(255),
-	@PasswordHash NVARCHAR(128),
+	@UserId INT,
 	@HostName NVARCHAR(255),
-	@UserId INT OUTPUT,
+	@IPAddress NVARCHAR(255),
+	@UserAgent NVARCHAR(255),	
 	@SessionId UNIQUEIDENTIFIER OUTPUT
 AS
 BEGIN
 	SET NOCOUNT ON;
 	SET XACT_ABORT ON;
 
-	SELECT @UserId = Id FROM dbo.Users WHERE [Name] = @Username AND PasswordHash = @PasswordHash;
+	DECLARE @temp TABLE (Id UNIQUEIDENTIFIER);
 
-	IF @UserId IS NULL
+	IF NOT EXISTS(SELECT * FROM dbo.Users WHERE Id = @UserId)
 	BEGIN
 		RETURN 1;
 	END
 
-	INSERT INTO dbo.UserSessions (UserId, AuthenticationMethod, AuthenticationScheme, HostName, [ExpireDate])
-	OUTPUT INSERTED.Id INTO @SessionId
-	VALUES (@UserId, 'Username and Password', 'Bearer', @HostName, DATEADD(MINUTE, 30, SYSDATETIME()));
+	INSERT INTO dbo.UserSessions (UserId, AuthenticationMethod, AuthenticationScheme, HostName, IPAddress, UserAgent, [ExpireDate])
+	OUTPUT INSERTED.Id INTO @temp
+	VALUES (@UserId, 'Username and Password', 'Bearer', @HostName, @IPAddress, @UserAgent, DATEADD(MINUTE, 30, SYSDATETIME()));
+
+	SELECT @SessionId = Id FROM @temp;
 
 	RETURN 0;
 END;

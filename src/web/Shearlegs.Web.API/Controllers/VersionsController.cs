@@ -8,14 +8,13 @@ using Shearlegs.Web.API.Models.Versions.Params;
 using Shearlegs.Web.API.Services.Foundations.Versions;
 using Shearlegs.Web.API.Services.Orchestrations.Versions;
 using Shearlegs.Web.API.Services.Processings.Versions;
-using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Shearlegs.Web.API.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("versions")]
     public class VersionsController : RESTFulController
     {
         private readonly IVersionService versionService;

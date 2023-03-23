@@ -9,5 +9,6 @@ namespace Shearlegs.Web.API.Services.Foundations.UserSessions
     {
         ValueTask<UserSession> CreateUserSessionAsync(CreateUserSessionParams @params);
         ValueTask<UserSession> RetrieveUserSessionByIdAsync(Guid sessionId);
+        ValueTask<UserSession> RevokeUserSessionByIdAsync(Guid sessionId);
     }
 }

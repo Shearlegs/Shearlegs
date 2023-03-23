@@ -5,6 +5,8 @@
 	AuthenticationMethod VARCHAR(255) NOT NULL,
 	AuthenticationScheme VARCHAR(255) NOT NULL,
 	HostName NVARCHAR(255) NULL,
+	IPAddress NVARCHAR(255) NULL,
+	UserAgent NVARCHAR(255) NULL,
 	[ExpireDate] DATETIME2(0) NOT NULL,
 	RevokeDate DATETIME2(0) NULL,
 	CreateDate DATETIME2(0) NOT NULL CONSTRAINT DF_UserSessions_CreateDate DEFAULT SYSDATETIME(),

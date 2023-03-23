@@ -8,6 +8,7 @@
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
     <PackageReference Include="Dapper" Version="2.0.123" />
     <PackageReference Include="Hangfire" Version="1.7.33" />
+    <PackageReference Include="LitJWT" Version="2.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.3" />
     <PackageReference Include="RESTFulSense" Version="2.9.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
@@ -20,10 +21,6 @@
     <ProjectReference Include="..\..\framework\Shearlegs.Core\Shearlegs.Core.csproj" />
     <ProjectReference Include="..\..\framework\Shearlegs.Runtime\Shearlegs.Runtime.csproj" />
     <ProjectReference Include="..\Shearlegs.Web.Shared\Shearlegs.Web.Shared.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Services\Orchestrations\UserAccounts\" />
   </ItemGroup>
 
 </Project>

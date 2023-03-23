@@ -5,14 +5,12 @@ using Shearlegs.Web.API.Models.Results.Exceptions;
 using Shearlegs.Web.API.Services.Foundations.Results;
 using Shearlegs.Web.API.Services.Processings.Results;
 using System.Collections.Generic;
-using System.Net.Mime;
-using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Shearlegs.Web.API.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("results")]
     public class ResultsController : RESTFulController
     {
         private readonly IResultService resultService;

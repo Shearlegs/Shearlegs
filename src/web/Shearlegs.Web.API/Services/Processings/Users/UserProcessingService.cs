@@ -27,6 +27,11 @@ namespace Shearlegs.Web.API.Services.Processings.Users
             return await userService.RetrieveUserByNameAsync(username);
         }
 
+        public async ValueTask<User> RetrieveUserByIdAsync(int userId)
+        {
+            return await userService.RetrieveUserByIdAsync(userId);
+        }
+
         public async ValueTask<User> CreateUserAsync(CreateUserParams @params)
         {
             ValidateCreateUserParams(@params);

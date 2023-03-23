@@ -2,8 +2,9 @@
 {
     public class CreateUserSessionParams
     {
-        public string Username { get; set; }
-        public string PasswordHash { get; set; }
+        public int UserId { get; set; }
         public string HostName { get; set; }
+        public string IPAddress { get; set; }
+        public string UserAgent { get; set; }
     }
 }
