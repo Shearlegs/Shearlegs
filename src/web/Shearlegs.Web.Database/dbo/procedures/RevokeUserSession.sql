@@ -9,4 +9,6 @@ BEGIN
 	BEGIN
 		RETURN 1;
 	END
+
+	UPDATE dbo.UserSessions SET RevokeDate = SYSDATETIME() WHERE Id = @SessionId;
 END;
