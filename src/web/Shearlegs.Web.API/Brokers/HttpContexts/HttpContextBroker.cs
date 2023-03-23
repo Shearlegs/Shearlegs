@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace Shearlegs.Web.API.Brokers.HttpContexts
@@ -15,30 +16,38 @@ namespace Shearlegs.Web.API.Brokers.HttpContexts
             this.httpContextAccessor = httpContextAccessor;
         }
 
-        public async ValueTask<string> GetAuthorizationHeaderValueAsync()
+        public string GetRequestIPAddress()
+        {
+            string ipAddress = httpContext.Connection.RemoteIpAddress.ToString();
+
+            return ipAddress;
+        }
+
+        public string GetRequestHostName()
+        {
+            string hostName = Dns.GetHostEntry(httpContext.Connection.RemoteIpAddress).HostName;
+
+            return hostName;
+        }
+
+        public string GetRequestUserAgentHeaderValue()
+        {
+            string userAgent = httpContext.Request.Headers.UserAgent.ToString();
+
+            return userAgent;
+        }        
+
+        public string GetRequestAuthorizationHeaderValue()
         {
             IHeaderDictionary requestHeaders = httpContext.Request.Headers;
 
-            if (httpContext.Request.Headers.TryGetValue("Authorization", out StringValues values))
+            string value = null;
+            if (requestHeaders.TryGetValue("Authorization", out StringValues values))
             {
-                return token.ToString();
+                value = values.ToString();
             }
 
-            throw new MissingAuthorizationHeaderException();
-
-            // Bearer <JWT>
-            // Possible exceptions
-            // 1. Header Authorization not found
-            // 2. Authorization type not supported (only Bearer)
-            // 3. JWT token is invalid
-            // 4. JWT token expired
-
-            string jwtToken = requestHeaders
-
-            string jwtToken = httpContext.Reque.Substring("Bearer ".Length).Trim();
-            .Authorization
-
+            return value;
         }
-
     }
 }

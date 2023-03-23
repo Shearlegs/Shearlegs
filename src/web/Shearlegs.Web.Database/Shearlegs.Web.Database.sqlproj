@@ -79,6 +79,8 @@
     <Build Include="dbo\procedures\UpdateResult.sql" />
     <Build Include="dbo\procedures\UpdateResultStatus.sql" />
     <Build Include="dbo\tables\UserSessions.sql" />
+    <Build Include="dbo\procedures\CreateUserSession.sql" />
+    <Build Include="dbo\procedures\GetUserSessions.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shearlegs.Web.Database.publish.xml" />

@@ -15,6 +15,7 @@ using Shearlegs.Web.API.Services.Foundations.Results;
 using Shearlegs.Web.API.Services.Foundations.Schedulings;
 using Shearlegs.Web.API.Services.Foundations.ShearlegsFrameworks;
 using Shearlegs.Web.API.Services.Foundations.Users;
+using Shearlegs.Web.API.Services.Foundations.UserSessions;
 using Shearlegs.Web.API.Services.Foundations.Versions;
 using Shearlegs.Web.API.Services.Orchestrations.Versions;
 using Shearlegs.Web.API.Services.Processings.Results;
@@ -61,6 +62,7 @@ namespace Shearlegs.Web.API.Extensions
             services.AddTransient<IPluginSecretService, PluginSecretService>();
             services.AddTransient<IResultService, ResultService>();
             services.AddTransient<ISchedulingService, SchedulingService>();
+            services.AddTransient<IUserSessionService, UserSessionService>();
 
             return services;
         }
