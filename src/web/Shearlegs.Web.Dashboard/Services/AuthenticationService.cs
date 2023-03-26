@@ -40,13 +40,14 @@ namespace Shearlegs.Web.Dashboard.Services
 
         public async ValueTask LogoutAsync()
         {
-            DateTimeOffset expireDate = DateTimeOffset.UtcNow.AddHours(-9999);
-            await cookieBroker.SetValue("JWT", string.Empty, expireDate);
+            await client.UserAuthentication.LogoutUserAsync();
 
             client.UpdateAuthorization(null);
             userState.SetAuthenticatedUser(null);
 
-            await client.UserAuthentication.LogoutUserAsync();
+            DateTimeOffset expireDate = DateTimeOffset.UtcNow.AddHours(-9999);
+            await cookieBroker.SetValue("JWT", string.Empty, expireDate);
+
         }
     }
 }

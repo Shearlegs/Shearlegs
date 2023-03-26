@@ -1,4 +1,5 @@
 ﻿@using Shearlegs.Web.Dashboard.Constants;
+@using Shearlegs.Web.Dashboard.Shared.Components
 @inherits LayoutComponentBase
 
 <MudThemeProvider @bind-IsDarkMode="@isDarkTheme" Theme="ShearlegsTheme.MudTheme" />
@@ -18,7 +19,7 @@
                     TransformOrigin="Origin.TopCenter"
                     FullWidth="true"
                     >
-                    <MudMenuItem OnClick="(a) => HandleLogoutAsync()">
+                    <MudMenuItem OnClick="HandleLogout">
                         Log out 
                     </MudMenuItem>
                 </MudMenu>
@@ -41,6 +42,19 @@
         </MudDrawerHeader>
         <MudDivider />
         <NavMenu />
+        <Condition Evaluation="userState.IsAuthenticated">
+            <Match>
+                <div class="mt-auto">
+                    <MudDivider />
+                    <div class="pa-4">
+                        <MudText Typo="Typo.subtitle2">
+                            Session ends in: <Countdown TargetDate="userState.Session.ExpireDate.LocalDateTime" />
+                        </MudText>
+                    </div>                    
+                </div>
+            </Match>
+        </Condition>
+        
     </MudDrawer>
     <MudMainContent>
         <MudContainer MaxWidth="MaxWidth.Large" Class="my-4 pt-4">

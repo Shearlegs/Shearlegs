@@ -1,10 +1,18 @@
+using Microsoft.AspNetCore.Components.Web;
+using MudBlazor;
+
 namespace Shearlegs.Web.Dashboard.Shared.Layouts
 {
     public partial class MainLayout
     {
         private bool isDarkTheme = false;
         private bool isDrawerOpen = true;
-        
+
+        protected override void OnInitialized()
+        {
+            snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomRight;   
+        }
+
         Task DrawerToggle()
         {
             isDrawerOpen = !isDrawerOpen;
@@ -19,10 +27,12 @@ namespace Shearlegs.Web.Dashboard.Shared.Layouts
             return Task.CompletedTask;
         }
 
-        async Task HandleLogoutAsync()
+        async Task HandleLogout(MouseEventArgs args)
         {
+            snackbar.Add("handle logout");
             await authenticationService.LogoutAsync();
-            StateHasChanged();
+            
+            navigationManager.NavigateTo("/account/login");
         }
     }
 }
