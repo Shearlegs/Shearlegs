@@ -14,10 +14,8 @@ namespace Shearlegs.Web.Dashboard
             {
                 AuthenticatedUser authenticatedUser = await client.UserAuthentication.GetAuthenticatedUserAsync();
                 userState.SetAuthenticatedUser(authenticatedUser);
-            } catch (ShearlegsWebAPIRequestException exception)
+            } catch (ShearlegsWebAPIRequestException)
             {
-                Console.WriteLine("user is not authenticated");
-                Console.WriteLine(exception.Message);
             }
 
             IsInitialized = true;

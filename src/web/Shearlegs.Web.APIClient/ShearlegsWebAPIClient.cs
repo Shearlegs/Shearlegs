@@ -15,10 +15,7 @@ namespace Shearlegs.Web.APIClient
         {
             this.httpClient = httpClient;
 
-            if (!string.IsNullOrEmpty(jwtToken))
-            {
-                UpdateAuthorization(jwtToken);
-            }            
+            UpdateAuthorization(jwtToken);
 
             Users = new(this);
             UserAuthentication = new(this);
@@ -26,7 +23,13 @@ namespace Shearlegs.Web.APIClient
 
         public void UpdateAuthorization(string jwtToken)
         {
-            httpClient.DefaultRequestHeaders.Authorization = new("Bearer", jwtToken);
+            if (!string.IsNullOrEmpty(jwtToken))
+            {
+                httpClient.DefaultRequestHeaders.Authorization = new("Bearer", jwtToken);
+            } else
+            {
+                httpClient.DefaultRequestHeaders.Remove("Authorization");
+            }
         }
 
         public UsersAPIService Users { get; }

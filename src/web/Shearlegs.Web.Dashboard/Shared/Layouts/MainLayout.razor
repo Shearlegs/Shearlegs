@@ -10,10 +10,18 @@
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
         <MudSpacer />
         <Condition Evaluation="userState.IsAuthenticated">
-            <Match>                
-                <MudButton StartIcon="@Icons.Material.Outlined.Person" Color="Color.Inherit">
-                    @userState.User.Name
-                </MudButton>
+            <Match>
+                <MudMenu StartIcon="@Icons.Material.Outlined.Person" 
+                    Label="@userState.User.Name" 
+                    Color="Color.Inherit" 
+                    AnchorOrigin="Origin.BottomCenter"
+                    TransformOrigin="Origin.TopCenter"
+                    FullWidth="true"
+                    >
+                    <MudMenuItem OnClick="(a) => HandleLogoutAsync()">
+                        Log out 
+                    </MudMenuItem>
+                </MudMenu>
             </Match>
             <NotMatch>
                 <MudButton Href="/account/login" StartIcon="@Icons.Material.Outlined.Login" Color="Color.Inherit">

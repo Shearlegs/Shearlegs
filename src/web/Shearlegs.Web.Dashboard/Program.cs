@@ -22,6 +22,8 @@ builder.Services.AddScoped<ProtectedLocalStorage>();
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddScoped<UserState>();
+builder.Services.AddScoped<AuthenticationService>();
+
 builder.Services.AddScoped<ShearlegsWebAPIClient>(services => 
 {
     IHttpContextAccessor httpContextAcccesor = services.GetRequiredService<IHttpContextAccessor>();

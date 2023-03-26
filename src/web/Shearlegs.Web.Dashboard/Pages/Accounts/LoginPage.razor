@@ -1,4 +1,5 @@
 ﻿@page "/account/login"
+@using Shearlegs.Web.Dashboard.Shared.Components
 @layout LoginLayout
 
 <MudPaper Class="mx-auto my-auto pa-3" MaxWidth="350px" Width="100%">
@@ -6,48 +7,77 @@
         <MudImage Class="mx-auto" Src="/images/icon.png" ObjectFit="ObjectFit.Fill" ObjectPosition="ObjectPosition.Center" Width="125" Height="125" />
     </div>
     
-    @*<div class="mb-3">
-        <MudText Align="Align.Center" Typo="Typo.h5">
-            Shearlegs Software
-        </MudText>
-    </div>*@
-    
-    <div class="mb-3">
-        <Condition Evaluation="LoginUserRequestException != null">
-            <Match>
-                <MudAlert Severity="Severity.Error" Variant="Variant.Outlined" Dense="true">
-                    Invalid username or password
-                </MudAlert>
-            </Match>
-        </Condition>
-        
-
-        <EditForm Model="LoginUserRequest" OnValidSubmit="HandleLoginAsync">
+    <Condition Evaluation="userState.IsAuthenticated">
+        <Match>
             <div class="mb-3">
-                <MudTextField T="string" Label="Username" @bind-Value="LoginUserRequest.Username" />
+                <MudText Typo="Typo.subtitle1" Align="Align.Center">
+                    Logged in as
+                </MudText>
+                <MudText Typo="Typo.h5" Align="Align.Center" Class="mb-3">
+                    @userState.User.Name
+                </MudText>
+                <MudButton Disabled="LogoutProcessing"
+                           Variant="Variant.Filled"
+                           Color="Color.Primary"
+                           FullWidth="true"
+                           OnClick="(a) => HandleLogoutAsync()">
+
+                    <Condition Evaluation="LogoutProcessing">
+                        <Match>
+                            <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+                            <MudText Class="ms-2">Processing</MudText>
+                        </Match>
+                        <NotMatch>
+                            <MudIcon Icon="@Icons.Material.Filled.Logout" Class="ms-n1" Size="Size.Small" />
+                            <MudText Class="ms-2">Log out Now</MudText>
+                        </NotMatch>
+                    </Condition>
+                </MudButton>
+                <MudText Typo="Typo.subtitle2" Align="Align.Center" Class="mt-3">
+                    Session ends in: <Countdown TargetDate="userState.Session.ExpireDate.LocalDateTime" />
+                </MudText>
             </div>
+            
+        </Match>
+        <NotMatch>
             <div class="mb-3">
-                <MudTextField T="string" Label="Password" InputType="InputType.Password" @bind-Value="LoginUserRequest.Password" />
-            </div>            
-            <MudButton Disabled="LoginUserRequestProcessing" 
-                Variant="Variant.Filled" 
-                Color="Color.Primary" 
-                FullWidth="true" 
-                ButtonType="ButtonType.Submit">
-
-                <Condition Evaluation="LoginUserRequestProcessing">
+                <Condition Evaluation="LoginUserRequestException != null">
                     <Match>
-                        <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
-                        <MudText Class="ms-2">Processing</MudText>
+                        <MudAlert Severity="Severity.Error" Variant="Variant.Outlined" Dense="true">
+                            Invalid username or password
+                        </MudAlert>
                     </Match>
-                    <NotMatch>
-                        <MudIcon Icon="@Icons.Material.Filled.Login" Class="ms-n1" Size="Size.Small" />
-                        <MudText Class="ms-2">Login</MudText>
-                    </NotMatch>
                 </Condition>
-            </MudButton>
-        </EditForm>
-    </div>
+
+                <EditForm Model="LoginUserFormModel" OnValidSubmit="HandleLoginAsync">
+                    <div class="mb-3">
+                        <MudTextField T="string" Label="Username" @bind-Value="LoginUserFormModel.Username" />
+                    </div>
+                    <div class="mb-3">
+                        <MudTextField T="string" Label="Password" InputType="InputType.Password" @bind-Value="LoginUserFormModel.Password" />
+                    </div>
+                    <MudButton Disabled="LoginProcessing"
+                               Variant="Variant.Filled"
+                               Color="Color.Primary"
+                               FullWidth="true"
+                               ButtonType="ButtonType.Submit">
+
+                        <Condition Evaluation="LoginProcessing">
+                            <Match>
+                                <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+                                <MudText Class="ms-2">Processing</MudText>
+                            </Match>
+                            <NotMatch>
+                                <MudIcon Icon="@Icons.Material.Filled.Login" Class="ms-n1" Size="Size.Small" />
+                                <MudText Class="ms-2">Login</MudText>
+                            </NotMatch>
+                        </Condition>
+                    </MudButton>
+                </EditForm>
+            </div>
+        </NotMatch>
+    </Condition>
+    
 
     <div>
         <MudText Typo="Typo.caption" Align="Align.Center" Color="Color.Surface">

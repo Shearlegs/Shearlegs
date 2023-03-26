@@ -18,5 +18,11 @@ namespace Shearlegs.Web.Dashboard.Shared.Layouts
 
             return Task.CompletedTask;
         }
+
+        async Task HandleLogoutAsync()
+        {
+            await authenticationService.LogoutAsync();
+            StateHasChanged();
+        }
     }
 }

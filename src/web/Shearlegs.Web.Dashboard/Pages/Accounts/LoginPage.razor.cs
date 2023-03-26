@@ -1,36 +1,41 @@
 ﻿using Shearlegs.Web.APIClient.Models.Exceptions;
 using Shearlegs.Web.APIClient.Models.UserAuthentications;
 using Shearlegs.Web.APIClient.Models.UserAuthentications.Requests;
+using Shearlegs.Web.Dashboard.Models.Forms;
 
 namespace Shearlegs.Web.Dashboard.Pages.Accounts
 {
     public partial class LoginPage
     {
-        public LoginUserRequest LoginUserRequest { get; set; } = new();
+        public LoginUserFormModel LoginUserFormModel { get; set; } = new();
         public ShearlegsWebAPIRequestException LoginUserRequestException { get; set; }
-        private bool LoginUserRequestProcessing { get; set; }
+        private bool LoginProcessing { get; set; }
+        public bool LogoutProcessing { get; set; }
 
         private async Task HandleLoginAsync()
         {
             LoginUserRequestException = null;
-            LoginUserRequestProcessing = true;
+            LoginProcessing = true;
 
             try
             {
-                UserAuthenticationToken authenticationToken = await client.UserAuthentication.LoginUserAsync(LoginUserRequest);
-
-                client.UpdateAuthorization(authenticationToken.Token);
-                userState.SetAuthenticatedUser(authenticationToken.AuthenticatedUser);
-                DateTimeOffset expireDate = authenticationToken.AuthenticatedUser.UserSession.ExpireDate;
-                await cookieBroker.SetValue("JWT", authenticationToken.Token, expireDate);
-
-                navigationManager.NavigateTo("/");
+                await authenticationService.LoginAsync(LoginUserFormModel.Username, LoginUserFormModel.Password);                
             } catch (ShearlegsWebAPIRequestException exception)
             {
                 LoginUserRequestException = exception;
             }
 
-            LoginUserRequestProcessing = false;
+            navigationManager.NavigateTo("/");
+            LoginProcessing = false;
+        }
+
+        private async Task HandleLogoutAsync()
+        {
+            LogoutProcessing = true;
+
+            await authenticationService.LogoutAsync();
+
+            LogoutProcessing = false;
         }
     }
 }
