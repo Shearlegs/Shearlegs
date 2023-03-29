@@ -1,9 +1,8 @@
-﻿using Shearlegs.Web.APIClient.Models.Exceptions;
-using Shearlegs.Web.APIClient.Models.UserAuthentications;
-using Shearlegs.Web.APIClient.Models.UserAuthentications.Requests;
+﻿using MudBlazor;
+using Shearlegs.Web.APIClient.Models.Exceptions;
 using Shearlegs.Web.Dashboard.Models.Forms;
 
-namespace Shearlegs.Web.Dashboard.Pages.Accounts
+namespace Shearlegs.Web.Dashboard.Pages.Authentications
 {
     public partial class LoginPage
     {
@@ -19,13 +18,15 @@ namespace Shearlegs.Web.Dashboard.Pages.Accounts
 
             try
             {
-                await authenticationService.LoginAsync(LoginUserFormModel.Username, LoginUserFormModel.Password);                
+                await authenticationService.LoginAsync(LoginUserFormModel.Username, LoginUserFormModel.Password);
+
+                navigationManager.NavigateTo("/");
+                snackbar.Add("Successfully logged you in!", Severity.Success);
             } catch (ShearlegsWebAPIRequestException exception)
             {
                 LoginUserRequestException = exception;
             }
-
-            navigationManager.NavigateTo("/");
+            
             LoginProcessing = false;
         }
 

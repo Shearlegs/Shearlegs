@@ -10,7 +10,7 @@ namespace Shearlegs.Web.Dashboard.Shared.Layouts
 
         protected override void OnInitialized()
         {
-            snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomRight;   
+            snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomRight;
         }
 
         Task DrawerToggle()
@@ -29,9 +29,9 @@ namespace Shearlegs.Web.Dashboard.Shared.Layouts
 
         async Task HandleLogout(MouseEventArgs args)
         {
-            snackbar.Add("handle logout");
             await authenticationService.LogoutAsync();
-            
+            snackbar.Add("Successfully logged you out!", Severity.Success);
+
             navigationManager.NavigateTo("/account/login");
         }
     }

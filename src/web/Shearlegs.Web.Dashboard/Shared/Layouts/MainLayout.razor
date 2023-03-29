@@ -12,13 +12,16 @@
         <MudSpacer />
         <Condition Evaluation="userState.IsAuthenticated">
             <Match>
-                <MudMenu StartIcon="@Icons.Material.Outlined.Person" 
+                <MudMenu Size="Size.Large" StartIcon="@Icons.Material.Outlined.Person" 
                     Label="@userState.User.Name" 
                     Color="Color.Inherit" 
                     AnchorOrigin="Origin.BottomCenter"
                     TransformOrigin="Origin.TopCenter"
                     FullWidth="true"
                     >
+                    <MudMenuItem Href="/account/settings">
+                        Settings
+                    </MudMenuItem>
                     <MudMenuItem OnClick="HandleLogout">
                         Log out 
                     </MudMenuItem>

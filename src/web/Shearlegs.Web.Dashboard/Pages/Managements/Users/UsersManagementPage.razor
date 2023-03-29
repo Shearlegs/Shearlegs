@@ -1,0 +1,68 @@
+﻿@page "/management/users"
+@using Shearlegs.Web.APIClient.Models.Users;
+
+<MudTable Items="@Users" Hover="true" Dense="true" Filter="SearchUser">
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">
+            Users
+        </MudText>
+        <MudSpacer />
+        <MudTextField 
+            @bind-Value="searchString"
+            Immediate="true"
+            Placeholder="Search" 
+            Adornment="Adornment.Start" 
+            AdornmentIcon="@Icons.Material.Filled.Search" 
+            IconSize="Size.Medium" 
+            Class="mt-0" />
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>
+            <MudTableSortLabel T="User" SortBy="x => x.Id">
+                ID
+            </MudTableSortLabel>
+        </MudTh>
+        <MudTh>
+            <MudTableSortLabel T="User" SortBy="x => x.Name">
+                Username
+            </MudTableSortLabel>
+        </MudTh>
+        <MudTh>
+            <MudTableSortLabel T="User" SortBy="x => x.Role">
+                Role
+            </MudTableSortLabel>
+        </MudTh>
+        <MudTh>
+            <MudTableSortLabel T="User" SortBy="x => x.LastLoginDate">
+                Last Login
+            </MudTableSortLabel>
+        </MudTh>
+        <MudTh>
+            <MudTableSortLabel T="User" SortBy="x => x.CreateDate" InitialDirection="SortDirection.Descending">
+                Create Date
+            </MudTableSortLabel>
+        </MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="ID">
+            @context.Id
+        </MudTd>
+        <MudTd DataLabel="Username">
+            <MudLink Href="@($"/management/users/{context.Id}")">
+                @context.Name
+            </MudLink>
+        </MudTd>
+        <MudTd DataLabel="Role">
+            @context.Role
+        </MudTd>
+        <MudTd DataLabel="Last Login">
+            @(context.LastLoginDate?.LocalDateTime.ToString() ?? "never")
+        </MudTd>
+        <MudTd DataLabel="Create Date">
+            @context.CreateDate.LocalDateTime
+        </MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager />
+    </PagerContent>
+</MudTable>
