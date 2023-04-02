@@ -11,6 +11,7 @@ namespace Shearlegs.Web.Dashboard.Shared.Layouts
         protected override void OnInitialized()
         {
             snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomRight;
+            snackbar.Configuration.SnackbarVariant = Variant.Outlined;
         }
 
         Task DrawerToggle()

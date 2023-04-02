@@ -7,7 +7,8 @@ namespace Shearlegs.Web.API.Services.Foundations.Users
 {
     public interface IUserService
     {
-        ValueTask<User> AddUserAsync(AddUserParams @params);
+        ValueTask<User> CreateUserAsync(CreateUserParams @params);
+        ValueTask<User> ModifyUserIdentityAsync(ModifyUserIdentityParams @params);
         ValueTask<IEnumerable<User>> RetrieveAllUsersAsync();
         ValueTask<User> RetrieveUserByIdAsync(int userId);
         ValueTask<User> RetrieveUserByNameAsync(string username);

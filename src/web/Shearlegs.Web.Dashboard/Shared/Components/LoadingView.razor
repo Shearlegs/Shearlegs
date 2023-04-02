@@ -1,0 +1,15 @@
+﻿<Condition Evaluation="IsLoaded">
+    <Match>
+        @ChildContent
+    </Match>
+    <NotMatch>
+        <MudProgressLinear Color="Color.Primary" Indeterminate="true" />
+    </NotMatch>
+</Condition>
+
+@code {
+    [Parameter]
+    public bool IsLoaded { get; set; }
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+}

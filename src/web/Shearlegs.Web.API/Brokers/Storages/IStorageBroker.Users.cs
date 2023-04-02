@@ -12,5 +12,6 @@ namespace Shearlegs.Web.API.Brokers.Storages
         ValueTask<User> SelectUserByIdAsync(int userId);
         ValueTask<User> SelectUserByNameAsync(string username);
         ValueTask<StoredProcedureResult<User>> AddUserAsync(AddUserParams @params);
+        ValueTask<StoredProcedureResult<User>> UpdateUserIdentityAsync(UpdateUserIdentityParams @params);
     }
 }

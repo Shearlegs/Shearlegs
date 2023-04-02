@@ -1,9 +1,17 @@
-﻿using Shearlegs.Web.APIClient.Models.Users;
+﻿using MudBlazor;
+using Shearlegs.Web.APIClient.Models.Users;
 
 namespace Shearlegs.Web.Dashboard.Pages.Managements.Users
 {
     public partial class UsersManagementPage
     {
+        public List<BreadcrumbItem> BreadcrumbItems = new()
+        {
+            new BreadcrumbItem("Home", "/"),
+            new BreadcrumbItem("Management", "/management"),
+            new BreadcrumbItem("Users", null, true)
+        };
+
         public List<User> Users { get; set; }
 
         protected override async Task OnInitializedAsync()

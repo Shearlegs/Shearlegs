@@ -36,5 +36,12 @@ namespace Shearlegs.Web.API.Brokers.Storages
 
             return await QuerySingleStoredProcedureAsync<User>(sql, @params);
         }
+
+        public async ValueTask<StoredProcedureResult<User>> UpdateUserIdentityAsync(UpdateUserIdentityParams @params)
+        {
+            const string sql = "dbo.UpdateUserIdentity";
+
+            return await QuerySingleStoredProcedureAsync<User>(sql, @params);
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Shearlegs.Web.API.Brokers.Storages;
+﻿using Shearlegs.Web.API.Brokers.Encryptions;
+using Shearlegs.Web.API.Brokers.Storages;
 using Shearlegs.Web.API.Brokers.Validations;
 using Shearlegs.Web.API.Models.Users;
 using Shearlegs.Web.API.Models.Users.Exceptions;
@@ -14,11 +15,13 @@ namespace Shearlegs.Web.API.Services.Users
     {
         private readonly IStorageBroker storageBroker;
         private readonly IValidationBroker validationBroker;
+        private readonly IEncryptionBroker encryptionBroker;
 
-        public UserService(IStorageBroker storageBroker, IValidationBroker validationBroker)
+        public UserService(IStorageBroker storageBroker, IValidationBroker validationBroker, IEncryptionBroker encryptionBroker)
         {
             this.storageBroker = storageBroker;
             this.validationBroker = validationBroker;
+            this.encryptionBroker = encryptionBroker;
         }
 
         public async ValueTask<IEnumerable<User>> RetrieveAllUsersAsync()
@@ -52,15 +55,50 @@ namespace Shearlegs.Web.API.Services.Users
             return user;
         }
 
-        public async ValueTask<User> AddUserAsync(AddUserParams @params)
+        public async ValueTask<User> CreateUserAsync(CreateUserParams @params)
         {
-            ValidateAddUserParams(@params);
+            ValidateCreateUserParams(@params);
 
-            StoredProcedureResult<User> result = await storageBroker.AddUserAsync(@params);
+            string passwordHash = encryptionBroker.HashPassword(@params.PasswordText);
+
+            AddUserParams addUserParams = new()
+            {
+                Name = @params.Name,
+                Role = @params.Role,
+                AuthenticationType = @params.AuthenticationType,
+                PasswordHash = passwordHash
+            };
+
+            StoredProcedureResult<User> result = await storageBroker.AddUserAsync(addUserParams);
 
             if (result.ReturnValue == 1)
             {
                 throw new AlreadyExistsUserException();
+            }
+
+            return result.Result;
+        }
+
+        public async ValueTask<User> ModifyUserIdentityAsync(ModifyUserIdentityParams @params)
+        {
+            ValidateModifyUserIdentityParams(@params);
+
+            UpdateUserIdentityParams updateUserIdentityParams = new()
+            {
+                UserId = @params.UserId,
+                Role = @params.Role
+            };
+
+            if (@params.Password != null)
+            {
+                updateUserIdentityParams.PasswordHash = encryptionBroker.HashPassword(@params.Password);
+            }
+
+            StoredProcedureResult<User> result = await storageBroker.UpdateUserIdentityAsync(updateUserIdentityParams);
+
+            if (result.ReturnValue == 1)
+            {
+                throw new NotFoundUserException();
             }
 
             return result.Result;

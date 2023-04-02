@@ -76,5 +76,21 @@ namespace Shearlegs.Web.API.Controllers
                 return Conflict(exception);
             }
         }
+
+        [HttpPost("{userId}/identity")]
+        public async ValueTask<IActionResult> ModifyIdentity(int userId, [FromBody] ModifyUserIdentityParams @params)
+        {
+            @params.UserId = userId;
+
+            try
+            {
+                User user = await userService.ModifyUserIdentityAsync(@params);
+
+                return Ok(user);
+            } catch (NotFoundUserException exception)
+            {
+                return NotFound(exception);
+            }
+        }
     }
 }

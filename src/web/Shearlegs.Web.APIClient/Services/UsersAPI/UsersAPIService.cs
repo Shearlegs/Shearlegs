@@ -45,5 +45,12 @@ namespace Shearlegs.Web.APIClient.Services.Users
 
             return await client.PostAsJsonAsync<User>(requestUri, request);
         }
+
+        public async ValueTask<User> ModifyUserIdentityAsync(int userId, ModifyUserIdentityRequest request)
+        {
+            string requestUri = $"/users/{userId}/identity";
+
+            return await client.PostAsJsonAsync<User>(requestUri, request);
+        }
     }
 }

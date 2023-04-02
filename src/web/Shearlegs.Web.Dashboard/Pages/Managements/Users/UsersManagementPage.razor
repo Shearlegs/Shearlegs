@@ -1,10 +1,12 @@
 ﻿@page "/management/users"
 @using Shearlegs.Web.APIClient.Models.Users;
 
+<MudBreadcrumbs Items="BreadcrumbItems" />
+
 <MudTable Items="@Users" Hover="true" Dense="true" Filter="SearchUser">
     <ToolBarContent>
         <MudText Typo="Typo.h6">
-            Users
+            User List
         </MudText>
         <MudSpacer />
         <MudTextField 

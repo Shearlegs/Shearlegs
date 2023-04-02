@@ -34,21 +34,7 @@ namespace Shearlegs.Web.API.Services.Processings.Users
 
         public async ValueTask<User> CreateUserAsync(CreateUserParams @params)
         {
-            ValidateCreateUserParams(@params);
-
-            string passwordHash = encryptionBroker.HashPassword(@params.PasswordText);
-
-            AddUserParams addUserParams = new()
-            {
-                Name = @params.Name,
-                Role = @params.Role,
-                AuthenticationType = @params.AuthenticationType,
-                PasswordHash = passwordHash
-            };
-
-            User user = await userService.AddUserAsync(addUserParams);
-
-            return user;
+            return await userService.CreateUserAsync(@params);
         }
 
         public async ValueTask<User> RetrieveUserByNameAndPasswordAsync(string username, string passwordText)
