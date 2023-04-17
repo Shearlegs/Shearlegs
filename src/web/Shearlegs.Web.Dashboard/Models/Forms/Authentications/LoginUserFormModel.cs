@@ -1,4 +1,4 @@
-﻿namespace Shearlegs.Web.Dashboard.Models.Forms
+﻿namespace Shearlegs.Web.Dashboard.Models.Forms.Authentications
 {
     public class LoginUserFormModel
     {

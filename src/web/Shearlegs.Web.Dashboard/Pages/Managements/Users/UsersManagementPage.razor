@@ -9,14 +9,13 @@
             User List
         </MudText>
         <MudSpacer />
-        <MudTextField 
-            @bind-Value="searchString"
-            Immediate="true"
-            Placeholder="Search" 
-            Adornment="Adornment.Start" 
-            AdornmentIcon="@Icons.Material.Filled.Search" 
-            IconSize="Size.Medium" 
-            Class="mt-0" />
+        <MudTextField @bind-Value="searchString"
+                      Immediate="true"
+                      Placeholder="Search"
+                      Adornment="Adornment.Start"
+                      AdornmentIcon="@Icons.Material.Filled.Search"
+                      IconSize="Size.Medium"
+                      Class="mt-0" />
     </ToolBarContent>
     <HeaderContent>
         <MudTh>
@@ -68,3 +67,12 @@
         <MudTablePager />
     </PagerContent>
 </MudTable>
+
+<div style="position: fixed; right: 16px; bottom: 16px;">
+    <MudFab 
+        Color="Color.Primary" 
+        StartIcon="@Icons.Material.Filled.Add" 
+        Size="Size.Large"
+        Label="Create User"
+        Href="/management/users/create"/>
+</div>

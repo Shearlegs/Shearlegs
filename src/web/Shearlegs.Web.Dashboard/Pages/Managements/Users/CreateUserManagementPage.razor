@@ -1,0 +1,58 @@
+﻿@page "/management/users/create"
+
+<MudBreadcrumbs Items="BreadcrumbItems" />
+
+<Condition Evaluation="showSuccessAlert">
+    <Match>
+        <MudAlert Severity="Severity.Success" Variant="Variant.Outlined" Class="mb-3">
+            Successfully updated user identity settings!
+        </MudAlert>
+    </Match>
+</Condition>
+
+<Condition Evaluation="showErrorAlert">
+    <Match>
+        <MudAlert Severity="Severity.Error" Variant="Variant.Outlined" Class="mb-3">
+            There was a problem. Please try again later
+        </MudAlert>
+    </Match>
+</Condition>
+
+<MudCard>
+    <MudCardHeader Class="mud-theme-primary">
+        <CardHeaderContent>
+            <MudText Typo="Typo.h6">
+                Identity
+            </MudText>
+        </CardHeaderContent>
+    </MudCardHeader>
+    <MudDivider />
+
+    <EditForm Model="Model" OnValidSubmit="HandleCreateUserAsync">
+        <DataAnnotationsValidator />
+        
+        <MudCardContent>
+            <div class="mb-3">
+                <MudTextField T="string" Label="Username" @bind-Value="Model.Name" For="(() => Model.Name)" />
+            </div>
+            <div class="mb-3">
+                <MudSelect @bind-Value="Model.Role" Label="Select Role" For="(() => Model.Role)">
+                    @foreach (UserRole role in Enum.GetValues(typeof(UserRole)))
+                    {
+                        <MudSelectItem Value="@role">@role</MudSelectItem>
+                    }
+                </MudSelect>
+            </div>
+            <div class="mb-3">
+                <MudTextField T="string" Label="Password" InputType="InputType.Password" @bind-Value="Model.Password" For="(() => Model.Password)" />
+            </div>
+        </MudCardContent>
+        <MudDivider />
+        <MudCardActions>
+            <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Disabled="isCreateUserProcessing">
+                Create User
+            </MudButton>
+        </MudCardActions>        
+    </EditForm>
+
+</MudCard>

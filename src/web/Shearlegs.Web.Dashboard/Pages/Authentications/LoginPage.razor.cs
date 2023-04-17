@@ -1,6 +1,6 @@
 ﻿using MudBlazor;
 using Shearlegs.Web.APIClient.Models.Exceptions;
-using Shearlegs.Web.Dashboard.Models.Forms;
+using Shearlegs.Web.Dashboard.Models.Forms.Authentications;
 
 namespace Shearlegs.Web.Dashboard.Pages.Authentications
 {

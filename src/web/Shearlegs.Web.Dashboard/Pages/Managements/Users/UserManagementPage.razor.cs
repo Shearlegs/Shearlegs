@@ -2,7 +2,7 @@
 using MudBlazor;
 using Shearlegs.Web.APIClient.Models.Users;
 using Shearlegs.Web.APIClient.Models.Users.Requests;
-using Shearlegs.Web.Dashboard.Models.Forms;
+using Shearlegs.Web.Dashboard.Models.Forms.Managements.Users;
 
 namespace Shearlegs.Web.Dashboard.Pages.Managements.Users
 {
@@ -32,14 +32,10 @@ namespace Shearlegs.Web.Dashboard.Pages.Managements.Users
 
             BreadcrumbItems.Add(new BreadcrumbItem(User.Name, null, true));
             Model = new()
-            {
-                Username = User.Name,
+            {                
                 Role = User.Role,
                 Password = null
-            };
-
-            await Task.Delay(1000);
-            
+            };            
 
             isLoaded = true;
         }
@@ -52,6 +48,7 @@ namespace Shearlegs.Web.Dashboard.Pages.Managements.Users
 
             ModifyUserIdentityRequest request = new()
             {
+
                 Role = Model.Role,
                 Password = Model.Password
             };
@@ -60,7 +57,6 @@ namespace Shearlegs.Web.Dashboard.Pages.Managements.Users
 
             Model = new()
             {
-                Username = User.Name,
                 Role = User.Role,
                 Password = null
             };
