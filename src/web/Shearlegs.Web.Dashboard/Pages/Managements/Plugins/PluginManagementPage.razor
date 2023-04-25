@@ -1,4 +1,4 @@
-﻿@page "/management/users/{UserId:int}"
+﻿@page "/management/plugins/{PackageId}"
 
 <MudBreadcrumbs Items="BreadcrumbItems" />
 
@@ -6,7 +6,7 @@
     <Condition Evaluation="showSuccessAlert">
         <Match>
             <MudAlert Severity="Severity.Success" Variant="Variant.Outlined" Class="mb-3">
-                Successfully updated user identity settings!
+                Successfully updated plugin information settings!
             </MudAlert>
         </Match>
     </Condition>
@@ -23,27 +23,42 @@
         <MudCardHeader Class="mud-theme-primary">
             <CardHeaderContent>
                 <MudText Typo="Typo.h6">
-                    Identity
+                    Information
                 </MudText>
             </CardHeaderContent>
         </MudCardHeader>
         <MudDivider />
 
-        <EditForm Model="Model" OnValidSubmit="HandleUpdateUserAsync">
+        <EditForm Model="Model" OnValidSubmit="HandleUpdatePluginAsync">
             <MudCardContent>
                 <div class="mb-3">
-                    <MudTextField T="string" Label="Username" @bind-Value="User.Name" Disabled="true" />
+                    <MudTextField T="string" 
+                        Label="PackageId" 
+                        @bind-Value="Plugin.PackageId" 
+                        For="(() => Plugin.PackageId)" 
+                        ReadOnly="true" />
                 </div>
                 <div class="mb-3">
-                    <MudSelect @bind-Value="Model.Role" Label="Select Role">
-                        @foreach (UserRole role in Enum.GetValues(typeof(UserRole)))
-                        {
-                            <MudSelectItem Value="@role">@role</MudSelectItem>
-                        }
-                    </MudSelect>
+                    <MudTextField T="string" 
+                        Label="Name" 
+                        @bind-Value="Model.Name" 
+                        For="(() => Model.Name)" 
+                        HelperText="Custom name of the plugin" />
                 </div>
                 <div class="mb-3">
-                    <MudTextField T="string" Label="Password" InputType="InputType.Password" @bind-Value="Model.Password" HelperText="Optional" />
+                    <MudTextField T="string" 
+                        Label="Description" 
+                        @bind-Value="Model.Description" 
+                        For="(() => Model.Description)" 
+                        Lines="3"
+                        HelperText="Optional description of the plugin"/>
+                </div>
+                <div class="mb-3">
+                    <MudTextField T="string" 
+                        Label="Author" 
+                        @bind-Value="Model.Author" 
+                        For="(() => Model.Author)" 
+                        HelperText="You can enter name or username of a person maintaining the plugin" />
                 </div>
             </MudCardContent>
             <MudDivider />
@@ -52,7 +67,7 @@
                     Save
                 </MudButton>
                 <MudText Class="ms-auto" Align="Align.End" Typo="Typo.inherit">
-                    @User.UpdateDate.LocalDateTime
+                    @(Plugin.UpdateDate.HasValue ? Plugin.UpdateDate.Value.LocalDateTime.ToString() : string.Empty)
                 </MudText>
             </MudCardActions>
 

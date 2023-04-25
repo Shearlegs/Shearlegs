@@ -1,0 +1,73 @@
+﻿@page "/management/plugins/add"
+
+<MudBreadcrumbs Items="BreadcrumbItems" />
+
+<Condition Evaluation="showSuccessAlert">
+    <Match>
+        <MudAlert Severity="Severity.Success" Variant="Variant.Outlined" Class="mb-3">
+            Successfully added a new plugin!
+        </MudAlert>
+    </Match>
+</Condition>
+
+<Condition Evaluation="showErrorAlert">
+    <Match>
+        <MudAlert Severity="Severity.Error" Variant="Variant.Outlined" Class="mb-3">
+            There was a problem. Please try again later
+        </MudAlert>
+    </Match>
+</Condition>
+
+<MudCard>
+    <MudCardHeader Class="mud-theme-primary">
+        <CardHeaderContent>
+            <MudText Typo="Typo.h6">
+                Information
+            </MudText>
+        </CardHeaderContent>
+    </MudCardHeader>
+    <MudDivider />
+
+    <EditForm Model="Model" OnValidSubmit="HandleAddPluginAsync">
+        <DataAnnotationsValidator />
+
+        <MudCardContent>
+            <div class="mb-3">
+                <MudTextField T="string" 
+                    Label="PackageId" 
+                    @bind-Value="Model.PackageId" 
+                    For="(() => Model.PackageId)" 
+                    HelperText="Unique id of the NuGet packages uploaded as versions for the plugin" />
+            </div>
+            <div class="mb-3">
+                <MudTextField T="string" 
+                    Label="Name" 
+                    @bind-Value="Model.Name" 
+                    For="(() => Model.Name)" 
+                    HelperText="Custom name of the plugin" />
+            </div>
+            <div class="mb-3">
+                <MudTextField T="string" 
+                    Label="Description" 
+                    @bind-Value="Model.Description" 
+                    For="(() => Model.Description)" 
+                    Lines="3"
+                    HelperText="Optional description of the plugin"/>
+            </div>
+            <div class="mb-3">
+                <MudTextField T="string" 
+                    Label="Author" 
+                    @bind-Value="Model.Author" 
+                    For="(() => Model.Author)" 
+                    HelperText="You can enter name or username of a person maintaining the plugin" />
+            </div>
+        </MudCardContent>
+        <MudDivider />
+        <MudCardActions>
+            <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Disabled="isAddPluginProcessing">
+                Add Plugin
+            </MudButton>
+        </MudCardActions>
+    </EditForm>
+
+</MudCard>

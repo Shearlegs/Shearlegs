@@ -1,0 +1,93 @@
+﻿@page "/management/plugins"
+@using Shearlegs.Web.APIClient.Models.Plugins;
+
+<MudBreadcrumbs Items="BreadcrumbItems" />
+
+<MudTable Items="@Plugins" Hover="true" Dense="true" Filter="SearchPlugin">
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">
+            Plugin List
+        </MudText>
+        <MudSpacer />
+        <MudTextField @bind-Value="searchString"
+                      Immediate="true"
+                      Placeholder="Search"
+                      Adornment="Adornment.Start"
+                      AdornmentIcon="@Icons.Material.Filled.Search"
+                      IconSize="Size.Medium"
+                      Class="mt-0" />
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>
+            <MudTableSortLabel T="Plugin" SortBy="x => x.Id">
+                ID
+            </MudTableSortLabel>
+        </MudTh>
+        <MudTh>
+            <MudTableSortLabel T="Plugin" SortBy="x => x.PackageId">
+                PackageId
+            </MudTableSortLabel>
+        </MudTh>
+        <MudTh>
+            <MudTableSortLabel T="Plugin" SortBy="x => x.Name">
+                Name
+            </MudTableSortLabel>
+        </MudTh>
+        <MudTh>
+            <MudTableSortLabel T="Plugin" SortBy="x => x.UpdateUser.Name">
+                Updated By
+            </MudTableSortLabel>
+        </MudTh>
+        <MudTh>
+            <MudTableSortLabel T="Plugin" SortBy="x => x.CreateUser.Name">
+                Created By
+            </MudTableSortLabel>
+        </MudTh>
+        <MudTh>
+            <MudTableSortLabel T="Plugin" SortBy="x => x.UpdateDate">
+                Update Date
+            </MudTableSortLabel>
+        </MudTh>
+        <MudTh>
+            <MudTableSortLabel T="Plugin" SortBy="x => x.CreateDate" InitialDirection="SortDirection.Descending">
+                Create Date
+            </MudTableSortLabel>
+        </MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="ID">
+            @context.Id
+        </MudTd>
+        <MudTd DataLabel="PackageId">
+            <MudLink Href="@($"/management/plugins/{context.PackageId}")">
+                @context.PackageId
+            </MudLink>
+        </MudTd>
+        <MudTd DataLabel="Name">
+            @context.Name
+        </MudTd>
+        <MudTd DataLabel="Updated By">
+            @(context.UpdateUser?.Name ?? "-")
+        </MudTd>
+        <MudTd DataLabel="Created By">
+            @(context.CreateUser?.Name ?? "-")
+        </MudTd>
+        <MudTd DataLabel="Update Date">
+            @(context.UpdateDate.HasValue ? context.UpdateDate.Value.LocalDateTime.ToString() : "-")
+        </MudTd>
+        <MudTd DataLabel="Create Date">
+            @context.CreateDate.LocalDateTime
+        </MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager />
+    </PagerContent>
+</MudTable>
+
+<div style="position: fixed; right: 16px; bottom: 16px;">
+    <MudFab Color="Color.Primary"
+            StartIcon="@Icons.Material.Filled.Add"
+            Size="Size.Large"
+            Label="Add Plugin"
+            Href="/management/plugins/add" />
+</div>

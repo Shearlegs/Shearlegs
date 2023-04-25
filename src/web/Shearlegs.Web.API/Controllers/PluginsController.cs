@@ -96,11 +96,12 @@ namespace Shearlegs.Web.API.Controllers
             }
         }
 
-        [HttpPost("update")]
-        public async ValueTask<IActionResult> UpdatePlugin([FromBody] UpdatePluginParams @params)
+        [HttpPost("{pluginId}/update")]
+        public async ValueTask<IActionResult> UpdatePlugin(int pluginId, [FromBody] UpdatePluginParams @params)
         {
             try
             {
+                @params.PluginId = pluginId;
                 Plugin plugin = await pluginService.UpdatePluginAsync(@params);
 
                 return Ok(plugin);
