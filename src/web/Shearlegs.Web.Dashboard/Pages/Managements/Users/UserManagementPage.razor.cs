@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using MudBlazor;
+using Shearlegs.Web.APIClient.Models.Exceptions;
 using Shearlegs.Web.APIClient.Models.Users;
 using Shearlegs.Web.APIClient.Models.Users.Requests;
 using Shearlegs.Web.Dashboard.Models.Forms.Managements.Users;
@@ -9,7 +10,7 @@ namespace Shearlegs.Web.Dashboard.Pages.Managements.Users
     public partial class UserManagementPage
     {
         [Parameter]
-        public int UserId { get; set; }
+        public string Username { get; set; }
 
         public List<BreadcrumbItem> BreadcrumbItems = new()
         {
@@ -22,13 +23,22 @@ namespace Shearlegs.Web.Dashboard.Pages.Managements.Users
         public UpdateUserFormModel Model { get; set; } = new();
 
         private bool isLoaded = false;
+        private bool isCanceled = false;
         private bool isUpdateUserProcessing = false;
         private bool showSuccessAlert = false;
         private bool showErrorAlert = false;
 
         protected override async Task OnInitializedAsync()
         {
-            User = await client.Users.GetUserByIdAsync(UserId);
+            try
+            {
+                User = await client.Users.GetUserByNameAsync(Username);
+            } catch (ShearlegsWebAPIRequestException) 
+            {
+                isCanceled = true;
+                BreadcrumbItems.Add(new BreadcrumbItem("Not Found", null, true));
+                return;
+            }            
 
             BreadcrumbItems.Add(new BreadcrumbItem(User.Name, null, true));
             Model = new()
@@ -48,7 +58,6 @@ namespace Shearlegs.Web.Dashboard.Pages.Managements.Users
 
             ModifyUserIdentityRequest request = new()
             {
-
                 Role = Model.Role,
                 Password = Model.Password
             };

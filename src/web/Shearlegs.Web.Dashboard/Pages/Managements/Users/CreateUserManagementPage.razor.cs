@@ -46,7 +46,7 @@ namespace Shearlegs.Web.Dashboard.Pages.Managements.Users
                 User user = await client.Users.CreateUserAsync(request);
                 showSuccessAlert = true;
 
-                navigationManager.NavigateTo($"/management/users/{user.Id}");                
+                navigationManager.NavigateTo($"/management/users/{user.Name}");                
             } catch (ShearlegsWebAPIRequestException)
             {
                 showErrorAlert = true;

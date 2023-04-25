@@ -1,15 +1,21 @@
-﻿<Condition Evaluation="IsLoaded">
-    <Match>
-        @ChildContent
-    </Match>
+﻿<Condition Evaluation="IsCanceled">
     <NotMatch>
-        <MudProgressLinear Color="Color.Primary" Indeterminate="true" />
+        <Condition Evaluation="IsLoaded">
+            <Match>
+                @ChildContent
+            </Match>
+            <NotMatch>
+                <MudProgressLinear Color="Color.Primary" Indeterminate="true" />
+            </NotMatch>
+        </Condition>
     </NotMatch>
 </Condition>
 
 @code {
     [Parameter]
     public bool IsLoaded { get; set; }
+    [Parameter]
+    public bool IsCanceled { get; set; }
     [Parameter]
     public RenderFragment ChildContent { get; set; }
 }

@@ -2,7 +2,15 @@
 
 <MudBreadcrumbs Items="BreadcrumbItems" />
 
-<LoadingView IsLoaded="isLoaded">
+<Condition Evaluation="isCanceled">
+    <Match>
+        <MudAlert Severity="Severity.Info" Variant="Variant.Text" Class="mb-3">
+            Plugin not found!
+        </MudAlert>
+    </Match>
+</Condition>
+
+<LoadingView IsLoaded="isLoaded" IsCanceled="isCanceled">
     <Condition Evaluation="showSuccessAlert">
         <Match>
             <MudAlert Severity="Severity.Success" Variant="Variant.Outlined" Class="mb-3">

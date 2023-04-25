@@ -23,13 +23,22 @@ namespace Shearlegs.Web.Dashboard.Pages.Managements.Plugins
         public UpdatePluginFormModel Model { get; set; }
 
         private bool isLoaded = false;
+        private bool isCanceled = false;
         private bool isUpdateUserProcessing = false;
         private bool showSuccessAlert = false;
         private bool showErrorAlert = false;
 
         protected override async Task OnParametersSetAsync()
         {
-            Plugin = await client.Plugins.GetPluginByPackageIdAsync(PackageId);
+            try
+            {
+                Plugin = await client.Plugins.GetPluginByPackageIdAsync(PackageId);
+            } catch (ShearlegsWebAPIRequestException)
+            {
+                isCanceled = true;
+                BreadcrumbItems.Add(new BreadcrumbItem("Not Found", null, true));
+                return;
+            }
 
             BreadcrumbItems.Add(new BreadcrumbItem(Plugin.PackageId, null, true));
 
