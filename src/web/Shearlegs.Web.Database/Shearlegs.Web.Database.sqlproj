@@ -84,6 +84,7 @@
     <Build Include="dbo\procedures\RevokeUserSession.sql" />
     <Build Include="dbo\procedures\UpdateUserIdentity.sql" />
     <Build Include="dbo\tables\Jobs.sql" />
+    <Build Include="dbo\tables\Nodes.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shearlegs.Web.Database.publish.xml" />
