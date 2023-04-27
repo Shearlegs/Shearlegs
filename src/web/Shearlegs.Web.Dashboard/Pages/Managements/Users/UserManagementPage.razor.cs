@@ -4,6 +4,8 @@ using Shearlegs.Web.APIClient.Models.Exceptions;
 using Shearlegs.Web.APIClient.Models.Users;
 using Shearlegs.Web.APIClient.Models.Users.Requests;
 using Shearlegs.Web.Dashboard.Models.Forms.Managements.Users;
+using System.Net;
+using System;
 
 namespace Shearlegs.Web.Dashboard.Pages.Managements.Users
 {
@@ -33,7 +35,7 @@ namespace Shearlegs.Web.Dashboard.Pages.Managements.Users
             try
             {
                 User = await client.Users.GetUserByNameAsync(Username);
-            } catch (ShearlegsWebAPIRequestException) 
+            } catch (ShearlegsWebAPIRequestException exception) when (exception.StatusCode == HttpStatusCode.NotFound)
             {
                 isCanceled = true;
                 BreadcrumbItems.Add(new BreadcrumbItem("Not Found", null, true));

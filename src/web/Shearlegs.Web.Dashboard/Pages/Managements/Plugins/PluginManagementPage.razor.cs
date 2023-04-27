@@ -4,6 +4,7 @@ using Shearlegs.Web.APIClient.Models.Exceptions;
 using Shearlegs.Web.APIClient.Models.Plugins;
 using Shearlegs.Web.APIClient.Models.Plugins.Requests;
 using Shearlegs.Web.Dashboard.Models.Forms.Managements.Plugins;
+using System.Net;
 
 namespace Shearlegs.Web.Dashboard.Pages.Managements.Plugins
 {
@@ -33,7 +34,7 @@ namespace Shearlegs.Web.Dashboard.Pages.Managements.Plugins
             try
             {
                 Plugin = await client.Plugins.GetPluginByPackageIdAsync(PackageId);
-            } catch (ShearlegsWebAPIRequestException)
+            } catch (ShearlegsWebAPIRequestException exception) when (exception.StatusCode == HttpStatusCode.NotFound)
             {
                 isCanceled = true;
                 BreadcrumbItems.Add(new BreadcrumbItem("Not Found", null, true));

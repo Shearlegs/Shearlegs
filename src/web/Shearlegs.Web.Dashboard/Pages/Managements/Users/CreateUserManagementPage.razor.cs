@@ -47,7 +47,7 @@ namespace Shearlegs.Web.Dashboard.Pages.Managements.Users
                 showSuccessAlert = true;
 
                 navigationManager.NavigateTo($"/management/users/{user.Name}");                
-            } catch (ShearlegsWebAPIRequestException)
+            } catch (ShearlegsWebAPIRequestException exception)
             {
                 showErrorAlert = true;
             }

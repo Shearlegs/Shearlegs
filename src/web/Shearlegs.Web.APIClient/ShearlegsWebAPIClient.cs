@@ -45,7 +45,7 @@ namespace Shearlegs.Web.APIClient
                 return await httpClient.GetFromJsonAsync<T>(requestUri);
             } catch (HttpRequestException exception)
             {
-                throw new ShearlegsWebAPIRequestException(exception.Message);
+                throw new ShearlegsWebAPIRequestException(exception.Message, exception.StatusCode);
             }            
         }
 
@@ -59,7 +59,7 @@ namespace Shearlegs.Web.APIClient
                 return await responseMessage.Content.ReadFromJsonAsync<T>();
             } catch (HttpRequestException exception)
             {
-                throw new ShearlegsWebAPIRequestException(exception.Message);
+                throw new ShearlegsWebAPIRequestException(exception.Message, exception.StatusCode);
             }
         }
 
@@ -72,7 +72,7 @@ namespace Shearlegs.Web.APIClient
             }
             catch (HttpRequestException exception)
             {
-                throw new ShearlegsWebAPIRequestException(exception.Message);
+                throw new ShearlegsWebAPIRequestException(exception.Message, exception.StatusCode);
             }
         }
     }
