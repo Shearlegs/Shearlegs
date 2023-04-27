@@ -14,6 +14,11 @@ BEGIN
 		RETURN 1;
 	END;
 
+	IF EXISTS(SELECT * FROM dbo.Plugins WHERE [Name] = @Name)
+	BEGIN
+		RETURN 2;
+	END;
+
 	UPDATE dbo.Plugins
 	SET [Name] = @Name,
 	[Description] = @Description,

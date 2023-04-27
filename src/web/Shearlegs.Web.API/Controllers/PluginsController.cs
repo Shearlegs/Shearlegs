@@ -109,6 +109,9 @@ namespace Shearlegs.Web.API.Controllers
             catch (NotFoundPluginException exception)
             {
                 return NotFound(exception);
+            } catch (AlreadyExistsPluginException exception)
+            {
+                return Conflict(exception);
             }
         }
     }

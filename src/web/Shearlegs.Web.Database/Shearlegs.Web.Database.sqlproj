@@ -85,6 +85,9 @@
     <Build Include="dbo\procedures\UpdateUserIdentity.sql" />
     <Build Include="dbo\tables\Jobs.sql" />
     <Build Include="dbo\tables\Nodes.sql" />
+    <Build Include="dbo\procedures\AddNode.sql" />
+    <Build Include="dbo\procedures\UpdateNode.sql" />
+    <Build Include="dbo\procedures\GetNodes.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shearlegs.Web.Database.publish.xml" />

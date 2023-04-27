@@ -97,6 +97,11 @@ namespace Shearlegs.Web.API.Services.Foundations.Plugins
                 throw new NotFoundPluginException();
             }
 
+            if (result.ReturnValue == 2)
+            {
+                throw new AlreadyExistsPluginException();
+            }
+
             return await RetrievePluginByIdAsync(@params.PluginId);
         }
     }
