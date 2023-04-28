@@ -53,7 +53,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shearlegs.Web.APIClient", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shearlegs.Web.Dashboard", "web\Shearlegs.Web.Dashboard\Shearlegs.Web.Dashboard.csproj", "{2EDF141C-F45D-4EBE-9F64-17C6F0062A05}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shearlegs.Web.Node", "web\Shearlegs.Web.Node\Shearlegs.Web.Node.csproj", "{A3CFAC61-AE8D-4C09-9DB4-A631A41D4723}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shearlegs.Web.Node", "web\Shearlegs.Web.Node\Shearlegs.Web.Node.csproj", "{A3CFAC61-AE8D-4C09-9DB4-A631A41D4723}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

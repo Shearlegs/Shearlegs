@@ -1,0 +1,85 @@
+﻿@page "/management/nodes"
+@using Shearlegs.Web.APIClient.Models.Nodes;
+
+<MudBreadcrumbs Items="BreadcrumbItems" />
+
+<MudTable Items="@Nodes" Hover="true" Dense="true" Filter="SearchNode">
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">
+            Node List
+        </MudText>
+        <MudSpacer />
+        <MudTextField @bind-Value="searchString"
+                      Immediate="true"
+                      Placeholder="Search"
+                      Adornment="Adornment.Start"
+                      AdornmentIcon="@Icons.Material.Filled.Search"
+                      IconSize="Size.Medium"
+                      Class="mt-0" />
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>
+            <MudTableSortLabel T="Node" SortBy="x => x.Id">
+                ID
+            </MudTableSortLabel>
+        </MudTh>
+        <MudTh>
+            <MudTableSortLabel T="Node" SortBy="x => x.Name">
+                Name
+            </MudTableSortLabel>
+        </MudTh>
+        <MudTh>
+            <MudTableSortLabel T="Node" SortBy="x => x.FQDN">
+                FQDN
+            </MudTableSortLabel>
+        </MudTh>
+        <MudTh>
+            <MudTableSortLabel T="Node" SortBy="x => x.UpdateUser.Name">
+                Updated By
+            </MudTableSortLabel>
+        </MudTh>
+        <MudTh>
+            <MudTableSortLabel T="Node" SortBy="x => x.CreateUser.Name">
+                Created By
+            </MudTableSortLabel>
+        </MudTh>
+        <MudTh>
+            <MudTableSortLabel T="Node" SortBy="x => x.UpdateDate">
+                Update Date
+            </MudTableSortLabel>
+        </MudTh>
+        <MudTh>
+            <MudTableSortLabel T="Node" SortBy="x => x.CreateDate" InitialDirection="SortDirection.Descending">
+                Create Date
+            </MudTableSortLabel>
+        </MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="ID">
+            @context.Id
+        </MudTd>
+        <MudTd DataLabel="Name">
+            <MudLink Href="@($"/management/nodes/{context.Name}")">
+                @context.Name
+            </MudLink>
+        </MudTd>
+        <MudTd DataLabel="FQDN">
+            @context.FQDN
+        </MudTd>
+        <MudTd DataLabel="Updated By">
+            @(context.UpdateUser?.Name ?? "-")
+        </MudTd>
+        <MudTd DataLabel="Created By">
+            @(context.CreateUser?.Name ?? "-")
+        </MudTd>
+        <MudTd DataLabel="Update Date">
+            @(context.UpdateDate.HasValue ? context.UpdateDate.Value.LocalDateTime.ToString() : "-")
+        </MudTd>
+        <MudTd DataLabel="Create Date">
+            @context.CreateDate.LocalDateTime
+        </MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager />
+    </PagerContent>
+</MudTable>

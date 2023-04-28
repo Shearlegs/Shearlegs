@@ -46,6 +46,7 @@ namespace Shearlegs.Web.API.Services.Coordinations.NodeUserAuthentications
 
             UpdateNodeParams @updateNodeParams = new()
             {
+                NodeId = @params.NodeId,
                 Name = @params.Name,
                 Description = @params.Description,
                 FQDN = @params.FQDN,

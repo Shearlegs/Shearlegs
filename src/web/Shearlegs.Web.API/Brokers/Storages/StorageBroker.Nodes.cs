@@ -31,7 +31,7 @@ namespace Shearlegs.Web.API.Brokers.Storages
 
         public async ValueTask<StoredProcedureResult> UpdateNodeAsync(UpdateNodeParams @params)
         {
-            const string sql = "dbo.UppdateNode";
+            const string sql = "dbo.UpdateNode";
 
             return await ExecuteStoredProcedureAsync(sql, @params);
         }

@@ -17,7 +17,7 @@ BEGIN
 		RETURN 1;
 	END;
 
-	IF EXISTS(SELECT * FROM dbo.Nodes WHERE [Name] = @Name)
+	IF EXISTS(SELECT * FROM dbo.Nodes WHERE [Name] = @Name AND Id <> @NodeId)
 	BEGIN
 		RETURN 2;
 	END;

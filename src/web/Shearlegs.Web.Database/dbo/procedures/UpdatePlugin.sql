@@ -14,7 +14,7 @@ BEGIN
 		RETURN 1;
 	END;
 
-	IF EXISTS(SELECT * FROM dbo.Plugins WHERE [Name] = @Name)
+	IF EXISTS(SELECT * FROM dbo.Plugins WHERE [Name] = @Name AND Id <> @PluginId)
 	BEGIN
 		RETURN 2;
 	END;
