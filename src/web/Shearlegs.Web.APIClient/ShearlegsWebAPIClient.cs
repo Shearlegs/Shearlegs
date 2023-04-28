@@ -1,4 +1,5 @@
 ﻿using Shearlegs.Web.APIClient.Models.Exceptions;
+using Shearlegs.Web.APIClient.Services.NodesAPI;
 using Shearlegs.Web.APIClient.Services.PluginsAPI;
 using Shearlegs.Web.APIClient.Services.UserAuthenticationAPI;
 using Shearlegs.Web.APIClient.Services.Users;
@@ -21,6 +22,7 @@ namespace Shearlegs.Web.APIClient
             Users = new(this);
             UserAuthentication = new(this);
             Plugins = new(this);
+            Nodes = new(this);
         }
 
         public void UpdateAuthorization(string jwtToken)
@@ -37,6 +39,7 @@ namespace Shearlegs.Web.APIClient
         public UsersAPIService Users { get; }
         public UserAuthenticationAPIService UserAuthentication { get; }
         public PluginsAPIService Plugins { get; }
+        public NodesAPIService Nodes { get; }
 
         internal async ValueTask<T> GetFromJsonAsync<T>(string requestUri)
         {
