@@ -13,8 +13,10 @@ using Shearlegs.Web.API.Brokers.Shearlegs;
 using Shearlegs.Web.API.Brokers.Storages;
 using Shearlegs.Web.API.Brokers.Validations;
 using Shearlegs.Web.API.Models.Options;
+using Shearlegs.Web.API.Services.Coordinations.NodeUserAuthentications;
 using Shearlegs.Web.API.Services.Foundations.HttpUsers;
 using Shearlegs.Web.API.Services.Foundations.JWTs;
+using Shearlegs.Web.API.Services.Foundations.Nodes;
 using Shearlegs.Web.API.Services.Foundations.Plugins;
 using Shearlegs.Web.API.Services.Foundations.PluginSecrets;
 using Shearlegs.Web.API.Services.Foundations.Results;
@@ -23,6 +25,7 @@ using Shearlegs.Web.API.Services.Foundations.ShearlegsFrameworks;
 using Shearlegs.Web.API.Services.Foundations.Users;
 using Shearlegs.Web.API.Services.Foundations.UserSessions;
 using Shearlegs.Web.API.Services.Foundations.Versions;
+using Shearlegs.Web.API.Services.Orchestrations.Nodes;
 using Shearlegs.Web.API.Services.Orchestrations.UserAuthentications;
 using Shearlegs.Web.API.Services.Orchestrations.Versions;
 using Shearlegs.Web.API.Services.Processings.Results;
@@ -111,6 +114,7 @@ namespace Shearlegs.Web.API.Extensions
             services.AddTransient<IUserSessionService, UserSessionService>();
             services.AddTransient<IHttpUserService, HttpUserService>();
             services.AddTransient<IJWTService, JWTService>();
+            services.AddTransient<INodeService, NodeService>();
 
             return services;
         }
@@ -128,6 +132,14 @@ namespace Shearlegs.Web.API.Extensions
         {
             services.AddTransient<IVersionOrchestrationService, VersionOrchestrationService>();
             services.AddTransient<IUserAuthenticationOrchestrationService, UserAuthenticationOrchestrationService>();
+            services.AddTransient<INodeOrchestrationService, NodeOrchestrationService>();
+
+            return services;
+        }
+
+        public static IServiceCollection AddCoordinations(this IServiceCollection services) 
+        {
+            services.AddTransient<INodeUserAuthenticationCoordinationService, NodeUserAuthenticationCoordinationService>();
 
             return services;
         }
