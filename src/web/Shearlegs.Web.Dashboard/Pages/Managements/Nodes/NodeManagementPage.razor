@@ -1,0 +1,130 @@
+﻿@page "/management/nodes/{NodeName}"
+
+<MudBreadcrumbs Items="BreadcrumbItems" />
+
+<Condition Evaluation="isCanceled">
+    <Match>
+        <MudAlert Severity="Severity.Info" Variant="Variant.Text" Class="mb-3">
+            Plugin not found!
+        </MudAlert>
+    </Match>
+</Condition>
+
+<LoadingView IsLoaded="isLoaded" IsCanceled="isCanceled">
+    <Condition Evaluation="showSuccessAlert">
+        <Match>
+            <MudAlert Severity="Severity.Success" Variant="Variant.Outlined" Class="mb-3">
+                Successfully updated plugin information settings!
+            </MudAlert>
+        </Match>
+    </Condition>
+
+    <Condition Evaluation="showErrorAlert">
+        <Match>
+            <MudAlert Severity="Severity.Error" Variant="Variant.Outlined" Class="mb-3">
+                There was a problem. Please try again later
+            </MudAlert>
+        </Match>
+    </Condition>
+
+    <MudCard>
+        <MudCardHeader Class="mud-theme-primary">
+            <CardHeaderContent>
+                <MudText Typo="Typo.h6">
+                    Settings
+                </MudText>
+            </CardHeaderContent>
+        </MudCardHeader>
+        <MudDivider />
+
+        <EditForm Model="Model" OnValidSubmit="HandleUpdateNodeAsync">
+            <MudCardContent>
+                <div class="mb-3">
+                    <MudTextField T="string"
+                                  Label="Name"
+                                  @bind-Value="Model.Name"
+                                  For="(() => Model.Name)"
+                                  HelperText="Custom name of the node" />
+                </div>
+                <div class="mb-3">
+                    <MudTextField T="string"
+                                  Label="Description"
+                                  @bind-Value="Model.Description"
+                                  For="(() => Model.Description)"
+                                  Lines="3"
+                                  HelperText="Optional description of the node" />
+                </div>
+                <div class="mb-3">
+                    <MudTextField T="string"
+                                  Label="Fully Qualified Domain Name"
+                                  @bind-Value="Model.FQDN"
+                                  For="(() => Model.FQDN)"
+                                  HelperText="Please enter domain name (e.g node.example.com) to be used for connecting to the daemon. An IP address may only be used if you are not using SSL for this node." />
+                </div>
+
+                <div class="mb-3">
+                    <MudText Typo="Typo.subtitle2" Class="mb-1">
+                        Communicate Over SSL
+                    </MudText>
+                    <MudRadioGroup @bind-SelectedOption="Model.Scheme">
+                        <MudRadio Option="@("https")" Color="Color.Info" Dense="true" UnCheckedColor="Color.Default">
+                            Use SSL Connection
+                        </MudRadio>
+                        <MudRadio Option="@("http")" Color="Color.Warning" Dense="true" UnCheckedColor="Color.Default">
+                            Use HTTP Connection
+                        </MudRadio>
+                    </MudRadioGroup>
+                    <MudText Class="mud-input-helper-text">
+                        In most cases you should select to use a SSL connection. If using an IP Address or you do not wish to use SSL at all, select a HTTP connection.
+                    </MudText>
+                </div>
+                <div class="mb-3">
+                    <MudText Typo="Typo.subtitle2" Class="mb-1">
+                        Behind Proxy
+                    </MudText>
+                    <MudRadioGroup @bind-SelectedOption="Model.IsBehindProxy">
+                        <MudRadio Option="false" Color="Color.Info" Dense="true" UnCheckedColor="Color.Default">
+                            Not Behind Proxy
+                        </MudRadio>
+                        <MudRadio Option="true" Color="Color.Success" Dense="true" UnCheckedColor="Color.Default">
+                            Behind Proxy
+                        </MudRadio>
+                    </MudRadioGroup>
+                    <MudText Class="mud-input-helper-text">
+                        If you are running the daemon behind a proxy such as Cloudflare, select this to have the daemon skip looking for certificates on boot.
+                    </MudText>
+                </div>
+                <div class="mb-3">
+                    <MudText Typo="Typo.subtitle2" Class="mb-1">
+                        Availability
+                    </MudText>
+                    <MudSwitch @bind-Checked="Model.IsEnabled" Color="Color.Primary">
+                        <Condition Evaluation="Model.IsEnabled">
+                            <Match>
+                                Enabled
+                            </Match>
+                            <NotMatch>
+                                Disabled
+                            </NotMatch>
+                        </Condition>
+                    </MudSwitch>
+                    <MudText Class="mud-input-helper-text">
+                        If the node is marked as 'Disabled' users won't be able to execute jobs on this node.
+                    </MudText>
+                </div>
+            </MudCardContent>
+            <MudDivider />
+            <MudCardActions>
+                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Disabled="isUpdateUserProcessing">
+                    Save
+                </MudButton>
+                <MudText Class="ms-auto" Align="Align.End" Typo="Typo.inherit">
+                    @(Node.UpdateDate.HasValue ? Node.UpdateDate.Value.LocalDateTime.ToString() : string.Empty)
+                </MudText>
+            </MudCardActions>
+
+            <DataAnnotationsValidator />
+        </EditForm>
+
+    </MudCard>
+</LoadingView>
