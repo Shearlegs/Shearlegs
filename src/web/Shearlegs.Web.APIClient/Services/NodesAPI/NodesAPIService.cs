@@ -1,5 +1,7 @@
 ﻿using Shearlegs.Web.APIClient.Models.Nodes;
 using Shearlegs.Web.APIClient.Models.Nodes.Requests;
+using Shearlegs.Web.APIClient.Models.NodeVariables;
+using Shearlegs.Web.APIClient.Models.NodeVariables.Requests;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,6 +52,29 @@ namespace Shearlegs.Web.APIClient.Services.NodesAPI
             string requestUri = $"/nodes/{nodeId}/update";
 
             return await client.PostAsJsonAsync<Node>(requestUri, request);
+        }
+
+        // Node Variables
+
+        public async ValueTask<List<NodeVariable>> GetNodeVariablesAsync(int nodeId)
+        {
+            string requestUri = $"/nodes/{nodeId}/variables";
+
+            return await client.GetFromJsonAsync<List<NodeVariable>>(requestUri);
+        }
+
+        public async ValueTask<NodeVariable> GetNodeVariableByNameAsync(int nodeId, string variableName)
+        {
+            string requestUri = $"/nodes/{nodeId}/variables/name/{variableName}";
+
+            return await client.GetFromJsonAsync<NodeVariable>(requestUri);
+        }
+
+        public async ValueTask<NodeVariable> AddNodeVariableAsync(int nodeId, AddNodeVariableRequest request)
+        {
+            string requestUri = $"/nodes/{nodeId}/variables/add";
+
+            return await client.PostAsJsonAsync<NodeVariable>(requestUri, request);
         }
     }
 }

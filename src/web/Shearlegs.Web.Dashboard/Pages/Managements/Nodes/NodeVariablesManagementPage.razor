@@ -1,9 +1,9 @@
-﻿@page "/management/nodes/{NodeName}"
+﻿@page "/management/nodes/{NodeName}/variables"
 @using Shearlegs.Web.Dashboard.Pages.Managements.Nodes.Components
 
 <MudBreadcrumbs Items="BreadcrumbItems" />
 
-<NodeNavigationTabs NodeName="@NodeName" ActivePanelIndex="0" />
+<NodeNavigationTabs NodeName="@NodeName" ActivePanelIndex="2" />
 
 <Condition Evaluation="isCanceled">
     <Match>

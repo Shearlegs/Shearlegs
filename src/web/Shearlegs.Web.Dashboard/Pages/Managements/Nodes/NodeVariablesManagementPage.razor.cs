@@ -3,11 +3,10 @@ using MudBlazor;
 using Shearlegs.Web.APIClient.Models.Exceptions;
 using Shearlegs.Web.APIClient.Models.Nodes;
 using System.Net;
-using System.Reflection;
 
 namespace Shearlegs.Web.Dashboard.Pages.Managements.Nodes
 {
-    public partial class NodeManagementPage
+    public partial class NodeVariablesManagementPage
     {
         [Parameter]
         public string NodeName { get; set; }
@@ -43,6 +42,7 @@ namespace Shearlegs.Web.Dashboard.Pages.Managements.Nodes
             }
 
             BreadcrumbItems.Add(new BreadcrumbItem(Node.Name, $"/management/nodes/{Node.Name}"));
+            BreadcrumbItems.Add(new BreadcrumbItem("Variables", null, true));
 
             isLoaded = true;
         }
