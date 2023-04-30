@@ -1,0 +1,16 @@
+﻿using Shearlegs.Web.API.Models.NodeVariables;
+using Shearlegs.Web.API.Models.NodeVariables.Params;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace Shearlegs.Web.API.Services.Orchestrations.NodeVariables
+{
+    public interface INodeVariableOrchestrationService
+    {
+        ValueTask<NodeVariable> AddNodeVariableAsync(AddNodeVariableParams @params);
+        ValueTask<IEnumerable<NodeVariable>> RetrieveAllNodeVariablesAsync();
+        ValueTask<NodeVariable> RetrieveNodeVariableByIdAsync(int nodeVariableId);
+        ValueTask<IEnumerable<NodeVariable>> RetrieveNodeVariablesByNodeIdAsync(int nodeId);
+        ValueTask<NodeVariable> UpdateNodeVariableAsync(UpdateNodeVariableParams @params);
+    }
+}

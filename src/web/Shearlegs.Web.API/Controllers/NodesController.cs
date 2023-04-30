@@ -7,6 +7,11 @@ using Shearlegs.Web.API.Services.Coordinations.NodeUserAuthentications;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Shearlegs.Web.API.Services.Coordinations.NodeVariableUserAuthentications;
+using Shearlegs.Web.API.Models.NodeVariables;
+using Shearlegs.Web.API.Models.NodeVariableUserAuthentications.Params;
+using Shearlegs.Web.API.Models.NodeVariables.Exceptions;
+using Shearlegs.Web.API.Models.UserAuthentications.Exceptions;
 
 namespace Shearlegs.Web.API.Controllers
 {
@@ -15,10 +20,14 @@ namespace Shearlegs.Web.API.Controllers
     public class NodesController : RESTFulController
     {
         private readonly INodeUserAuthenticationCoordinationService nodeService;
+        private readonly INodeVariableUserAuthenticationCoordinationService nodeVariableService;
 
-        public NodesController(INodeUserAuthenticationCoordinationService nodeService)
+        public NodesController(
+            INodeUserAuthenticationCoordinationService nodeService, 
+            INodeVariableUserAuthenticationCoordinationService nodeVariableService)
         {
             this.nodeService = nodeService;
+            this.nodeVariableService = nodeVariableService;
         }
 
         [HttpGet]
@@ -69,6 +78,9 @@ namespace Shearlegs.Web.API.Controllers
             } catch (AlreadyExistsNodeException exception)
             {
                 return Conflict(exception);
+            } catch (NotAuthenticatedUserException exception)
+            {
+                return Unauthorized(exception);
             }
         }
 
@@ -87,6 +99,46 @@ namespace Shearlegs.Web.API.Controllers
             } catch (AlreadyExistsNodeException exception)
             {
                 return Conflict(exception);
+            } catch (NotAuthenticatedUserException exception)
+            {
+                return Unauthorized(exception);
+            }
+        }
+
+        [HttpGet("{nodeId}/variables")]
+        public async ValueTask<IActionResult> GetNodeVariables(int nodeId)
+        {
+            IEnumerable<NodeVariable> nodeVariables = await nodeVariableService.RetrieveNodeVariablesByNodeIdAsync(nodeId);
+
+            return Ok(nodeVariables);
+        }
+
+        [HttpGet("{nodeId}/variables/name/{nodeVariableName}")]
+        public async ValueTask GetNodeVariableByName(int nodeId, string nodeVariableName)
+        {
+            // TODO: Implement this
+        }
+
+        [HttpPost("{nodeId}/variables/add")]
+        public async ValueTask<IActionResult> AddNodeVariable(int nodeId, AddUserNodeVariableParams @params)
+        {
+            try
+            {
+                @params.NodeId = nodeId;
+                NodeVariable nodeVariable = await nodeVariableService.AddUserNodeVariableAsync(@params);
+
+                return Ok(nodeVariable);
+            }
+            catch (NotFoundNodeException exception)
+            {
+                return NotFound(exception);
+            }
+            catch (AlreadyExistsNodeVariableException exception)
+            {
+                return Conflict(exception);
+            } catch (NotAuthenticatedUserException exception)
+            {
+                return Unauthorized(exception);
             }
         }
     }

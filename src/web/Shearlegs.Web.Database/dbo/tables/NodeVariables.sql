@@ -1,0 +1,14 @@
+﻿CREATE TABLE dbo.NodeVariables
+(
+	Id INT IDENTITY(1,1) NOT NULL CONSTRAINT PK_NodeVariables PRIMARY KEY,
+	NodeId INT NOT NULL CONSTRAINT FK_NodeVariables_NodeId FOREIGN KEY REFERENCES dbo.Nodes(Id),
+	[Name] NVARCHAR(50) NOT NULL,
+	[Value] NVARCHAR(2000) NOT NULL,
+	[Description] NVARCHAR(2000) NULL,
+	IsSensitive BIT NOT NULL,
+	UpdateUserId INT NULL CONSTRAINT FK_NodeVariables_UpdateUserId FOREIGN KEY REFERENCES dbo.Users(Id),
+	CreateUserId INT NOT NULL CONSTRAINT FK_NodeVariables_CreateUserId FOREIGN KEY REFERENCES dbo.Users(Id),
+	UpdateDate DATETIME2(0) NULL,
+	CreateDate DATETIME NOT NULL CONSTRAINT DF_NodeVariables_CreateDate DEFAULT SYSDATETIME(),
+	CONSTRAINT UK_NodeVariables_Name UNIQUE (NodeId, [Name])
+)

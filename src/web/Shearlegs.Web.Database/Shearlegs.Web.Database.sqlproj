@@ -88,6 +88,10 @@
     <Build Include="dbo\procedures\AddNode.sql" />
     <Build Include="dbo\procedures\UpdateNode.sql" />
     <Build Include="dbo\procedures\GetNodes.sql" />
+    <Build Include="dbo\tables\NodeVariables.sql" />
+    <Build Include="dbo\procedures\AddNodeVariable.sql" />
+    <Build Include="dbo\procedures\UpdateNodeVariable.sql" />
+    <Build Include="dbo\procedures\GetNodeVariables.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shearlegs.Web.Database.publish.xml" />
