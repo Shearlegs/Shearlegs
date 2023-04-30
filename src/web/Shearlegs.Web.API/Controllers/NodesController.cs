@@ -113,10 +113,18 @@ namespace Shearlegs.Web.API.Controllers
             return Ok(nodeVariables);
         }
 
-        [HttpGet("{nodeId}/variables/name/{nodeVariableName}")]
-        public async ValueTask GetNodeVariableByName(int nodeId, string nodeVariableName)
+        [HttpGet("{nodeId}/variables/name/{variableName}")]
+        public async ValueTask<IActionResult> GetNodeVariableByName(int nodeId, string variableName)
         {
-            // TODO: Implement this
+            try
+            {
+                NodeVariable nodeVariable = await nodeVariableService.RetrieveNodeVariableByNodeIdAndNameAsync(nodeId, variableName);
+
+                return Ok(nodeVariable);
+            } catch (NotFoundNodeVariableException exception)
+            {
+                return NotFound(exception);
+            }
         }
 
         [HttpPost("{nodeId}/variables/add")]

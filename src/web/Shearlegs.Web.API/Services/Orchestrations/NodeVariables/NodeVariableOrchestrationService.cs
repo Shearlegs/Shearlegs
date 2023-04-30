@@ -30,6 +30,11 @@ namespace Shearlegs.Web.API.Services.Orchestrations.NodeVariables
             return await nodeVariableService.RetrieveNodeVariablesByNodeIdAsync(nodeId);
         }
 
+        public async ValueTask<NodeVariable> RetrieveNodeVariableByNodeIdAndNameAsync(int nodeId, string variableName)
+        {
+            return await nodeVariableService.RetrieveNodeVariableByNodeIdAndNameAsync(nodeId, variableName);
+        }
+
         public async ValueTask<NodeVariable> AddNodeVariableAsync(AddNodeVariableParams @params)
         {
             return await nodeVariableService.AddNodeVariableAsync(@params);

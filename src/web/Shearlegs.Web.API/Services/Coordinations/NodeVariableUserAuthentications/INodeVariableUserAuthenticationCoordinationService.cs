@@ -10,6 +10,7 @@ namespace Shearlegs.Web.API.Services.Coordinations.NodeVariableUserAuthenticatio
         ValueTask<NodeVariable> AddUserNodeVariableAsync(AddUserNodeVariableParams @params);
         ValueTask<IEnumerable<NodeVariable>> RetrieveAllNodeVariablesAsync();
         ValueTask<NodeVariable> RetrieveNodeVariableByIdAsync(int nodeVariableId);
+        ValueTask<NodeVariable> RetrieveNodeVariableByNodeIdAndNameAsync(int nodeId, string variableName);
         ValueTask<IEnumerable<NodeVariable>> RetrieveNodeVariablesByNodeIdAsync(int nodeId);
         ValueTask<NodeVariable> UpdateUserNodeVariableAsync(UpdateUserNodeVariableParams @params);
     }

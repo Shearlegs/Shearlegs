@@ -53,6 +53,24 @@ namespace Shearlegs.Web.API.Services.Foundations.NodeVariables
             return await storageBroker.GetNodeVariablesAsync(@params);
         }
 
+        public async ValueTask<NodeVariable> RetrieveNodeVariableByNodeIdAndNameAsync(int nodeId, string variableName)
+        {
+            GetNodeVariablesParams @params = new()
+            {
+                NodeId = nodeId,
+                Name = variableName
+            };
+
+            NodeVariable nodeVariable = await storageBroker.GetNodeVariableAsync(@params);
+
+            if (nodeVariable == null)
+            {
+                throw new NotFoundNodeVariableException();
+            }
+
+            return nodeVariable;
+        }
+
         public async ValueTask<NodeVariable> AddNodeVariableAsync(AddNodeVariableParams @params)
         {
             AddNodeVariableResult result = await storageBroker.AddNodeVariableAsync(@params);
