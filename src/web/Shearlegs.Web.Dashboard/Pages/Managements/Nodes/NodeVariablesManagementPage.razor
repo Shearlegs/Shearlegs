@@ -15,4 +15,50 @@
 
 <LoadingView IsLoaded="isLoaded" IsCanceled="isCanceled">
 
+    <MudTable Items="NodeVariables" Loading="isVariablesLoading" Hover="true" Context="variable" Filter="SearchNodeVariable">
+        <ToolBarContent>
+            <MudText Typo="Typo.h6">
+                Variable List
+            </MudText>
+            <MudSpacer />
+            <MudTextField @bind-Value="searchString"
+                          Immediate="true"
+                          Placeholder="Search"
+                          Adornment="Adornment.Start"
+                          AdornmentIcon="@Icons.Material.Filled.Search"
+                          IconSize="Size.Medium"
+                          Class="mt-0" />
+        </ToolBarContent>
+        <HeaderContent>
+            <MudTh>Name</MudTh>
+            <MudTh>Description</MudTh>
+            <MudTh>Update Date</MudTh>
+            <MudTh>Create Date</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Name">
+                <MudButton>
+                    @variable.Name
+                </MudButton>                
+            </MudTd>
+            <MudTd DataLabel="Description">
+                @variable.Description
+            </MudTd>
+            <MudTd DataLabel="Update Date">
+                @(variable.UpdateDate.HasValue ? variable.UpdateDate.Value.LocalDateTime : '-')
+            </MudTd>
+            <MudTd DataLabel="Create Date">
+                @variable.CreateDate.LocalDateTime
+            </MudTd>
+        </RowTemplate>
+    </MudTable>
+
+    <div style="position: fixed; right: 16px; bottom: 16px;">
+        <MudFab Color="Color.Primary"
+            StartIcon="@Icons.Material.Filled.Add"
+            Size="Size.Large"
+            Label="Add Variable"
+            OnClick="OpenAddDialog"
+            />
+    </div>
 </LoadingView>

@@ -2,6 +2,8 @@
 using MudBlazor;
 using Shearlegs.Web.APIClient.Models.Exceptions;
 using Shearlegs.Web.APIClient.Models.Nodes;
+using Shearlegs.Web.APIClient.Models.NodeVariables;
+using Shearlegs.Web.Dashboard.Pages.Managements.Nodes.Dialogs;
 using System.Net;
 
 namespace Shearlegs.Web.Dashboard.Pages.Managements.Nodes
@@ -19,9 +21,12 @@ namespace Shearlegs.Web.Dashboard.Pages.Managements.Nodes
         };
 
         public Node Node { get; set; }
+        public List<NodeVariable> NodeVariables { get; set; }
 
         private bool isLoaded = false;
         private bool isCanceled = false;
+        private bool isVariablesLoading = true;
+        private string searchString = string.Empty;
 
         protected override async Task OnParametersSetAsync()
         {
@@ -45,6 +50,48 @@ namespace Shearlegs.Web.Dashboard.Pages.Managements.Nodes
             BreadcrumbItems.Add(new BreadcrumbItem("Variables", null, true));
 
             isLoaded = true;
+
+            await Task.Factory.StartNew(LoadVariables);
+        }
+
+        private async Task LoadVariables()
+        {
+            isVariablesLoading = true;
+            NodeVariables = await client.Nodes.GetNodeVariablesAsync(Node.Id);
+            isVariablesLoading = false;
+            await InvokeAsync(StateHasChanged);
+        }
+
+        private bool SearchNodeVariable(NodeVariable nodeVariable)
+        {
+            if (string.IsNullOrWhiteSpace(searchString))
+                return true;
+            if (nodeVariable.Id.ToString().Contains(searchString, StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (nodeVariable.Name.ToString().Contains(searchString, StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (nodeVariable.Description.ToString().Contains(searchString, StringComparison.OrdinalIgnoreCase))
+                return true;
+            if (nodeVariable.UpdateUser?.Name.ToString().Contains(searchString, StringComparison.OrdinalIgnoreCase) ?? false)
+                return true;
+            if (nodeVariable.CreateUser?.Name.ToString().Contains(searchString, StringComparison.OrdinalIgnoreCase) ?? false)
+                return true;
+            return false;
+        }
+
+        private void OpenAddDialog()
+        {
+            DialogOptions options = new() 
+            { 
+                CloseOnEscapeKey = true,
+                FullWidth = true
+            };
+            DialogParameters parameters = new()
+            {
+                { "Node", Node }
+            };
+
+            dialogService.Show<AddNodeVariableDialog>("Add Node Variable", parameters, options);
         }
     }
 }
