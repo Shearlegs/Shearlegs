@@ -90,8 +90,9 @@ namespace Shearlegs.Web.Dashboard.Pages.Managements.Nodes
 
                 showSuccessAlert = true;
             }
-            catch (ShearlegsWebAPIRequestException)
+            catch (ShearlegsWebAPIRequestException exception)
             {
+                loggingBroker.LogException(exception);
                 showErrorAlert = true;
             }
 

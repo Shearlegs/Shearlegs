@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting.StaticWebAssets;
 using MudBlazor.Services;
 using Shearlegs.Web.APIClient;
 using Shearlegs.Web.Dashboard.Brokers.Cookies;
+using Shearlegs.Web.Dashboard.Brokers.Loggings;
 using Shearlegs.Web.Dashboard.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +15,8 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddMudServices();
 builder.Services.AddScoped<ICookieBroker, CookieBroker>();
+builder.Services.AddScoped<ILoggingBroker, LoggingBroker>();
+builder.Services.AddLogging();
 
 builder.Services.AddScoped<ProtectedLocalStorage>();
 builder.Services.AddHttpContextAccessor();
