@@ -1,4 +1,5 @@
 ﻿@page "/management/nodes/{NodeName}/variables"
+@using Shearlegs.Web.APIClient.Models.NodeVariables;
 @using Shearlegs.Web.Dashboard.Pages.Managements.Nodes.Components
 
 <MudBreadcrumbs Items="BreadcrumbItems" />
@@ -30,14 +31,30 @@
                           Class="mt-0" />
         </ToolBarContent>
         <HeaderContent>
-            <MudTh>Name</MudTh>
-            <MudTh>Description</MudTh>
-            <MudTh>Update Date</MudTh>
-            <MudTh>Create Date</MudTh>
+            <MudTh>
+                <MudTableSortLabel T="NodeVariable" SortBy="x => x.Name">
+                    Name
+                </MudTableSortLabel>
+            </MudTh>
+            <MudTh>
+                <MudTableSortLabel T="NodeVariable" SortBy="x => x.Description">
+                    Description
+                </MudTableSortLabel>
+            </MudTh>
+            <MudTh>
+                <MudTableSortLabel T="NodeVariable" SortBy="x => x.UpdateDate">
+                    Update Date
+                </MudTableSortLabel>
+            </MudTh>
+            <MudTh>
+                <MudTableSortLabel T="NodeVariable" SortBy="x => x.CreateDate" InitialDirection="SortDirection.Descending">
+                    Create Date
+                </MudTableSortLabel>
+            </MudTh>
         </HeaderContent>
         <RowTemplate>
             <MudTd DataLabel="Name">
-                <MudButton>
+                <MudButton OnClick="() => OpenEditDialogAsync(variable)">
                     @variable.Name
                 </MudButton>                
             </MudTd>
@@ -58,7 +75,7 @@
             StartIcon="@Icons.Material.Filled.Add"
             Size="Size.Large"
             Label="Add Variable"
-            OnClick="OpenAddDialog"
+            OnClick="OpenAddDialogAsync"
             />
     </div>
 </LoadingView>

@@ -79,19 +79,58 @@ namespace Shearlegs.Web.Dashboard.Pages.Managements.Nodes
             return false;
         }
 
-        private void OpenAddDialog()
+        private async Task OpenAddDialogAsync()
         {
             DialogOptions options = new() 
             { 
                 CloseOnEscapeKey = true,
-                FullWidth = true
+                DisableBackdropClick = true,
+                FullWidth = true,
+                Position = DialogPosition.TopCenter
             };
             DialogParameters parameters = new()
             {
                 { "Node", Node }
             };
 
-            dialogService.Show<AddNodeVariableDialog>("Add Node Variable", parameters, options);
+            IDialogReference dialog = dialogService.Show<AddNodeVariableDialog>(null, parameters, options);
+
+            DialogResult result = await dialog.Result;
+
+            if (!result.Cancelled)
+            {
+                NodeVariable nodeVariable = result.Data as NodeVariable;
+                NodeVariables.Add(nodeVariable);
+                StateHasChanged();
+            }
+        }
+
+        private async Task OpenEditDialogAsync(NodeVariable variable)
+        {
+            DialogOptions options = new()
+            {
+                CloseOnEscapeKey = true,
+                DisableBackdropClick = true,
+                FullWidth = true,
+                Position = DialogPosition.TopCenter
+            };
+            DialogParameters parameters = new()
+            {
+                { "Node", Node },
+                { "NodeVariable", variable }
+            };
+
+            IDialogReference dialog = dialogService.Show<EditNodeVariableDialog>(null, parameters, options);
+
+            DialogResult result = await dialog.Result;
+
+            if (!result.Cancelled)
+            {
+                NodeVariable nodeVariable = result.Data as NodeVariable;
+                NodeVariables.RemoveAll(x => x.Id == nodeVariable.Id);
+                NodeVariables.Add(nodeVariable);
+                StateHasChanged();
+            }
         }
     }
 }
