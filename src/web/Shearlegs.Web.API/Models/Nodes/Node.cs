@@ -11,7 +11,10 @@ namespace Shearlegs.Web.API.Models.Nodes
 		public string Description { get; set; }
 		public string FQDN { get; set; }
 		public string Scheme { get; set; }
-		public bool IsBehindProxy { get; set; }
+        public int HttpPort { get; set; }
+        public int HttpsPort { get; set; }
+        public int CacheSizeLimit { get; set; }
+        public bool IsBehindProxy { get; set; }
 		public bool IsEnabled { get; set; }
 		public Guid AccessToken { get; set; }        
 		public DateTimeOffset? UpdateDate { get; set; }

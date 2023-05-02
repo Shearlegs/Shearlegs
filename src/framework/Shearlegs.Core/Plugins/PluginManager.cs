@@ -82,8 +82,7 @@ namespace Shearlegs.Core.Plugins
                 Version = loadResult.PluginAssembly.Version,
                 IsPrerelease = loadResult.PluginAssembly.IsPrerelease,
                 Parameters = parameters,
-                ContentFiles = fileStore.Files.Select(x => new ContentFileInfo(x.Name, x.Content.Length))
-                
+                ContentFiles = fileStore.Files.Select(x => new ContentFileInfo(x.Name, x.Content.Length))                
             };
 
             IEnumerable<Type> types = loadResult.PluginAssembly.Assembly.GetTypes().Where(t => t.GetInterface(nameof(IParameters)) != null);
