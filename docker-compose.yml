@@ -1,6 +1,7 @@
 version: '3'
 services:
   mssql-server:
+    restart: always
     user: root
     image: "mcr.microsoft.com/mssql/server:2019-latest"
     environment:
@@ -20,6 +21,7 @@ services:
     depends_on:
       - mssql-server  
   web:
+    restart: always
     build:
         context: .
         dockerfile: ./docker/web/Dockerfile
