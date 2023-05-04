@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "Shearlegs.API": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:57512;http://localhost:57514"
+    }
+  }
+}

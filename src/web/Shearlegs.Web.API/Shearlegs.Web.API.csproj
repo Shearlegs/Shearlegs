@@ -24,8 +24,4 @@
     <ProjectReference Include="..\Shearlegs.Web.Shared\Shearlegs.Web.Shared.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Models\NodeCommunications\" />
-  </ItemGroup>
-
 </Project>

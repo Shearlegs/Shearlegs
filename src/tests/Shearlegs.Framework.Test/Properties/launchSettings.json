@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "Shearlegs.Framework.Test": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:57504;http://localhost:57505"
+    }
+  }
+}
