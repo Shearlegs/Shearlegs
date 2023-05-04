@@ -2,6 +2,7 @@
 using Shearlegs.Web.API.Models.Nodes;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Shearlegs.Web.API.Models.NodeDaemons;
 
 namespace Shearlegs.Web.API.Services.Coordinations.NodeUserAuthentications
 {
@@ -11,6 +12,8 @@ namespace Shearlegs.Web.API.Services.Coordinations.NodeUserAuthentications
         ValueTask<IEnumerable<Node>> RetrieveAllNodesAsync();
         ValueTask<Node> RetrieveNodeByIdAsync(int nodeId);
         ValueTask<Node> RetrieveNodeByNameAsync(string nodeName);
+        ValueTask<NodeDaemon> RetrieveNodeDaemonByIdAsync(int nodeId);
+        ValueTask<NodeDaemonInfo> RetrieveNodeDaemonInfoByIdAsync(int nodeId);
         ValueTask<Node> UpdateUserNodeAsync(UpdateUserNodeParams @params);
     }
 }

@@ -76,5 +76,21 @@ namespace Shearlegs.Web.APIClient.Services.NodesAPI
 
             return await client.PostAsJsonAsync<NodeVariable>(requestUri, request);
         }
+
+        // Node Daemon
+
+        public async ValueTask<NodeDaemon> GetNodeDaemonAsync(int nodeId)
+        {
+            string requestUri = $"/nodes/{nodeId}/daemon";
+
+            return await client.GetFromJsonAsync<NodeDaemon>(requestUri);
+        }
+
+        public async ValueTask<NodeDaemonInfo> GetNodeDaemonInfoAsync(int nodeId)
+        {
+            string requestUri = $"/nodes/{nodeId}/daemon/info";
+
+            return await client.GetFromJsonAsync<NodeDaemonInfo>(requestUri);
+        }
     }
 }

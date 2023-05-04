@@ -1,5 +1,7 @@
 ﻿using MudBlazor;
+using Shearlegs.Web.APIClient.Models.Exceptions;
 using Shearlegs.Web.APIClient.Models.Nodes;
+using System.Xml.Linq;
 
 namespace Shearlegs.Web.Dashboard.Pages.Managements.Nodes
 {
@@ -13,10 +15,40 @@ namespace Shearlegs.Web.Dashboard.Pages.Managements.Nodes
         };
         
         public List<Node> Nodes { get; set; }
+        public Dictionary<int, NodeDaemonInfo> NodeDaemons { get; set; } = new();
 
         protected override async Task OnInitializedAsync()
         {
             Nodes = await client.Nodes.GetAllNodesAsync();
+
+            foreach (Node node in Nodes)
+            {
+                _ = RefreshNodeDaemon(node.Id);
+            }
+        }
+
+        private async Task RefreshNodeDaemon(int nodeId)
+        {
+            await Task.Delay(1000);
+            NodeDaemonInfo daemonInfo;
+
+            try
+            {
+                daemonInfo = await client.Nodes.GetNodeDaemonInfoAsync(nodeId);
+            } catch (ShearlegsWebAPIRequestException)
+            {
+                daemonInfo = null;
+            }
+
+            if (NodeDaemons.ContainsKey(nodeId))
+            {
+                NodeDaemons[nodeId] = daemonInfo;
+            } else
+            {
+                NodeDaemons.Add(nodeId, daemonInfo);
+            }
+
+            await InvokeAsync(StateHasChanged);
         }
 
         private string searchString = string.Empty;

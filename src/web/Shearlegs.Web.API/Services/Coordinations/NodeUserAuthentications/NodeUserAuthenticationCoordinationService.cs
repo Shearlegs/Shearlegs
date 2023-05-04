@@ -6,6 +6,7 @@ using Shearlegs.Web.API.Services.Orchestrations.Nodes;
 using Shearlegs.Web.API.Services.Orchestrations.UserAuthentications;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Shearlegs.Web.API.Models.NodeDaemons;
 
 namespace Shearlegs.Web.API.Services.Coordinations.NodeUserAuthentications
 {
@@ -72,6 +73,16 @@ namespace Shearlegs.Web.API.Services.Coordinations.NodeUserAuthentications
         public async ValueTask<IEnumerable<Node>> RetrieveAllNodesAsync()
         {
             return await nodeService.RetrieveAllNodesAsync();
+        }
+
+        public async ValueTask<NodeDaemon> RetrieveNodeDaemonByIdAsync(int nodeId)
+        {
+            return await nodeService.RetrieveNodeDaemonByIdAsync(nodeId);
+        }
+
+        public async ValueTask<NodeDaemonInfo> RetrieveNodeDaemonInfoByIdAsync(int nodeId)
+        {
+            return await nodeService.RetrieveNodeDaemonInfoByIdAsync(nodeId);
         }
     }
 }

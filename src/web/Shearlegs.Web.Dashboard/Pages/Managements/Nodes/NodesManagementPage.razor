@@ -19,8 +19,8 @@
     </ToolBarContent>
     <HeaderContent>
         <MudTh>
-            <MudTableSortLabel T="Node" SortBy="x => x.Id">
-                ID
+            <MudTableSortLabel T="Node">
+                
             </MudTableSortLabel>
         </MudTh>
         <MudTh>
@@ -55,8 +55,47 @@
         </MudTh>
     </HeaderContent>
     <RowTemplate>
-        <MudTd DataLabel="ID">
-            @context.Id
+        <MudTd DataLabel="Status">
+            <Condition Evaluation="NodeDaemons.ContainsKey(context.Id)">
+                <Match>
+                    <Condition Evaluation="NodeDaemons[context.Id] != null">
+                        <Match>
+                            <div class="d-flex justify-center">
+                                <MudTooltip Color="Color.Dark" Placement="Placement.Top">
+                                    <ChildContent>
+                                        <MudChip Color="Color.Success" Size="Size.Small">
+                                            Online
+                                        </MudChip>
+                                    </ChildContent>
+                                    <TooltipContent>
+                                        <MudText Typo="Typo.body2">
+                                            Node v@(NodeDaemons[context.Id].NodeVersion)
+                                        </MudText>
+                                        <MudText Typo="Typo.body2">
+                                            Shearlegs v@(NodeDaemons[context.Id].ShearlegsRuntimeVersion)
+                                        </MudText>
+                                    </TooltipContent>
+                                </MudTooltip>
+                            </div>
+                        </Match>
+                        <NotMatch>
+                            <div class="d-flex justify-center">
+                                <MudChip Color="Color.Error" Size="Size.Small">
+                                    Offline
+                                </MudChip>
+                            </div>
+                        </NotMatch>
+                    </Condition>
+                    
+                </Match>
+                <NotMatch>
+                    <div class="d-flex justify-center">
+                        <MudChip Disabled="true" Size="Size.Small">
+                            Checking...
+                        </MudChip>
+                    </div>                   
+                </NotMatch>
+            </Condition>
         </MudTd>
         <MudTd DataLabel="Name">
             <MudLink Href="@($"/management/nodes/{context.Name}")">

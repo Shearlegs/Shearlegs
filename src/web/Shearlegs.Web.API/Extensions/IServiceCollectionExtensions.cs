@@ -7,6 +7,7 @@ using Shearlegs.Runtime;
 using Shearlegs.Web.API.Brokers.Encryptions;
 using Shearlegs.Web.API.Brokers.HttpContexts;
 using Shearlegs.Web.API.Brokers.JWTs;
+using Shearlegs.Web.API.Brokers.NodeClients;
 using Shearlegs.Web.API.Brokers.Schedulings;
 using Shearlegs.Web.API.Brokers.Serializations;
 using Shearlegs.Web.API.Brokers.Shearlegs;
@@ -17,6 +18,7 @@ using Shearlegs.Web.API.Services.Coordinations.NodeUserAuthentications;
 using Shearlegs.Web.API.Services.Coordinations.NodeVariableUserAuthentications;
 using Shearlegs.Web.API.Services.Foundations.HttpUsers;
 using Shearlegs.Web.API.Services.Foundations.JWTs;
+using Shearlegs.Web.API.Services.Foundations.NodeDaemons;
 using Shearlegs.Web.API.Services.Foundations.Nodes;
 using Shearlegs.Web.API.Services.Foundations.NodeVariables;
 using Shearlegs.Web.API.Services.Foundations.Plugins;
@@ -46,6 +48,7 @@ namespace Shearlegs.Web.API.Extensions
         {
             services.AddOptions();
             services.AddHttpContextAccessor();
+            services.AddHttpClient();
 
             // Swagger
             services.AddSwaggerGen(options =>
@@ -101,6 +104,7 @@ namespace Shearlegs.Web.API.Extensions
             services.AddTransient<ISchedulingBroker, SchedulingBroker>();
             services.AddTransient<IHttpContextBroker, HttpContextBroker>();
             services.AddTransient<IJWTBroker, JWTBroker>();
+            services.AddTransient<INodeClientBroker, NodeClientBroker>();
 
             return services;
         }
@@ -119,6 +123,7 @@ namespace Shearlegs.Web.API.Extensions
             services.AddTransient<IJWTService, JWTService>();
             services.AddTransient<INodeService, NodeService>();
             services.AddTransient<INodeVariableService, NodeVariableService>();
+            services.AddTransient<INodeDaemonService, NodeDaemonService>();
 
             return services;
         }

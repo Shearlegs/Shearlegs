@@ -12,6 +12,7 @@ using Shearlegs.Web.API.Models.NodeVariables;
 using Shearlegs.Web.API.Models.NodeVariableUserAuthentications.Params;
 using Shearlegs.Web.API.Models.NodeVariables.Exceptions;
 using Shearlegs.Web.API.Models.UserAuthentications.Exceptions;
+using Shearlegs.Web.API.Models.NodeDaemons;
 
 namespace Shearlegs.Web.API.Controllers
 {
@@ -147,6 +148,34 @@ namespace Shearlegs.Web.API.Controllers
             } catch (NotAuthenticatedUserException exception)
             {
                 return Unauthorized(exception);
+            }
+        }
+
+        [HttpGet("{nodeId}/daemon")]
+        public async ValueTask<IActionResult> GetNodeDaemon(int nodeId)
+        {
+            try
+            {
+                NodeDaemon nodeDaemon = await nodeService.RetrieveNodeDaemonByIdAsync(nodeId);
+
+                return Ok(nodeDaemon);
+            } catch (NotFoundNodeException exception)
+            {
+                return NotFound(exception);
+            }
+        }
+
+        [HttpGet("{nodeId}/daemon/info")]
+        public async ValueTask<IActionResult> GetNodeDaemonInfo(int nodeId)
+        {
+            try
+            {
+                NodeDaemonInfo nodeDaemonInfo = await nodeService.RetrieveNodeDaemonInfoByIdAsync(nodeId);
+
+                return Ok(nodeDaemonInfo);
+            } catch (NotFoundNodeException exception)
+            {
+                return NotFound(exception);
             }
         }
     }

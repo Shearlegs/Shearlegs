@@ -2,7 +2,6 @@ using Hangfire;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
 using Shearlegs.Web.API.Extensions;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
