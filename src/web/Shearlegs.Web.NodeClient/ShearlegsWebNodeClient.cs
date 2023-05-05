@@ -20,9 +20,9 @@ namespace Shearlegs.Web.NodeClient
             return await GetFromJsonAsync<NodeInfo>("info");
         }
 
-        public async ValueTask<NodeFullInfo> GetNodeFullInfoAsync()
+        public async ValueTask<NodeStatistics> GetNodeStatisticsAsync()
         {
-            return await GetFromJsonAsync<NodeFullInfo>("fullinfo");
+            return await GetFromJsonAsync<NodeStatistics>("statistics");
         }
 
         public async ValueTask<T> GetFromJsonAsync<T>(string requestUri)

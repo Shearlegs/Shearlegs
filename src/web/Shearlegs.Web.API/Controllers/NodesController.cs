@@ -151,12 +151,12 @@ namespace Shearlegs.Web.API.Controllers
             }
         }
 
-        [HttpGet("{nodeId}/daemon")]
-        public async ValueTask<IActionResult> GetNodeDaemon(int nodeId)
+        [HttpGet("{nodeId}/daemon/statistics")]
+        public async ValueTask<IActionResult> GetNodeDaemonStatistics(int nodeId)
         {
             try
             {
-                NodeDaemon nodeDaemon = await nodeService.RetrieveNodeDaemonByIdAsync(nodeId);
+                NodeDaemonStatistics nodeDaemon = await nodeService.RetrieveNodeDaemonStatisticsByIdAsync(nodeId);
 
                 return Ok(nodeDaemon);
             } catch (NotFoundNodeException exception)

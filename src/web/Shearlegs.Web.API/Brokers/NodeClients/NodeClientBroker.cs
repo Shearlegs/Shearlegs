@@ -27,7 +27,7 @@ namespace Shearlegs.Web.API.Brokers.NodeClients
             return await nodeClient.GetNodeInfoAsync();
         }
 
-        public async ValueTask<NodeFullInfo> GetNodeFullInfoAsync(NodeCommunicationDetails nodeCommunicationDetails)
+        public async ValueTask<NodeStatistics> GetNodeStatisticsAsync(NodeCommunicationDetails nodeCommunicationDetails)
         {
             HttpClient httpClient = new()
             {
@@ -35,7 +35,7 @@ namespace Shearlegs.Web.API.Brokers.NodeClients
             };
             ShearlegsWebNodeClient nodeClient = new(httpClient);
 
-            return await nodeClient.GetNodeFullInfoAsync();
+            return await nodeClient.GetNodeStatisticsAsync();
         }
     }
 }

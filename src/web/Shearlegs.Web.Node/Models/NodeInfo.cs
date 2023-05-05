@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.Formatters;
-
-namespace Shearlegs.Web.Node.Models
+﻿namespace Shearlegs.Web.Node.Models
 {
     public class NodeInfo
     {

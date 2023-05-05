@@ -75,7 +75,7 @@ namespace Shearlegs.Web.API.Services.Coordinations.NodeUserAuthentications
             return await nodeService.RetrieveAllNodesAsync();
         }
 
-        public async ValueTask<NodeDaemon> RetrieveNodeDaemonByIdAsync(int nodeId)
+        public async ValueTask<NodeDaemonStatistics> RetrieveNodeDaemonStatisticsByIdAsync(int nodeId)
         {
             return await nodeService.RetrieveNodeDaemonByIdAsync(nodeId);
         }

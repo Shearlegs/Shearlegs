@@ -61,7 +61,7 @@ namespace Shearlegs.Web.API.Services.Orchestrations.Nodes
             return await nodeDaemonService.RetrieveNodeDaemonInfoAsync(communicationDetails);
         }
 
-        public async ValueTask<NodeDaemon> RetrieveNodeDaemonByIdAsync(int nodeId)
+        public async ValueTask<NodeDaemonStatistics> RetrieveNodeDaemonByIdAsync(int nodeId)
         {
             Node node = await nodeService.RetrieveNodeByIdAsync(nodeId);
 

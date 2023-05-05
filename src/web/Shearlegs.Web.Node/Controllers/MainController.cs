@@ -30,17 +30,15 @@ namespace Shearlegs.Web.Node.Controllers
             return Ok(nodeInfo);
         }        
 
-        [HttpGet("fullinfo")]
-        public IActionResult GetFullInfo()
+        [HttpGet("statistics")]
+        public IActionResult GetStatistics()
         {
-            NodeFullInfo nodeFullInfo = new()
+            NodeStatistics nodeStatistics = new()
             {
-                NodeVersion = typeof(Program).Assembly.GetName().Version.ToString(3),
-                ShearlegsRuntimeVersion = typeof(ShearlegsRuntime).Assembly.GetName().Version.ToString(3),
                 CacheSizeBytes = DirectoryHelper.GetDirectorySize(DirectoryConstants.CacheDirectory)
             };
 
-            return Ok(nodeFullInfo);
+            return Ok(nodeStatistics);
         }
     }
 }

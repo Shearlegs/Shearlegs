@@ -14,15 +14,13 @@ namespace Shearlegs.Web.API.Services.Foundations.NodeDaemons
             this.nodeClientBroker = nodeClientBroker;
         }
 
-        public async ValueTask<NodeDaemon> RetrieveNodeDaemonAsync(NodeCommunicationDetails communicationDetails)
+        public async ValueTask<NodeDaemonStatistics> RetrieveNodeDaemonAsync(NodeCommunicationDetails communicationDetails)
         {
-            NodeFullInfo nodeFullInfo = await nodeClientBroker.GetNodeFullInfoAsync(communicationDetails);
+            NodeStatistics nodeStats = await nodeClientBroker.GetNodeStatisticsAsync(communicationDetails);
             
-            return new NodeDaemon
+            return new NodeDaemonStatistics
             {
-                NodeVersion = nodeFullInfo.NodeVersion,
-                ShearlegsRuntimeVersion = nodeFullInfo.ShearlegsRuntimeVersion,
-                CacheSizeBytes = nodeFullInfo.CacheSizeBytes
+                CacheSizeBytes = nodeStats.CacheSizeBytes
             };
         }
 

@@ -79,11 +79,11 @@ namespace Shearlegs.Web.APIClient.Services.NodesAPI
 
         // Node Daemon
 
-        public async ValueTask<NodeDaemon> GetNodeDaemonAsync(int nodeId)
+        public async ValueTask<NodeDaemonStatistics> GetNodeDaemonAsync(int nodeId)
         {
-            string requestUri = $"/nodes/{nodeId}/daemon";
+            string requestUri = $"/nodes/{nodeId}/daemon/statistics";
 
-            return await client.GetFromJsonAsync<NodeDaemon>(requestUri);
+            return await client.GetFromJsonAsync<NodeDaemonStatistics>(requestUri);
         }
 
         public async ValueTask<NodeDaemonInfo> GetNodeDaemonInfoAsync(int nodeId)

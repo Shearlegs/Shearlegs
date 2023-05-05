@@ -5,7 +5,7 @@ namespace Shearlegs.Web.API.Services.Foundations.NodeDaemons
 {
     public interface INodeDaemonService
     {
-        ValueTask<NodeDaemon> RetrieveNodeDaemonAsync(NodeCommunicationDetails communicationDetails);
+        ValueTask<NodeDaemonStatistics> RetrieveNodeDaemonAsync(NodeCommunicationDetails communicationDetails);
         ValueTask<NodeDaemonInfo> RetrieveNodeDaemonInfoAsync(NodeCommunicationDetails communicationDetails);
     }
 }

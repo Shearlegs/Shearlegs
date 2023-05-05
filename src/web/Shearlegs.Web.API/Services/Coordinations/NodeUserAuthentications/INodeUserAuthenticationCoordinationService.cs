@@ -12,7 +12,7 @@ namespace Shearlegs.Web.API.Services.Coordinations.NodeUserAuthentications
         ValueTask<IEnumerable<Node>> RetrieveAllNodesAsync();
         ValueTask<Node> RetrieveNodeByIdAsync(int nodeId);
         ValueTask<Node> RetrieveNodeByNameAsync(string nodeName);
-        ValueTask<NodeDaemon> RetrieveNodeDaemonByIdAsync(int nodeId);
+        ValueTask<NodeDaemonStatistics> RetrieveNodeDaemonStatisticsByIdAsync(int nodeId);
         ValueTask<NodeDaemonInfo> RetrieveNodeDaemonInfoByIdAsync(int nodeId);
         ValueTask<Node> UpdateUserNodeAsync(UpdateUserNodeParams @params);
     }

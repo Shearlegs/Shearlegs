@@ -6,7 +6,7 @@ namespace Shearlegs.Web.API.Brokers.NodeClients
 {
     public interface INodeClientBroker
     {
-        ValueTask<NodeFullInfo> GetNodeFullInfoAsync(NodeCommunicationDetails nodeCommunicationDetails);
+        ValueTask<NodeStatistics> GetNodeStatisticsAsync(NodeCommunicationDetails nodeCommunicationDetails);
         ValueTask<NodeInfo> GetNodeInfoAsync(NodeCommunicationDetails nodeCommunicationDetails);
     }
 }
