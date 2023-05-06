@@ -56,6 +56,9 @@ namespace Shearlegs.Web.Dashboard.Pages.Managements.Nodes
                 Description = Node.Description,
                 FQDN = Node.FQDN,
                 Scheme = Node.Scheme,
+                HttpPort = Node.HttpPort,
+                HttpsPort = Node.HttpsPort,
+                CacheSizeLimit = Node.CacheSizeLimit,
                 IsBehindProxy = Node.IsBehindProxy,
                 IsEnabled = Node.IsEnabled
             };
@@ -75,6 +78,9 @@ namespace Shearlegs.Web.Dashboard.Pages.Managements.Nodes
                 Description = Model.Description,
                 FQDN = Model.FQDN,
                 Scheme = Model.Scheme,
+                HttpPort = Model.HttpPort,
+                HttpsPort = Model.HttpsPort,
+                CacheSizeLimit = Model.CacheSizeLimit,
                 IsBehindProxy = Model.IsBehindProxy,
                 IsEnabled = Model.IsEnabled
             };

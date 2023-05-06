@@ -14,6 +14,12 @@ namespace Shearlegs.Web.Dashboard.Models.Forms.Managements.Nodes
         public string FQDN { get; set; }
         [Required]
         public string Scheme { get; set; }
+        [Required]
+        public int HttpPort { get; set; }
+        [Required]
+        public int HttpsPort { get; set; }
+        [Required]
+        public int CacheSizeLimit { get; set; }
         public bool IsBehindProxy { get; set; }
         public bool IsEnabled { get; set; }
     }

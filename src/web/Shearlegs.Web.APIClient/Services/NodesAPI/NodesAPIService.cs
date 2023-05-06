@@ -79,7 +79,7 @@ namespace Shearlegs.Web.APIClient.Services.NodesAPI
 
         // Node Daemon
 
-        public async ValueTask<NodeDaemonStatistics> GetNodeDaemonAsync(int nodeId)
+        public async ValueTask<NodeDaemonStatistics> GetNodeDaemonStatisticsAsync(int nodeId)
         {
             string requestUri = $"/nodes/{nodeId}/daemon/statistics";
 

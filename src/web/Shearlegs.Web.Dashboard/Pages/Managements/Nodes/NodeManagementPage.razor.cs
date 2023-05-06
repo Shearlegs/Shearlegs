@@ -4,6 +4,7 @@ using Shearlegs.Web.APIClient.Models.Exceptions;
 using Shearlegs.Web.APIClient.Models.Nodes;
 using System.Net;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace Shearlegs.Web.Dashboard.Pages.Managements.Nodes
 {
@@ -20,9 +21,13 @@ namespace Shearlegs.Web.Dashboard.Pages.Managements.Nodes
         };
 
         public Node Node { get; set; }
+        public NodeDaemonInfo DaemonInfo { get; set; }
+        public NodeDaemonStatistics DaemonStatistics { get; set; }
 
         private bool isLoaded = false;
         private bool isCanceled = false;
+        private bool isOffline = false;
+        private ShearlegsWebAPIRequestException daemonException;
 
         protected override async Task OnParametersSetAsync()
         {
@@ -44,7 +49,44 @@ namespace Shearlegs.Web.Dashboard.Pages.Managements.Nodes
 
             BreadcrumbItems.Add(new BreadcrumbItem(Node.Name, $"/management/nodes/{Node.Name}"));
 
+            _ = RefreshDaemonInfoAsync();
+            _ = RefreshDaemonStatisticsAsync();
+
             isLoaded = true;
+        }
+
+        private async Task RefreshDaemonInfoAsync()
+        {
+            try
+            {
+                DaemonInfo = await client.Nodes.GetNodeDaemonInfoAsync(Node.Id);
+            } catch (ShearlegsWebAPIRequestException exception) when (exception.StatusCode == HttpStatusCode.ServiceUnavailable)
+            {
+                isOffline = true;
+                daemonException = exception;
+            } catch (ShearlegsWebAPIRequestException exception)
+            {
+                loggingBroker.LogException(exception);
+            }
+
+            await InvokeAsync(StateHasChanged);
+        }
+
+        private async Task RefreshDaemonStatisticsAsync()
+        {
+            try
+            {
+                DaemonStatistics = await client.Nodes.GetNodeDaemonStatisticsAsync(Node.Id);
+            }  catch (ShearlegsWebAPIRequestException exception) when (exception.StatusCode == HttpStatusCode.ServiceUnavailable)
+            {
+                isOffline = true;
+                daemonException = exception;
+            } catch (ShearlegsWebAPIRequestException exception)
+            {
+                loggingBroker.LogException(exception);
+            }
+
+            await InvokeAsync(StateHasChanged);
         }
     }
 }

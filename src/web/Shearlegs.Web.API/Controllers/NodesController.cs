@@ -13,6 +13,7 @@ using Shearlegs.Web.API.Models.NodeVariableUserAuthentications.Params;
 using Shearlegs.Web.API.Models.NodeVariables.Exceptions;
 using Shearlegs.Web.API.Models.UserAuthentications.Exceptions;
 using Shearlegs.Web.API.Models.NodeDaemons;
+using Shearlegs.Web.API.Models.NodeDaemons.Exceptions;
 
 namespace Shearlegs.Web.API.Controllers
 {
@@ -162,6 +163,9 @@ namespace Shearlegs.Web.API.Controllers
             } catch (NotFoundNodeException exception)
             {
                 return NotFound(exception);
+            } catch (NodeDaemonCommunicationException exception)
+            {
+                return ServiceUnavailable(exception);
             }
         }
 
@@ -176,6 +180,9 @@ namespace Shearlegs.Web.API.Controllers
             } catch (NotFoundNodeException exception)
             {
                 return NotFound(exception);
+            } catch (NodeDaemonCommunicationException exception)
+            {
+                return ServiceUnavailable(exception);
             }
         }
     }

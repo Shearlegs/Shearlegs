@@ -12,7 +12,7 @@ namespace Shearlegs.Web.Dashboard.Shared.Components
         public EventCallback OnTimeElapsed { get; set; }
 
         public TimeSpan TimeLeft { get; set; }
-        public string TimeLeftString => TimeLeft.ToString(@"mm\:ss");
+        public string TimeLeftString => TimeLeft.ToString(@"hh\:mm\:ss");
 
         public Timer Timer { get; set; }
 

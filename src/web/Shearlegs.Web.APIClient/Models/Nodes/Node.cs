@@ -1,9 +1,5 @@
 ﻿using Shearlegs.Web.APIClient.Models.Users;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Shearlegs.Web.APIClient.Models.Nodes
 {
@@ -15,6 +11,9 @@ namespace Shearlegs.Web.APIClient.Models.Nodes
         public string Description { get; set; }
         public string FQDN { get; set; }
         public string Scheme { get; set; }
+        public int HttpPort { get; set; }
+        public int HttpsPort { get; set; }
+        public int CacheSizeLimit { get; set; }
         public bool IsBehindProxy { get; set; }
         public bool IsEnabled { get; set; }
         public Guid AccessToken { get; set; }

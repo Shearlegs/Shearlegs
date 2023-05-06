@@ -1,6 +1,8 @@
 ﻿using Shearlegs.Web.API.Brokers.NodeClients;
 using Shearlegs.Web.API.Models.NodeDaemons;
+using Shearlegs.Web.API.Models.NodeDaemons.Exceptions;
 using Shearlegs.Web.NodeClient.Models;
+using Shearlegs.Web.NodeClient.Models.Exceptions;
 using System.Threading.Tasks;
 
 namespace Shearlegs.Web.API.Services.Foundations.NodeDaemons
@@ -16,23 +18,36 @@ namespace Shearlegs.Web.API.Services.Foundations.NodeDaemons
 
         public async ValueTask<NodeDaemonStatistics> RetrieveNodeDaemonAsync(NodeCommunicationDetails communicationDetails)
         {
-            NodeStatistics nodeStats = await nodeClientBroker.GetNodeStatisticsAsync(communicationDetails);
-            
-            return new NodeDaemonStatistics
+            try
             {
-                CacheSizeBytes = nodeStats.CacheSizeBytes
-            };
+                NodeStatistics nodeStats = await nodeClientBroker.GetNodeStatisticsAsync(communicationDetails);
+
+                return new NodeDaemonStatistics
+                {
+                    CacheSizeBytes = nodeStats.CacheSizeBytes
+                };
+            }
+            catch (ShearlegsWebNodeClientRequestException exception)
+            {
+                throw new NodeDaemonCommunicationException(exception);
+            }
         }
 
         public async ValueTask<NodeDaemonInfo> RetrieveNodeDaemonInfoAsync(NodeCommunicationDetails communicationDetails)
         {
-            NodeInfo nodeInfo = await nodeClientBroker.GetNodeInfoAsync(communicationDetails);
-
-            return new NodeDaemonInfo
+            try
             {
-                NodeVersion = nodeInfo.NodeVersion,
-                ShearlegsRuntimeVersion = nodeInfo.ShearlegsRuntimeVersion
-            };
+                NodeInfo nodeInfo = await nodeClientBroker.GetNodeInfoAsync(communicationDetails);
+
+                return new NodeDaemonInfo
+                {
+                    NodeVersion = nodeInfo.NodeVersion,
+                    ShearlegsRuntimeVersion = nodeInfo.ShearlegsRuntimeVersion
+                };
+            } catch (ShearlegsWebNodeClientRequestException exception)
+            {
+                throw new NodeDaemonCommunicationException(exception);
+            }
         }
     }
 }

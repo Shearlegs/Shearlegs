@@ -49,7 +49,7 @@ namespace Shearlegs.Web.API.Services.Orchestrations.UserAuthentications
                 UserId = user.Id,
                 HostName = httpUser.HostName,
                 IPAddress  = httpUser.IPAddress,
-                UserAgent = httpUser.UserAgent,
+                UserAgent = httpUser.UserAgent
             };
 
             UserSession userSession = await userSessionService.CreateUserSessionAsync(createUserSessionParams);

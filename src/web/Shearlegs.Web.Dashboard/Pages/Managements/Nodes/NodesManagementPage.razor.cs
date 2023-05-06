@@ -29,7 +29,6 @@ namespace Shearlegs.Web.Dashboard.Pages.Managements.Nodes
 
         private async Task RefreshNodeDaemon(int nodeId)
         {
-            await Task.Delay(1000);
             NodeDaemonInfo daemonInfo;
 
             try

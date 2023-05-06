@@ -10,6 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="ByteSize" Version="2.1.1" />
     <PackageReference Include="MudBlazor" Version="6.0.13" />
     <PackageReference Include="PrettyBlazor" Version="1.2.0" />
   </ItemGroup>

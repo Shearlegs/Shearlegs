@@ -34,6 +34,9 @@ namespace Shearlegs.Web.API.Services.Coordinations.NodeUserAuthentications
                 FQDN = @params.FQDN,
                 Scheme = @params.Scheme,
                 IsBehindProxy = @params.IsBehindProxy,
+                HttpPort = @params.HttpPort,
+                HttpsPort = @params.HttpsPort,
+                CacheSizeLimit = @params.CacheSizeLimit,
                 IsEnabled = @params.IsEnabled,
                 CreateUserId = authenticatedUser.User.Id
             };
@@ -52,6 +55,9 @@ namespace Shearlegs.Web.API.Services.Coordinations.NodeUserAuthentications
                 Description = @params.Description,
                 FQDN = @params.FQDN,
                 Scheme = @params.Scheme,
+                HttpPort = @params.HttpPort,
+                HttpsPort = @params.HttpsPort,
+                CacheSizeLimit = @params.CacheSizeLimit,
                 IsBehindProxy = @params.IsBehindProxy,
                 IsEnabled = @params.IsEnabled,
                 UpdateUserId = authenticatedUser.User.Id

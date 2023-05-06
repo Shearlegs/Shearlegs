@@ -18,7 +18,7 @@ BEGIN
 
 	INSERT INTO dbo.UserSessions (UserId, AuthenticationMethod, AuthenticationScheme, HostName, IPAddress, UserAgent, [ExpireDate])
 	OUTPUT INSERTED.Id INTO @temp
-	VALUES (@UserId, 'Username and Password', 'Bearer', @HostName, @IPAddress, @UserAgent, DATEADD(MINUTE, 30, SYSDATETIME()));
+	VALUES (@UserId, 'Username and Password', 'Bearer', @HostName, @IPAddress, @UserAgent, DATEADD(HOUR, 24, SYSDATETIME()));
 
 	SELECT @SessionId = Id FROM @temp;
 
