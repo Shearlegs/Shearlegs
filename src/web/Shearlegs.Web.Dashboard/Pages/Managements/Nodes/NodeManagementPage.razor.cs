@@ -47,7 +47,7 @@ namespace Shearlegs.Web.Dashboard.Pages.Managements.Nodes
                 return;
             }
 
-            BreadcrumbItems.Add(new BreadcrumbItem(Node.Name, $"/management/nodes/{Node.Name}"));
+            BreadcrumbItems.Add(new BreadcrumbItem(Node.Name, null, true));
 
             _ = RefreshDaemonInfoAsync();
             _ = RefreshDaemonStatisticsAsync();

@@ -1,4 +1,5 @@
 ﻿@page "/management/plugins/{PackageId}/versions"
+@using ByteSizeLib;
 @using Shearlegs.Web.Dashboard.Pages.Managements.Plugins.Components
 
 <MudBreadcrumbs Items="BreadcrumbItems" />
@@ -14,5 +15,55 @@
 </Condition>
 
 <LoadingView IsLoaded="isLoaded" IsCanceled="isCanceled">
-    
+    <MudTable Items="Versions" Loading="isVersionsLoading" Hover="true" Dense="false" Context="version" Filter="SearchVersion">
+        <ToolBarContent>
+            <MudText Typo="Typo.h6">
+                Version List
+            </MudText>
+            <MudSpacer />
+            <MudTextField @bind-Value="searchString"
+                          Immediate="true"
+                          Placeholder="Search"
+                          Adornment="Adornment.Start"
+                          AdornmentIcon="@Icons.Material.Filled.Search"
+                          IconSize="Size.Medium"
+                          Class="mt-0" />
+        </ToolBarContent>
+        <HeaderContent>
+            <MudTh>
+                <MudTableSortLabel T="Version" SortBy="x => x.Name">
+                    Name
+                </MudTableSortLabel>
+            </MudTh>
+            <MudTh>
+                <MudTableSortLabel T="Version" SortBy="x => x.ContentLength">
+                    Size
+                </MudTableSortLabel>
+            </MudTh>
+            <MudTh>
+                <MudTableSortLabel T="Version" SortBy="x => x.CreateUser.Name">
+                    Uploader
+                </MudTableSortLabel>
+            </MudTh>
+            <MudTh>
+                <MudTableSortLabel T="Version" SortBy="x => x.CreateDate" InitialDirection="SortDirection.Descending">
+                    Create Date
+                </MudTableSortLabel>
+            </MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Name">
+                @version.Name
+            </MudTd>
+            <MudTd DataLabel="Size">
+                @ByteSize.FromBytes(version.ContentLength).ToString()
+            </MudTd>
+            <MudTd DataLabel="Uploader">
+                @(version.CreateUser?.Name ?? "-")
+            </MudTd>
+            <MudTd DataLabel="Create Date">
+                @version.CreateDate.LocalDateTime
+            </MudTd>
+        </RowTemplate>
+    </MudTable>
 </LoadingView>
