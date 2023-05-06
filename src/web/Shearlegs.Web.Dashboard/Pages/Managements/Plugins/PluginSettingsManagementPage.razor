@@ -1,0 +1,90 @@
+﻿@page "/management/plugins/{PackageId}/settings"
+@using Shearlegs.Web.Dashboard.Pages.Managements.Plugins.Components
+
+<MudBreadcrumbs Items="BreadcrumbItems" />
+
+<PluginNavigationTabs PluginName="@PackageId" ActivePanelIndex="1" />
+
+<Condition Evaluation="isCanceled">
+    <Match>
+        <MudAlert Severity="Severity.Info" Variant="Variant.Text" Class="mb-3">
+            Plugin not found!
+        </MudAlert>
+    </Match>
+</Condition>
+
+<LoadingView IsLoaded="isLoaded" IsCanceled="isCanceled">
+    <Condition Evaluation="showSuccessAlert">
+        <Match>
+            <MudAlert Severity="Severity.Success" Variant="Variant.Outlined" Class="mb-3">
+                Successfully updated plugin information settings!
+            </MudAlert>
+        </Match>
+    </Condition>
+
+    <Condition Evaluation="showErrorAlert">
+        <Match>
+            <MudAlert Severity="Severity.Error" Variant="Variant.Outlined" Class="mb-3">
+                There was a problem. Please try again later
+            </MudAlert>
+        </Match>
+    </Condition>
+
+    <MudCard>
+        <MudCardHeader Class="mud-theme-primary">
+            <CardHeaderContent>
+                <MudText Typo="Typo.h6">
+                    Settings
+                </MudText>
+            </CardHeaderContent>
+        </MudCardHeader>
+        <MudDivider />
+
+        <EditForm Model="Model" OnValidSubmit="HandleUpdatePluginAsync">
+            <MudCardContent>
+                <div class="mb-3">
+                    <MudTextField T="string" 
+                        Label="PackageId" 
+                        @bind-Value="Plugin.PackageId" 
+                        For="(() => Plugin.PackageId)" 
+                        ReadOnly="true"
+                        Disabled="true"/>
+                </div>
+                <div class="mb-3">
+                    <MudTextField T="string" 
+                        Label="Name" 
+                        @bind-Value="Model.Name" 
+                        For="(() => Model.Name)" 
+                        HelperText="Custom name of the plugin" />
+                </div>
+                <div class="mb-3">
+                    <MudTextField T="string" 
+                        Label="Description" 
+                        @bind-Value="Model.Description" 
+                        For="(() => Model.Description)" 
+                        Lines="3"
+                        HelperText="Optional description of the plugin"/>
+                </div>
+                <div class="mb-3">
+                    <MudTextField T="string" 
+                        Label="Author" 
+                        @bind-Value="Model.Author" 
+                        For="(() => Model.Author)" 
+                        HelperText="You can enter name or username of a person maintaining the plugin" />
+                </div>
+            </MudCardContent>
+            <MudDivider />
+            <MudCardActions>
+                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Disabled="isUpdateUserProcessing">
+                    Save
+                </MudButton>
+                <MudText Class="ms-auto" Align="Align.End" Typo="Typo.inherit">
+                    @(Plugin.UpdateDate.HasValue ? Plugin.UpdateDate.Value.LocalDateTime.ToString() : string.Empty)
+                </MudText>
+            </MudCardActions>
+
+            <DataAnnotationsValidator />
+        </EditForm>
+
+    </MudCard>
+</LoadingView>
