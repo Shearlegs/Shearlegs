@@ -1,4 +1,7 @@
-﻿namespace Shearlegs.Web.Dashboard.Brokers.Cookies
+﻿using System;
+using System.Threading.Tasks;
+
+namespace Shearlegs.Web.Dashboard.Brokers.Cookies
 {
     public interface ICookieBroker
     {

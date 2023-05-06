@@ -1,4 +1,6 @@
-﻿namespace Shearlegs.Web.Dashboard.Brokers.Loggings
+﻿using System;
+
+namespace Shearlegs.Web.Dashboard.Brokers.Loggings
 {
     public interface ILoggingBroker
     {

@@ -1,0 +1,18 @@
+﻿@page "/management/plugins/{PackageId}/versions"
+@using Shearlegs.Web.Dashboard.Pages.Managements.Plugins.Components
+
+<MudBreadcrumbs Items="BreadcrumbItems" />
+
+<PluginNavigationTabs PluginName="@PackageId" ActivePanelIndex="2" />
+
+<Condition Evaluation="isCanceled">
+    <Match>
+        <MudAlert Severity="Severity.Info" Variant="Variant.Text" Class="mb-3">
+            Plugin not found!
+        </MudAlert>
+    </Match>
+</Condition>
+
+<LoadingView IsLoaded="isLoaded" IsCanceled="isCanceled">
+    
+</LoadingView>

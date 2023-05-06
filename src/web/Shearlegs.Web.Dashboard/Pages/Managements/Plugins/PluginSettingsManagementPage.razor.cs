@@ -4,7 +4,9 @@ using Shearlegs.Web.APIClient.Models.Exceptions;
 using Shearlegs.Web.APIClient.Models.Plugins;
 using Shearlegs.Web.APIClient.Models.Plugins.Requests;
 using Shearlegs.Web.Dashboard.Models.Forms.Managements.Plugins;
+using System.Collections.Generic;
 using System.Net;
+using System.Threading.Tasks;
 
 namespace Shearlegs.Web.Dashboard.Pages.Managements.Plugins
 {
@@ -31,6 +33,11 @@ namespace Shearlegs.Web.Dashboard.Pages.Managements.Plugins
 
         protected override async Task OnParametersSetAsync()
         {
+            while (BreadcrumbItems.Count > 3)
+            {
+                BreadcrumbItems.RemoveAt(3);
+            }
+
             try
             {
                 Plugin = await client.Plugins.GetPluginByPackageIdAsync(PackageId);
@@ -41,7 +48,8 @@ namespace Shearlegs.Web.Dashboard.Pages.Managements.Plugins
                 return;
             }
 
-            BreadcrumbItems.Add(new BreadcrumbItem(Plugin.PackageId, null, true));
+            BreadcrumbItems.Add(new BreadcrumbItem(Plugin.PackageId, $"/management/plugins/{Plugin.PackageId}"));
+            BreadcrumbItems.Add(new BreadcrumbItem("Settings", null, true));
 
             Model = new()
             {

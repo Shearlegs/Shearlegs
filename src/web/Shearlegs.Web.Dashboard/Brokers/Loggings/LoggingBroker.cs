@@ -1,4 +1,7 @@
-﻿namespace Shearlegs.Web.Dashboard.Brokers.Loggings
+﻿using Microsoft.Extensions.Logging;
+using System;
+
+namespace Shearlegs.Web.Dashboard.Brokers.Loggings
 {
     public class LoggingBroker : ILoggingBroker
     {

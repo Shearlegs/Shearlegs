@@ -1,4 +1,6 @@
 ﻿using Microsoft.JSInterop;
+using System;
+using System.Threading.Tasks;
 
 namespace Shearlegs.Web.Dashboard.Brokers.Cookies
 {

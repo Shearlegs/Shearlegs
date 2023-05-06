@@ -3,6 +3,8 @@ using Shearlegs.Web.APIClient;
 using Shearlegs.Web.APIClient.Models.UserAuthentications;
 using Shearlegs.Web.APIClient.Models.UserAuthentications.Requests;
 using Shearlegs.Web.Dashboard.Brokers.Cookies;
+using System;
+using System.Threading.Tasks;
 
 namespace Shearlegs.Web.Dashboard.Services
 {

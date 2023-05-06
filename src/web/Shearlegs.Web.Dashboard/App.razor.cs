@@ -1,6 +1,7 @@
 ﻿using Shearlegs.Web.APIClient.Models.Exceptions;
 using Shearlegs.Web.APIClient.Models.UserAuthentications;
 using Shearlegs.Web.APIClient.Models.Users;
+using System.Threading.Tasks;
 
 namespace Shearlegs.Web.Dashboard
 {

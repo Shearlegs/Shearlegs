@@ -1,5 +1,6 @@
 ﻿using Shearlegs.Web.APIClient.Models.Plugins;
 using Shearlegs.Web.APIClient.Models.Plugins.Requests;
+using Shearlegs.Web.APIClient.Models.Versions;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -47,6 +48,15 @@ namespace Shearlegs.Web.APIClient.Services.PluginsAPI
             string requestUri = $"/plugins/{pluginId}/update";
 
             return await client.PostAsJsonAsync<Plugin>(requestUri, request);
+        }
+
+        // Versions
+
+        public async ValueTask<List<Version>> GetVersionsByPluginIdAsync(int pluginId)
+        {
+            string requestUri = $"/plugins/{pluginId}/versions";
+
+            return await client.GetFromJsonAsync<List<Version>>(requestUri);
         }
     }
 }
