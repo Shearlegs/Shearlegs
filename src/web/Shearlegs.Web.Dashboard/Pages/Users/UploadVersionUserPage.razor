@@ -1,0 +1,101 @@
+﻿@page "/user/uploadversion"
+@using ByteSizeLib;
+
+
+<MudBreadcrumbs Items="BreadcrumbItems" />
+
+<MudCard>
+    <MudCardHeader Class="mud-theme-primary">
+        <MudText Typo="Typo.h6">
+            Upload New Version
+        </MudText>
+    </MudCardHeader>
+    <MudDivider />
+    <Condition Evaluation="HasFileSelected">
+        <Match>
+            <MudList Dense="true">
+                <MudListItem>
+                    <MudText Typo="Typo.subtitle2">
+                        File Name
+                    </MudText>
+                    <MudText>
+                        @VersionFile.Name
+                    </MudText>
+                </MudListItem>
+                <MudListItem>
+                    <MudText Typo="Typo.subtitle2">
+                        Content Type
+                    </MudText>
+                    <MudText>
+                        <Condition Evaluation="string.IsNullOrEmpty(VersionFile.ContentType)">
+                            <Match>
+                                -
+                            </Match>
+                            <NotMatch>
+                                @VersionFile.ContentType
+                            </NotMatch>
+                        </Condition>                        
+                    </MudText>
+                </MudListItem>
+                <MudListItem>
+                    <MudText Typo="Typo.subtitle2">
+                        Last Modified
+                    </MudText>
+                    <MudText>
+                        @VersionFile.LastModified.LocalDateTime.ToString()
+                    </MudText>
+                </MudListItem>
+                <MudListItem>
+                    <MudText Typo="Typo.subtitle2">
+                        Size
+                    </MudText>
+                    <MudText>
+                        @ByteSize.FromBytes(VersionFile.Size).ToString()
+                    </MudText>
+                </MudListItem>
+            </MudList>
+        </Match>
+    </Condition>
+    <MudDivider />
+    <MudCardActions>
+        <InputFile id="versionFileInput" OnChange="OnVersionFileChanged" hidden accept=".nupkg" />
+
+        <MudButton HtmlTag="label" 
+            StartIcon="@(VersionFile == null ? Icons.Material.Filled.AttachFile : Icons.Material.Filled.Attachment)" 
+            Variant="Variant.Filled" 
+            Disabled="isUploadProcessing"
+            for="versionFileInput">
+            <Condition Evaluation="VersionFile != null">
+                <Match>
+                    @VersionFile.Name
+                </Match>
+                <NotMatch>
+                    Select File
+                </NotMatch>
+            </Condition>
+        </MudButton>
+
+        <MudButton Class="ml-3" 
+            Disabled="!HasFileSelected || isUploadProcessing" 
+            OnClick="UploadAndTestAsync" 
+            StartIcon="@(isUploadProcessing ? "" : Icons.Material.Filled.FileUpload)" 
+            Variant="Variant.Filled" 
+            Color="Color.Primary">
+            
+            <Condition Evaluation="isUploadProcessing">
+                <Match>
+                    <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+                    <MudText Class="ms-2">Uploading</MudText>
+                </Match>
+                <NotMatch>
+                    Upload & Test
+                </NotMatch>
+            </Condition>
+        </MudButton>
+    </MudCardActions>
+</MudCard>
+
+
+
+
+
