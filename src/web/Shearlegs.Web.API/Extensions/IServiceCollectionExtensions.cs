@@ -16,6 +16,7 @@ using Shearlegs.Web.API.Brokers.Validations;
 using Shearlegs.Web.API.Models.Options;
 using Shearlegs.Web.API.Services.Coordinations.NodeUserAuthentications;
 using Shearlegs.Web.API.Services.Coordinations.NodeVariableUserAuthentications;
+using Shearlegs.Web.API.Services.Coordinations.VersionUploadUserAuthentications;
 using Shearlegs.Web.API.Services.Foundations.HttpUsers;
 using Shearlegs.Web.API.Services.Foundations.JWTs;
 using Shearlegs.Web.API.Services.Foundations.NodeDaemons;
@@ -29,10 +30,12 @@ using Shearlegs.Web.API.Services.Foundations.ShearlegsFrameworks;
 using Shearlegs.Web.API.Services.Foundations.Users;
 using Shearlegs.Web.API.Services.Foundations.UserSessions;
 using Shearlegs.Web.API.Services.Foundations.Versions;
+using Shearlegs.Web.API.Services.Foundations.VersionUploads;
 using Shearlegs.Web.API.Services.Orchestrations.Nodes;
 using Shearlegs.Web.API.Services.Orchestrations.NodeVariables;
 using Shearlegs.Web.API.Services.Orchestrations.UserAuthentications;
 using Shearlegs.Web.API.Services.Orchestrations.Versions;
+using Shearlegs.Web.API.Services.Orchestrations.VersionUploads;
 using Shearlegs.Web.API.Services.Processings.Results;
 using Shearlegs.Web.API.Services.Processings.Users;
 using Shearlegs.Web.API.Services.Processings.Versions;
@@ -124,6 +127,7 @@ namespace Shearlegs.Web.API.Extensions
             services.AddTransient<INodeService, NodeService>();
             services.AddTransient<INodeVariableService, NodeVariableService>();
             services.AddTransient<INodeDaemonService, NodeDaemonService>();
+            services.AddTransient<IVersionUploadService, VersionUploadService>();
 
             return services;
         }
@@ -143,6 +147,7 @@ namespace Shearlegs.Web.API.Extensions
             services.AddTransient<IUserAuthenticationOrchestrationService, UserAuthenticationOrchestrationService>();
             services.AddTransient<INodeOrchestrationService, NodeOrchestrationService>();
             services.AddTransient<INodeVariableOrchestrationService, NodeVariableOrchestrationService>();
+            services.AddTransient<IVersionUploadOrchestrationService, VersionUploadOrchestrationService>();
 
             return services;
         }
@@ -151,6 +156,7 @@ namespace Shearlegs.Web.API.Extensions
         {
             services.AddTransient<INodeUserAuthenticationCoordinationService, NodeUserAuthenticationCoordinationService>();
             services.AddTransient<INodeVariableUserAuthenticationCoordinationService, NodeVariableUserAuthenticationCoordinationService>();
+            services.AddTransient<IVersionUploadUserAuthenticationCoordinationService, VersionUploadUserAuthenticationCoordinationService>();
 
             return services;
         }

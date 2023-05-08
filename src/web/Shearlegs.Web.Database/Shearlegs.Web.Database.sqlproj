@@ -92,6 +92,9 @@
     <Build Include="dbo\procedures\AddNodeVariable.sql" />
     <Build Include="dbo\procedures\UpdateNodeVariable.sql" />
     <Build Include="dbo\procedures\GetNodeVariables.sql" />
+    <Build Include="dbo\tables\VersionUploads.sql" />
+    <Build Include="dbo\procedures\AddVersionUpload.sql" />
+    <Build Include="dbo\procedures\GetVersionUploads.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shearlegs.Web.Database.publish.xml" />
