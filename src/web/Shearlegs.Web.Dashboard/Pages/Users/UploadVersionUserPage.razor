@@ -27,12 +27,12 @@
                         Content Type
                     </MudText>
                     <MudText>
-                        <Condition Evaluation="string.IsNullOrEmpty(VersionFile.ContentType)">
+                        <Condition Evaluation="string.IsNullOrEmpty(VersionContentType)">
                             <Match>
                                 -
                             </Match>
                             <NotMatch>
-                                @VersionFile.ContentType
+                                @VersionContentType
                             </NotMatch>
                         </Condition>                        
                     </MudText>
