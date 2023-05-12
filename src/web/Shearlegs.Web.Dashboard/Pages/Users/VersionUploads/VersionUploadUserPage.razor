@@ -1,0 +1,15 @@
+﻿@page "/user/versionuploads/{VersionUploadId:int}"
+
+<MudBreadcrumbs Items="BreadcrumbItems" />
+
+<Condition Evaluation="isCanceled">
+    <Match>
+        <MudAlert Severity="Severity.Info" Variant="Variant.Text" Class="mb-3">
+            Version upload was not found!
+        </MudAlert>
+    </Match>
+</Condition>
+
+<LoadingView IsLoaded="isLoaded" IsCanceled="isCanceled">
+
+</LoadingView>

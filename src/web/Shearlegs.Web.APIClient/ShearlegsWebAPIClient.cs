@@ -92,7 +92,6 @@ namespace Shearlegs.Web.APIClient
             MultipartFormDataContent content = new();
             StreamContent fileStreamContent = new(formFile.OpenReadStream());
             content.Add(fileStreamContent, "formFile", formFile.FileName);
-            //content.Headers.ContentType = new MediaTypeHeaderValue(formFile.ContentType ?? "application/octet-stream");
 
             try
             {

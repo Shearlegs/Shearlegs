@@ -6,9 +6,14 @@
         <MudNavLink Href="/user/results" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Task">
             Your results
         </MudNavLink>
-        <MudNavLink Href="user/uploadversion" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.FileUpload">
-            Upload version
-        </MudNavLink>
+        <MudNavGroup Title="Version Uploads" Icon="@Icons.Material.Filled.CloudUpload" Expanded="true">
+            <MudNavLink Href="/user/versionuploads" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.List" >
+                List
+            </MudNavLink>
+            <MudNavLink Href="/user/versionuploads/add" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.FileUpload">
+                Upload
+            </MudNavLink>
+        </MudNavGroup>
     </MudNavGroup>
     <MudNavGroup Title="Management" Expanded="true">
         <MudNavLink Href="/management/jobs" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Assignment">

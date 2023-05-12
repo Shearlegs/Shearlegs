@@ -1,0 +1,86 @@
+﻿@page "/user/versionuploads"
+@using ByteSizeLib;
+@using Shearlegs.Web.APIClient.Models.VersionUploads;
+
+<MudBreadcrumbs Items="BreadcrumbItems" />
+
+<MudTable Items="@VersionUploads" Hover="true" Dense="true" Context="versionUpload" Filter="SearchVersionUpload">
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">
+            Version Upload List
+        </MudText>
+        <MudSpacer />
+        <MudTextField @bind-Value="searchString"
+                      Immediate="true"
+                      Placeholder="Search"
+                      Adornment="Adornment.Start"
+                      AdornmentIcon="@Icons.Material.Filled.Search"
+                      IconSize="Size.Medium"
+                      Class="mt-0" />
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>
+            <MudTableSortLabel T="VersionUpload" SortBy="x => x.Id">
+                ID
+            </MudTableSortLabel>
+        </MudTh>
+        <MudTh>
+            <MudTableSortLabel T="VersionUpload" SortBy="x => x.FileName">
+                File Name
+            </MudTableSortLabel>
+        </MudTh>
+        <MudTh>
+            <MudTableSortLabel T="VersionUpload" SortBy="x => x.ContentLength">
+                Size
+            </MudTableSortLabel>
+        </MudTh>
+        <MudTh>
+            <MudTableSortLabel T="VersionUpload" SortBy="x => x.Status">
+                Status
+            </MudTableSortLabel>
+        </MudTh>
+        <MudTh>
+            <MudTableSortLabel T="VersionUpload" SortBy="x => x.PackageId">
+                Package Id
+            </MudTableSortLabel>
+        </MudTh>
+        <MudTh>
+            <MudTableSortLabel T="VersionUpload" SortBy="x => x.PackageVersion">
+                Package Version
+            </MudTableSortLabel>
+        </MudTh>
+        <MudTh>
+            <MudTableSortLabel T="VersionUpload" SortBy="x => x.CreateDate" InitialDirection="SortDirection.Descending">
+                Create Date
+            </MudTableSortLabel>
+        </MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="ID">
+            @versionUpload.Id
+        </MudTd>
+        <MudTd DataLabel="File Name">
+            <MudLink Href="@($"/user/versionuploads/{versionUpload.Id}")">
+                @versionUpload.FileName
+            </MudLink>
+        </MudTd>
+        <MudTd DataLabel="Size">
+            @ByteSize.FromBytes(versionUpload.ContentLength)
+        </MudTd>
+        <MudTd DataLabel="Status">
+            @versionUpload.Status
+        </MudTd>
+        <MudTd DataLabel="Package Id">
+            @(versionUpload.PackageId ?? "-")
+        </MudTd>
+        <MudTd DataLabel="Package Version">
+            @(versionUpload.PackageVersion ?? "-")
+        </MudTd>
+        <MudTd DataLabel="Create Date">
+            @versionUpload.CreateDate.LocalDateTime
+        </MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager />
+    </PagerContent>
+</MudTable>

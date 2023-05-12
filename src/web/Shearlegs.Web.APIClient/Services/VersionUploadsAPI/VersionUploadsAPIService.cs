@@ -31,7 +31,7 @@ namespace Shearlegs.Web.APIClient.Services.VersionUploadsAPI
             return await client.GetFromJsonAsync<List<VersionUpload>>(requestUri);
         }
 
-        public async ValueTask<List<VersionUpload>> getVersionUploadsByUserIdAsync(int userId)
+        public async ValueTask<List<VersionUpload>> GetVersionUploadsByUserIdAsync(int userId)
         {
             string requestUri = $"/versionuploads/userid/{userId}";
 

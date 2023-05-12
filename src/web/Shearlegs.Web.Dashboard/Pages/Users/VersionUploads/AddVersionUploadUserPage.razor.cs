@@ -6,15 +6,16 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace Shearlegs.Web.Dashboard.Pages.Users
+namespace Shearlegs.Web.Dashboard.Pages.Users.VersionUploads
 {
-    public partial class UploadVersionUserPage
+    public partial class AddVersionUploadUserPage
     {
         public List<BreadcrumbItem> BreadcrumbItems = new()
         {
             new BreadcrumbItem("Home", "/"),
-            new BreadcrumbItem("User", "/User"),
-            new BreadcrumbItem("Upload Version", null, true)
+            new BreadcrumbItem("User", "/user"),
+            new BreadcrumbItem("Version Uploads", "/user/versionuploads"),
+            new BreadcrumbItem("Add", null, true)
         };
 
         public IBrowserFile VersionFile { get; set; }
@@ -62,7 +63,7 @@ namespace Shearlegs.Web.Dashboard.Pages.Users
             };
 
             VersionUpload versionUpload = await client.VersionUploads.AddVersionUploadAsync(formFile);
-            navigationManager.NavigateTo($"/user/version-uploads/{versionUpload.Id}");
+            navigationManager.NavigateTo($"/user/versionuploads/{versionUpload.Id}");
 
             isUploadProcessing = false;
             StateHasChanged();

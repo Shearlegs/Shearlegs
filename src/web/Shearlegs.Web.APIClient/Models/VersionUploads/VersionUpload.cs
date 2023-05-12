@@ -1,5 +1,6 @@
 ﻿using Shearlegs.Web.APIClient.Models.Nodes;
 using Shearlegs.Web.APIClient.Models.Users;
+using Shearlegs.Web.Shared.Enums;
 using System;
 
 namespace Shearlegs.Web.APIClient.Models.VersionUploads
@@ -11,7 +12,7 @@ namespace Shearlegs.Web.APIClient.Models.VersionUploads
         public string ContentType { get; set; }
         public long ContentLength { get; set; }
         public DateTimeOffset? LastModified { get; set; }
-        public byte Status { get; set; }
+        public VersionUploadStatus Status { get; set; }
         public string PackageId { get; set; }
         public string PackageVersion { get; set; }
         public string ErrorMessage { get; set; }
