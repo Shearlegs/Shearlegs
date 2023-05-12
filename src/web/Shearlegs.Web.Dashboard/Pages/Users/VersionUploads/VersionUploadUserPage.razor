@@ -1,4 +1,5 @@
 ﻿@page "/user/versionuploads/{VersionUploadId:int}"
+@using ByteSizeLib;
 
 <MudBreadcrumbs Items="BreadcrumbItems" />
 
@@ -11,5 +12,74 @@
 </Condition>
 
 <LoadingView IsLoaded="isLoaded" IsCanceled="isCanceled">
+    <MudText Typo="Typo.h4" Class="mb-3">
+        #@VersionUpload.Id (@VersionUpload.CreateDate.LocalDateTime)
+    </MudText>    
 
+    <MudGrid>
+        <MudItem lg="4">
+            <MudCard Class="mb-3">
+                <MudCardHeader Class="mud-theme-primary">
+                    <CardHeaderContent>
+                        <MudText Typo="Typo.h6">
+                            Status
+                        </MudText>
+                    </CardHeaderContent>
+                </MudCardHeader>
+                <MudDivider />
+                <MudCardContent>
+                    <MudTimeline>
+                        <MudTimelineItem Color="Color.Info">
+                            <MudText Typo="Typo.button">File has been uploaded</MudText>
+                            <MudText Typo="Typo.body2" Class="mud-text-secondary">@VersionUpload.CreateDate.LocalDateTime</MudText>
+                        </MudTimelineItem>
+                        <MudTimelineItem TimelineAlign="TimelineAlign.Start">
+                            <MudText Typo="Typo.body2" Align="Align.End">Version is queded for testing</MudText>
+                            @*<MudText Typo="Typo.body2" Class="mud-text-secondary" Align="Align.End">Yesterday: 17:10</MudText>*@
+                        </MudTimelineItem>
+                    </MudTimeline>
+                </MudCardContent>
+            </MudCard>
+        </MudItem>
+        <MudItem lg="8">
+            <MudCard>
+                <MudCardHeader Class="mud-theme-primary">
+                    <CardHeaderContent>
+                        <MudText Typo="Typo.h6">
+                            File Information
+                        </MudText>
+                    </CardHeaderContent>
+                </MudCardHeader>
+                <MudDivider />
+                <MudList Dense="true">
+                    <MudListItem>
+                        <MudText Typo="Typo.subtitle2">
+                            File Name
+                        </MudText>
+                        @VersionUpload.FileName
+                    </MudListItem>
+                    <MudDivider />
+                    <MudListItem>
+                        <MudText Typo="Typo.subtitle2">
+                            Content Type
+                        </MudText>
+                        @VersionUpload.ContentType
+                    </MudListItem>
+                    <MudDivider />
+                    <MudListItem>
+                        <MudText Typo="Typo.subtitle2">
+                            Size
+                        </MudText>
+                        @ByteSize.FromBytes(VersionUpload.ContentLength)
+                    </MudListItem>
+                </MudList>
+                <MudDivider />
+                <MudCardActions>
+                    <MudButton StartIcon="@Icons.Filled.Download" Variant="Variant.Filled" Color="Color.Primary">
+                        Download
+                    </MudButton>
+                </MudCardActions>
+            </MudCard>
+        </MudItem>
+    </MudGrid>
 </LoadingView>
