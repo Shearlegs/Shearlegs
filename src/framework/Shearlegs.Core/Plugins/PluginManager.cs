@@ -68,10 +68,16 @@ namespace Shearlegs.Core.Plugins
 
         public async Task<IPluginInfo> GetPluginInfoAsync(byte[] pluginData)
         {
-            using AssemblyContext context = AssemblyContext.Create();
-            using MemoryStream ms = new MemoryStream(pluginData);
+            using MemoryStream stream = new MemoryStream(pluginData);
 
-            IPluginLoadResult loadResult = await pluginLoader.LoadPluginAsync(context, ms);
+            return await GetPluginInfoAsync(stream);
+        }
+
+        public async Task<IPluginInfo> GetPluginInfoAsync(Stream stream)
+        {
+            using AssemblyContext context = AssemblyContext.Create();            
+
+            IPluginLoadResult loadResult = await pluginLoader.LoadPluginAsync(context, stream);
             IContentFileStore fileStore = CreateContentFileStore(loadResult.PluginAssembly.Assembly);
 
             List<IPluginParameterInfo> parameters = new();

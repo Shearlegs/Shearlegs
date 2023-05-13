@@ -1,4 +1,5 @@
 ﻿using Shearlegs.Web.API.Models.NodeDaemons;
+using Shearlegs.Web.API.Models.NodeDaemons.Params;
 using Shearlegs.Web.API.Models.Nodes;
 using Shearlegs.Web.API.Models.Nodes.Params;
 using Shearlegs.Web.API.Services.Foundations.NodeDaemons;
@@ -75,6 +76,21 @@ namespace Shearlegs.Web.API.Services.Orchestrations.Nodes
             };
 
             return await nodeDaemonService.RetrieveNodeDaemonAsync(communicationDetails);
+        }
+
+        public async ValueTask<ProcessedPluginInfo> ProcessPluginAsync(int nodeId, ProcessPluginParams @params)
+        {
+            Node node = await nodeService.RetrieveNodeByIdAsync(nodeId);
+            NodeCommunicationDetails communicationDetails = new()
+            {
+                Scheme = node.Scheme,
+                FQDN = node.FQDN,
+                HttpPort = node.HttpPort,
+                HttpsPort = node.HttpsPort,
+                IsBehindProxy = node.IsBehindProxy
+            };
+
+            return await nodeDaemonService.ProcessPluginAsync(communicationDetails, @params);
         }
     }
 }

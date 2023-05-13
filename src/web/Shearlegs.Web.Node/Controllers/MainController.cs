@@ -1,10 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using RESTFulSense.Controllers;
 using Shearlegs.API.Constants;
 using Shearlegs.API.Plugins;
+using Shearlegs.API.Plugins.Info;
+using Shearlegs.Core.Plugins.Info;
 using Shearlegs.Runtime;
 using Shearlegs.Web.Node.Helpers;
 using Shearlegs.Web.Node.Models;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Shearlegs.Web.Node.Controllers
 {
@@ -39,6 +45,46 @@ namespace Shearlegs.Web.Node.Controllers
             };
 
             return Ok(nodeStatistics);
+        }
+
+        [HttpPost("process-plugin")]
+        public async ValueTask<IActionResult> TestPlugin(IFormFile formFile)
+        {
+            using Stream stream = formFile.OpenReadStream();
+            IPluginInfo pluginInfo = await pluginManager.GetPluginInfoAsync(stream);
+
+            PluginInformation pluginInformation = new()
+            {
+                PackageId = pluginInfo.PackageId,
+                Version = pluginInfo.Version,
+                IsPrerelease = pluginInfo.IsPrerelease,
+                Parameters = new(),
+                ContentFiles = new()
+            };
+
+            foreach (IPluginParameterInfo parameterInfo in pluginInfo.Parameters)
+            {
+                pluginInformation.Parameters.Add(new PluginInformation.ParameterInfo()
+                {
+                    Name = parameterInfo.Name,
+                    Description = parameterInfo.Description,
+                    Type = parameterInfo.Type.ToString(),
+                    Value = parameterInfo.Value?.ToString() ?? null,
+                    IsRequired = parameterInfo.IsRequired,
+                    IsSecret = parameterInfo.IsSecret
+                });
+            }
+
+            foreach (IContentFileInfo contentFileInfo in pluginInfo.ContentFiles)
+            {
+                pluginInformation.ContentFiles.Add(new PluginInformation.ContentFileInfo()
+                {
+                    Name = contentFileInfo.Name,
+                    Length = contentFileInfo.Length
+                });
+            }
+
+            return Ok(pluginInformation);
         }
     }
 }

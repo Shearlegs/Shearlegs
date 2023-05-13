@@ -1,6 +1,8 @@
-﻿using Shearlegs.Web.API.Brokers.NodeClients;
+﻿using Microsoft.AspNetCore.Http;
+using Shearlegs.Web.API.Brokers.NodeClients;
 using Shearlegs.Web.API.Models.NodeDaemons;
 using Shearlegs.Web.API.Models.NodeDaemons.Exceptions;
+using Shearlegs.Web.API.Models.NodeDaemons.Params;
 using Shearlegs.Web.NodeClient.Models;
 using Shearlegs.Web.NodeClient.Models.Exceptions;
 using System.Threading.Tasks;
@@ -44,6 +46,19 @@ namespace Shearlegs.Web.API.Services.Foundations.NodeDaemons
                     NodeVersion = nodeInfo.NodeVersion,
                     ShearlegsRuntimeVersion = nodeInfo.ShearlegsRuntimeVersion
                 };
+            } catch (ShearlegsWebNodeClientRequestException exception)
+            {
+                throw new NodeDaemonCommunicationException(exception);
+            }
+        }
+
+        public async ValueTask<ProcessedPluginInfo> ProcessPluginAsync(NodeCommunicationDetails communicationDetails, ProcessPluginParams @params)
+        {
+            try
+            {
+                PluginInformation pluginInformation = await nodeClientBroker.ProcessPluginAsync(communicationDetails, @params);
+
+                return MapPluginInformationToProcessedPluginInfo(pluginInformation);
             } catch (ShearlegsWebNodeClientRequestException exception)
             {
                 throw new NodeDaemonCommunicationException(exception);
