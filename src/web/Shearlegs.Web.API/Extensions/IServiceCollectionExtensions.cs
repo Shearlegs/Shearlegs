@@ -16,6 +16,7 @@ using Shearlegs.Web.API.Brokers.Validations;
 using Shearlegs.Web.API.Models.Options;
 using Shearlegs.Web.API.Services.Coordinations.NodeUserAuthentications;
 using Shearlegs.Web.API.Services.Coordinations.NodeVariableUserAuthentications;
+using Shearlegs.Web.API.Services.Coordinations.VersionUploads;
 using Shearlegs.Web.API.Services.Coordinations.VersionUploadUserAuthentications;
 using Shearlegs.Web.API.Services.Foundations.HttpUsers;
 using Shearlegs.Web.API.Services.Foundations.JWTs;
@@ -33,6 +34,7 @@ using Shearlegs.Web.API.Services.Foundations.Versions;
 using Shearlegs.Web.API.Services.Foundations.VersionUploads;
 using Shearlegs.Web.API.Services.Orchestrations.Nodes;
 using Shearlegs.Web.API.Services.Orchestrations.NodeVariables;
+using Shearlegs.Web.API.Services.Orchestrations.Schedulings;
 using Shearlegs.Web.API.Services.Orchestrations.UserAuthentications;
 using Shearlegs.Web.API.Services.Orchestrations.Versions;
 using Shearlegs.Web.API.Services.Orchestrations.VersionUploads;
@@ -148,6 +150,7 @@ namespace Shearlegs.Web.API.Extensions
             services.AddTransient<INodeOrchestrationService, NodeOrchestrationService>();
             services.AddTransient<INodeVariableOrchestrationService, NodeVariableOrchestrationService>();
             services.AddTransient<IVersionUploadOrchestrationService, VersionUploadOrchestrationService>();
+            services.AddTransient<ISchedulingOrchestrationService, SchedulingOrchestrationService>();
 
             return services;
         }
@@ -157,6 +160,7 @@ namespace Shearlegs.Web.API.Extensions
             services.AddTransient<INodeUserAuthenticationCoordinationService, NodeUserAuthenticationCoordinationService>();
             services.AddTransient<INodeVariableUserAuthenticationCoordinationService, NodeVariableUserAuthenticationCoordinationService>();
             services.AddTransient<IVersionUploadUserAuthenticationCoordinationService, VersionUploadUserAuthenticationCoordinationService>();
+            services.AddTransient<IVersionUploadCoordinationService, VersionUploadCoordinationService>();
 
             return services;
         }

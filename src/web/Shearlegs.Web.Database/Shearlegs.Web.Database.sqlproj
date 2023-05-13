@@ -95,6 +95,8 @@
     <Build Include="dbo\tables\VersionUploads.sql" />
     <Build Include="dbo\procedures\AddVersionUpload.sql" />
     <Build Include="dbo\procedures\GetVersionUploads.sql" />
+    <Build Include="dbo\procedures\StartProcessingVersionUpload.sql" />
+    <Build Include="dbo\procedures\FinishProcessingVersionUpload.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shearlegs.Web.Database.publish.xml" />

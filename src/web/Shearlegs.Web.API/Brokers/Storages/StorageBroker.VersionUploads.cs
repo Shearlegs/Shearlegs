@@ -6,6 +6,7 @@ using Shearlegs.Web.API.Models.Versions.Results;
 using Shearlegs.Web.API.Models.VersionUploads;
 using Shearlegs.Web.API.Models.VersionUploads.Params;
 using Shearlegs.Web.API.Models.VersionUploads.Results;
+using Shearlegs.Web.API.Utilities.StoredProcedures;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -68,6 +69,24 @@ namespace Shearlegs.Web.API.Brokers.Storages
             AddVersionUploadResult result = new();
             result.StoredProcedureResult = await ExecuteStoredProcedureAsync(sql, dp);
             result.VersionUploadId = dp.Get<int?>("@VersionUploadId");
+
+            return result;
+        }
+
+        public async ValueTask<StoredProcedureResult> StartProcessingVersionUploadAsync(StartProcessingVersionUploadParams @params)
+        {
+            const string sql = "dbo.StartProcessingVersionUpload";
+            
+            StoredProcedureResult result = await ExecuteStoredProcedureAsync(sql, @params);
+
+            return result;
+        }
+
+        public async ValueTask<StoredProcedureResult> FinishProcessingVersionUploadAsync(FinishProcessingVersionUploadParams @params)
+        {
+            const string sql = "dbo.FinishProcessingVersionUpload";
+
+            StoredProcedureResult result = await ExecuteStoredProcedureAsync(sql, @params);
 
             return result;
         }

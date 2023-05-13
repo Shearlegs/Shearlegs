@@ -12,6 +12,7 @@
 	PackageId NVARCHAR(255) NULL,
 	PackageVersion NVARCHAR(255) NULL,
 	ErrorMessage NVARCHAR(MAX) NULL,
-	UpdateDate DATETIME2(0) NULL,
+	ProcessingStartDate DATETIME2(0) NULL,
+	ProcessingEndDate DATETIME2(0) NULL,
 	CreateDate DATETIME2(0) NOT NULL CONSTRAINT DF_VersionUploads_CreateDate DEFAULT SYSDATETIME()
 )

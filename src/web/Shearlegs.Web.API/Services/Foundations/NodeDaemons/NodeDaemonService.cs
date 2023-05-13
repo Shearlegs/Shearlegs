@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Shearlegs.Web.API.Services.Foundations.NodeDaemons
 {
-    public class NodeDaemonService : INodeDaemonService
+    public partial class NodeDaemonService : INodeDaemonService
     {
         private readonly INodeClientBroker nodeClientBroker;
 
