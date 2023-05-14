@@ -3,6 +3,7 @@ using Shearlegs.Web.API.Models.VersionUploads;
 using Shearlegs.Web.API.Models.VersionUploads.Exceptions;
 using Shearlegs.Web.API.Models.VersionUploads.Params;
 using Shearlegs.Web.API.Models.VersionUploads.Results;
+using Shearlegs.Web.API.Utilities.StoredProcedures;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -55,11 +56,45 @@ namespace Shearlegs.Web.API.Services.Foundations.VersionUploads
             return versionUploads;
         }
 
+        public async ValueTask<VersionUploadContent> RetrieveVersionUploadContentByIdAsync(int versionUploadId)
+        {
+            VersionUploadContent versionUplaodContent = await storageBroker.SelectVersionUploadContentByIdAsync(versionUploadId);
+
+            if (versionUplaodContent == null)
+            {
+                throw new NotFoundVersionUploadException();
+            }
+
+            return versionUplaodContent;
+        }
+
         public async ValueTask<VersionUpload> AddVersionUploadAsync(AddVersionUploadParams @params)
         {
             AddVersionUploadResult result = await storageBroker.AddVersionUploadAsync(@params);
 
             return await RetrieveVersionUploadByIdAsync(result.VersionUploadId.GetValueOrDefault());
+        }
+
+        public async ValueTask<VersionUpload> StartProcessingVersionUploadAsync(StartProcessingVersionUploadParams @params)
+        {
+            StoredProcedureResult result = await storageBroker.StartProcessingVersionUploadAsync(@params);
+            if (result.ReturnValue == 1)
+            {
+                throw new NotFoundVersionUploadException();
+            }
+
+            return await RetrieveVersionUploadByIdAsync(@params.VersionUploadId);
+        }
+
+        public async ValueTask<VersionUpload> FinishProcessingVersionUploadAsync(FinishProcessingVersionUploadParams @params)
+        {
+            StoredProcedureResult result = await storageBroker.FinishProcessingVersionUploadAsync(@params);
+            if (result.ReturnValue == 1)
+            {
+                throw new NotFoundVersionUploadException();
+            }
+
+            return await RetrieveVersionUploadByIdAsync(@params.VersionUploadId);
         }
     }
 }

@@ -1,8 +1,6 @@
 ﻿using Dapper;
 using Shearlegs.Web.API.Models.Nodes;
 using Shearlegs.Web.API.Models.Users;
-using Shearlegs.Web.API.Models.Versions.Params;
-using Shearlegs.Web.API.Models.Versions.Results;
 using Shearlegs.Web.API.Models.VersionUploads;
 using Shearlegs.Web.API.Models.VersionUploads.Params;
 using Shearlegs.Web.API.Models.VersionUploads.Results;
@@ -16,6 +14,13 @@ namespace Shearlegs.Web.API.Brokers.Storages
 {
     public partial class StorageBroker
     {
+        public async ValueTask<VersionUploadContent> SelectVersionUploadContentByIdAsync(int versionUploadId)
+        {
+            const string sql = "SELECT FileName, Content FROM dbo.VersionUploads WHERE Id  = @versionUploadId;";
+
+            return await connection.QuerySingleOrDefaultAsync<VersionUploadContent>(sql, new { versionUploadId });
+        }
+
         public async ValueTask<IEnumerable<VersionUpload>> GetVersionUploadsAsync(GetVersionUploadsParams @params)
         {
             const string sql = "dbo.GetVersionUploads";

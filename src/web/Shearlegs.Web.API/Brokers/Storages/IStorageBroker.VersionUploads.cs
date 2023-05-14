@@ -14,5 +14,6 @@ namespace Shearlegs.Web.API.Brokers.Storages
         ValueTask<AddVersionUploadResult> AddVersionUploadAsync(AddVersionUploadParams @params);
         ValueTask<StoredProcedureResult> StartProcessingVersionUploadAsync(StartProcessingVersionUploadParams @params);
         ValueTask<StoredProcedureResult> FinishProcessingVersionUploadAsync(FinishProcessingVersionUploadParams @params);
+        ValueTask<VersionUploadContent> SelectVersionUploadContentByIdAsync(int versionUploadId);
     }
 }

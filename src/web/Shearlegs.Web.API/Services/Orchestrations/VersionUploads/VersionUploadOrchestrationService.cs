@@ -36,9 +36,30 @@ namespace Shearlegs.Web.API.Services.Orchestrations.VersionUploads
             return versionUploads;
         }
 
+        public async ValueTask<VersionUploadContent> RetrieveVersionUploadContentByIdAsync(int versionUploadId)
+        {
+            VersionUploadContent versionUploadContent = await versionUploadService.RetrieveVersionUploadContentByIdAsync(versionUploadId);
+
+            return versionUploadContent;
+        }
+
         public async ValueTask<VersionUpload> AddVersionUploadAsync(AddVersionUploadParams @params)
         {
             VersionUpload versionUpload = await versionUploadService.AddVersionUploadAsync(@params);
+
+            return versionUpload;
+        }
+
+        public async ValueTask<VersionUpload> StartProcessingVersionUploadAsync(StartProcessingVersionUploadParams @params)
+        {
+            VersionUpload versionUpload = await versionUploadService.StartProcessingVersionUploadAsync(@params);
+
+            return versionUpload;
+        }
+
+        public async ValueTask<VersionUpload> FinishProcessingVersionUploadAsync(FinishProcessingVersionUploadParams @params)
+        {
+            VersionUpload versionUpload = await versionUploadService.FinishProcessingVersionUploadAsync(@params);
 
             return versionUpload;
         }
