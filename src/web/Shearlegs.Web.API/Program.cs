@@ -12,6 +12,7 @@ builder.Services.AddFoundations();
 builder.Services.AddProcessings();
 builder.Services.AddOrchestrations();
 builder.Services.AddCoordinations();
+builder.Services.AddManagements();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

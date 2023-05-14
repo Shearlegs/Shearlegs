@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using RESTFulSense.Controllers;
 using Shearlegs.Web.API.Models.VersionUploads;
 using Shearlegs.Web.API.Models.VersionUploads.Exceptions;
-using Shearlegs.Web.API.Services.Coordinations.VersionUploadUserAuthentications;
+using Shearlegs.Web.API.Services.Managements.VersionUploadUserAuthentications;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -13,9 +13,9 @@ namespace Shearlegs.Web.API.Controllers
     [Route("versionuploads")]
     public class VersionUploadsController : RESTFulController
     {
-        private readonly IVersionUploadUserAuthenticationCoordinationService versionUploadUserAuthenticationService;
+        private readonly IVersionUploadUserAuthenticationManagementService versionUploadUserAuthenticationService;
 
-        public VersionUploadsController(IVersionUploadUserAuthenticationCoordinationService versionUploadUserAuthenticationService)
+        public VersionUploadsController(IVersionUploadUserAuthenticationManagementService versionUploadUserAuthenticationService)
         {
             this.versionUploadUserAuthenticationService = versionUploadUserAuthenticationService;
         }
@@ -45,7 +45,7 @@ namespace Shearlegs.Web.API.Controllers
         [HttpGet("userId/{userId}")]
         public async ValueTask<IActionResult> GetVersionUploadByUserId(int userId)
         {
-            IEnumerable<VersionUpload> versionUploads = await versionUploadUserAuthenticationService.RetrieveVersionUploadByUserIdAsync(userId);
+            IEnumerable<VersionUpload> versionUploads = await versionUploadUserAuthenticationService.RetrieveVersionUploadsByUserIdAsync(userId);
 
             return Ok(versionUploads);
         }

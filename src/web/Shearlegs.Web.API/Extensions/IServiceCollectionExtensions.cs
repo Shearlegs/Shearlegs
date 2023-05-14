@@ -32,6 +32,7 @@ using Shearlegs.Web.API.Services.Foundations.Users;
 using Shearlegs.Web.API.Services.Foundations.UserSessions;
 using Shearlegs.Web.API.Services.Foundations.Versions;
 using Shearlegs.Web.API.Services.Foundations.VersionUploads;
+using Shearlegs.Web.API.Services.Managements.VersionUploadUserAuthentications;
 using Shearlegs.Web.API.Services.Orchestrations.Nodes;
 using Shearlegs.Web.API.Services.Orchestrations.NodeVariables;
 using Shearlegs.Web.API.Services.Orchestrations.Schedulings;
@@ -161,6 +162,13 @@ namespace Shearlegs.Web.API.Extensions
             services.AddTransient<INodeVariableUserAuthenticationCoordinationService, NodeVariableUserAuthenticationCoordinationService>();
             services.AddTransient<IVersionUploadUserAuthenticationCoordinationService, VersionUploadUserAuthenticationCoordinationService>();
             services.AddTransient<IVersionUploadCoordinationService, VersionUploadCoordinationService>();
+
+            return services;
+        }
+
+        public static IServiceCollection AddManagements(this IServiceCollection services)
+        {
+            services.AddTransient<IVersionUploadUserAuthenticationManagementService, VersionUploadUserAuthenticationManagementService>();
 
             return services;
         }

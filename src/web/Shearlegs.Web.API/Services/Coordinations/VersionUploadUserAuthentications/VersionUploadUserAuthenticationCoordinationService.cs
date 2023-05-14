@@ -57,7 +57,7 @@ namespace Shearlegs.Web.API.Services.Coordinations.VersionUploadUserAuthenticati
             return await versionUploadService.RetrieveVersionUploadByIdAsync(versionUploadId);
         }
 
-        public async ValueTask<IEnumerable<VersionUpload>> RetrieveVersionUploadByUserIdAsync(int userId)
+        public async ValueTask<IEnumerable<VersionUpload>> RetrieveVersionUploadsByUserIdAsync(int userId)
         {
             return await versionUploadService.RetrieveVersionUploadsByUserIdAsync(userId);
         }

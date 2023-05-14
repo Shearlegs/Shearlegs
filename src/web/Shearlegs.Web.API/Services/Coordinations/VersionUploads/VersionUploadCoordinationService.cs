@@ -38,7 +38,7 @@ namespace Shearlegs.Web.API.Services.Coordinations.VersionUploads
             await schedulingService.EnqueueAsync(() => ProcessVersionUploadAsync(versionUploadId));
         }
 
-        private async Task ProcessVersionUploadAsync(int versionUploadId)
+        public async Task ProcessVersionUploadAsync(int versionUploadId)
         {
             IEnumerable<Node> nodes = await nodeService.RetrieveAllNodesAsync();
             int nodeId = nodes.First().Id;
