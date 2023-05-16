@@ -1,5 +1,7 @@
-﻿using Shearlegs.Web.API.Brokers.Storages;
+﻿using Shearlegs.Web.API.Brokers.Serializations;
+using Shearlegs.Web.API.Brokers.Storages;
 using Shearlegs.Web.API.Models.VersionUploads;
+using Shearlegs.Web.API.Models.VersionUploads.DTOs;
 using Shearlegs.Web.API.Models.VersionUploads.Exceptions;
 using Shearlegs.Web.API.Models.VersionUploads.Params;
 using Shearlegs.Web.API.Models.VersionUploads.Results;
@@ -12,10 +14,12 @@ namespace Shearlegs.Web.API.Services.Foundations.VersionUploads
     public class VersionUploadService : IVersionUploadService
     {
         private readonly IStorageBroker storageBroker;
+        private readonly ISerializationBroker serializationBroker;
 
-        public VersionUploadService(IStorageBroker storageBroker)
+        public VersionUploadService(IStorageBroker storageBroker, ISerializationBroker serializationBroker)
         {
             this.storageBroker = storageBroker;
+            this.serializationBroker = serializationBroker;
         }
 
         public async ValueTask<VersionUpload> RetrieveVersionUploadByIdAsync(int versionUploadId)
@@ -88,7 +92,17 @@ namespace Shearlegs.Web.API.Services.Foundations.VersionUploads
 
         public async ValueTask<VersionUpload> FinishProcessingVersionUploadAsync(FinishProcessingVersionUploadParams @params)
         {
-            StoredProcedureResult result = await storageBroker.FinishProcessingVersionUploadAsync(@params);
+            FinishProcessingVersionUploadDTO dto = new()
+            {
+                VersionUploadId = @params.VersionUploadId,
+                PackageId = @params.PackageId,
+                PackageVersion = @params.PackageVersion,
+                ErrorMessage = @params.ErrorMessage,
+                Status = @params.Status,                
+                ParametersJson = serializationBroker.SerializeToJson(@params.Parameters)
+            };
+
+            StoredProcedureResult result = await storageBroker.FinishProcessingVersionUploadAsync(dto);
             if (result.ReturnValue == 1)
             {
                 throw new NotFoundVersionUploadException();

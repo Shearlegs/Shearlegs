@@ -2,6 +2,7 @@
 using Shearlegs.Web.API.Models.Nodes;
 using Shearlegs.Web.API.Models.Users;
 using Shearlegs.Web.API.Models.VersionUploads;
+using Shearlegs.Web.API.Models.VersionUploads.DTOs;
 using Shearlegs.Web.API.Models.VersionUploads.Params;
 using Shearlegs.Web.API.Models.VersionUploads.Results;
 using Shearlegs.Web.API.Utilities.StoredProcedures;
@@ -87,11 +88,11 @@ namespace Shearlegs.Web.API.Brokers.Storages
             return result;
         }
 
-        public async ValueTask<StoredProcedureResult> FinishProcessingVersionUploadAsync(FinishProcessingVersionUploadParams @params)
+        public async ValueTask<StoredProcedureResult> FinishProcessingVersionUploadAsync(FinishProcessingVersionUploadDTO dto)
         {
             const string sql = "dbo.FinishProcessingVersionUpload";
 
-            StoredProcedureResult result = await ExecuteStoredProcedureAsync(sql, @params);
+            StoredProcedureResult result = await ExecuteStoredProcedureAsync(sql, dto);
 
             return result;
         }

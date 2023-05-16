@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using FluentAssertions;
+using Microsoft.AspNetCore.Http;
 using NuGet.Versioning;
 using Shearlegs.Web.API.Models.NodeDaemons;
 using Shearlegs.Web.API.Models.NodeDaemons.Exceptions;
@@ -10,6 +11,7 @@ using Shearlegs.Web.API.Services.Orchestrations.Nodes;
 using Shearlegs.Web.API.Services.Orchestrations.Schedulings;
 using Shearlegs.Web.API.Services.Orchestrations.VersionUploads;
 using Shearlegs.Web.Shared.Enums;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -75,8 +77,25 @@ namespace Shearlegs.Web.API.Services.Coordinations.VersionUploads
                         VersionUploadId = versionUpload.Id,
                         Status = VersionUploadStatus.Completed,
                         PackageId = processedPluginInfo.PackageId,
-                        PackageVersion = processedPluginInfo.Version
+                        PackageVersion = processedPluginInfo.Version,
+                        Parameters = new()
                     };
+
+                    foreach (ProcessedPluginInfo.ParameterInfo parameter in processedPluginInfo.Parameters)
+                    {
+                        Type type = Type.GetType(parameter.Type);
+
+                        finishProcessingVersionUploadParams.Parameters.Add(new FinishProcessingVersionUploadParams.Parameter()
+                        {
+                            Name = parameter.Name,
+                            DataType = parameter.Type,
+                            DefaultValue = parameter.Value,
+                            IsSecret = parameter.IsSecret,
+                            IsArray = type?.IsArray ?? false,
+                            IsRequired = parameter.IsRequired,
+                            Description = parameter.Description,
+                        });
+                    }
 
                     versionUpload = await versionUploadService.FinishProcessingVersionUploadAsync(finishProcessingVersionUploadParams);
 
