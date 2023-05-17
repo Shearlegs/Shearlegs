@@ -104,6 +104,7 @@
     <Build Include="dbo\procedures\Results\UpdateResult.sql" />
     <Build Include="dbo\procedures\Results\UpdateResultStatus.sql" />
     <Build Include="dbo\tables\VersionUploadParameters.sql" />
+    <Build Include="dbo\procedures\Versions\MigrateVersionUploadToVersion.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shearlegs.Web.Database.publish.xml" />

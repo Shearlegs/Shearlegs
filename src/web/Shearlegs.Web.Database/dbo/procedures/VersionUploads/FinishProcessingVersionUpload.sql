@@ -12,7 +12,9 @@ BEGIN
 
 	DECLARE @currentStatus TINYINT;
 
-	IF NOT EXISTS(SELECT [Status] = @currentStatus FROM dbo.VersionUploads WHERE Id = @VersionUploadId)
+	SELECT @currentStatus = [Status] FROM dbo.VersionUploads WHERE Id = @VersionUploadId;
+
+	IF @@ROWCOUNT = 0 
 	BEGIN
 		PRINT 'VersionUploadId does not exist';
 		RETURN 1;
