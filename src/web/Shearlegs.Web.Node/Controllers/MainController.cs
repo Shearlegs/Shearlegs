@@ -1,13 +1,16 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 using RESTFulSense.Controllers;
 using Shearlegs.API.Constants;
 using Shearlegs.API.Plugins;
 using Shearlegs.API.Plugins.Info;
+using Shearlegs.API.Plugins.Result;
 using Shearlegs.Core.Plugins.Info;
 using Shearlegs.Runtime;
 using Shearlegs.Web.Node.Helpers;
 using Shearlegs.Web.Node.Models;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -85,6 +88,21 @@ namespace Shearlegs.Web.Node.Controllers
             }
 
             return Ok(pluginInformation);
+        }
+
+        [HttpPost("execute-plugin")]
+        public async ValueTask<IActionResult> ExecutePlugin(IFormFile formFile, [FromForm] string parametersJson)
+        {
+            using Stream stream = formFile.OpenReadStream();
+            Stopwatch stopwatch = Stopwatch.StartNew();
+            IPluginResult pluginResult = await pluginManager.ExecutePluginAsync(stream, parametersJson);
+            stopwatch.Stop();
+
+            JObject jObject = new();
+            jObject["PluginResult"] = JObject.FromObject(pluginResult);
+            jObject.Add("ExecutionTime", stopwatch.ElapsedMilliseconds);
+            
+            return Content(jObject.ToString(), "application/json");
         }
     }
 }

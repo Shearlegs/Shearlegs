@@ -33,6 +33,30 @@ namespace Shearlegs.Web.NodeClient
             return await responseMessage.Content.ReadFromJsonAsync<PluginInformation>();
         }
 
+        public async ValueTask<string> ExecutePluginAsync(IFormFile formFile, string parametersJson)
+        {
+            const string requestUri = "execute-plugin";
+            MultipartFormDataContent content = new();
+
+            StreamContent fileStreamContent = new(formFile.OpenReadStream());
+            content.Add(fileStreamContent, "formFile", formFile.FileName);
+
+            StringContent parametersContent = new(parametersJson);
+            content.Add(parametersContent, "parametersJson");
+
+            try
+            {
+                HttpResponseMessage responseMessage = await httpClient.PostAsync(requestUri, content);
+                responseMessage.EnsureSuccessStatusCode();
+
+                return await responseMessage.Content.ReadAsStringAsync();
+            }
+            catch (HttpRequestException exception)
+            {
+                throw new ShearlegsWebNodeClientRequestException(exception.Message, exception.StatusCode);
+            }
+        }
+
         internal async ValueTask<T> GetFromJsonAsync<T>(string requestUri)
         {
             try

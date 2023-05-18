@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json.Linq;
 using Shearlegs.Web.API.Brokers.NodeClients;
 using Shearlegs.Web.API.Models.NodeDaemons;
 using Shearlegs.Web.API.Models.NodeDaemons.Exceptions;
@@ -60,6 +61,26 @@ namespace Shearlegs.Web.API.Services.Foundations.NodeDaemons
 
                 return MapPluginInformationToProcessedPluginInfo(pluginInformation);
             } catch (ShearlegsWebNodeClientRequestException exception)
+            {
+                throw new NodeDaemonCommunicationException(exception);
+            }
+        }
+
+        public async ValueTask<ExecutePluginResult> ExecutePluginAsync(NodeCommunicationDetails communicationDetails, ExecutePluginParams @params)
+        {
+            try
+            {
+                string result = await nodeClientBroker.ExecutePluginAsync(communicationDetails, @params);
+
+                JObject jObject = JObject.Parse(result);
+
+                return new ExecutePluginResult
+                {
+                    PluginResult = jObject["PluginResult"],
+                    ExecutionTime = jObject["ExecutionTime"].Value<int>()
+                };
+            }
+            catch (ShearlegsWebNodeClientRequestException exception)
             {
                 throw new NodeDaemonCommunicationException(exception);
             }

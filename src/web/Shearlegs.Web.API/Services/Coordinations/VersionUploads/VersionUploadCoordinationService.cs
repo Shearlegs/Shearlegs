@@ -1,6 +1,4 @@
-﻿using FluentAssertions;
-using Microsoft.AspNetCore.Http;
-using NuGet.Versioning;
+﻿using Microsoft.AspNetCore.Http;
 using Shearlegs.Web.API.Models.NodeDaemons;
 using Shearlegs.Web.API.Models.NodeDaemons.Exceptions;
 using Shearlegs.Web.API.Models.NodeDaemons.Params;
@@ -9,6 +7,7 @@ using Shearlegs.Web.API.Models.VersionUploads;
 using Shearlegs.Web.API.Models.VersionUploads.Params;
 using Shearlegs.Web.API.Services.Orchestrations.Nodes;
 using Shearlegs.Web.API.Services.Orchestrations.Schedulings;
+using Shearlegs.Web.API.Services.Orchestrations.Versions;
 using Shearlegs.Web.API.Services.Orchestrations.VersionUploads;
 using Shearlegs.Web.Shared.Enums;
 using System;
@@ -26,13 +25,13 @@ namespace Shearlegs.Web.API.Services.Coordinations.VersionUploads
         private readonly ISchedulingOrchestrationService schedulingService;
 
         public VersionUploadCoordinationService(
-            IVersionUploadOrchestrationService versionUploadService, 
-            INodeOrchestrationService nodeService, 
+            IVersionUploadOrchestrationService versionUploadService,
+            INodeOrchestrationService nodeService,
             ISchedulingOrchestrationService schedulingService)
         {
             this.versionUploadService = versionUploadService;
             this.nodeService = nodeService;
-            this.schedulingService = schedulingService;
+            this.schedulingService = schedulingService;            
         }
 
         public async ValueTask QueueProcessVersionAsync(int versionUploadId)
@@ -60,56 +59,55 @@ namespace Shearlegs.Web.API.Services.Coordinations.VersionUploads
 
             VersionUploadContent versionUploadContent = await versionUploadService.RetrieveVersionUploadContentByIdAsync(versionUploadId);
 
-            using (MemoryStream ms = new(versionUploadContent.Content))
+            using MemoryStream ms = new(versionUploadContent.Content);
+
+            ProcessPluginParams processPluginParams = new()
             {
-                ProcessPluginParams processPluginParams = new()
+                PluginFile = new FormFile(ms, 0, ms.Length, "formFile", versionUploadContent.FileName)
+            };
+
+            try
+            {
+                ProcessedPluginInfo processedPluginInfo = await nodeService.ProcessPluginAsync(nodeId, processPluginParams);
+
+                FinishProcessingVersionUploadParams finishProcessingVersionUploadParams = new()
                 {
-                    PluginFile = new FormFile(ms, 0, ms.Length, "formFile", versionUploadContent.FileName)
+                    VersionUploadId = versionUpload.Id,
+                    Status = VersionUploadStatus.Completed,
+                    PackageId = processedPluginInfo.PackageId,
+                    PackageVersion = processedPluginInfo.Version,
+                    Parameters = new()
                 };
 
-                
-                try
+                foreach (ProcessedPluginInfo.ParameterInfo parameter in processedPluginInfo.Parameters)
                 {
-                    ProcessedPluginInfo processedPluginInfo = await nodeService.ProcessPluginAsync(nodeId, processPluginParams);
+                    Type type = Type.GetType(parameter.Type);
 
-                    FinishProcessingVersionUploadParams finishProcessingVersionUploadParams = new()
+                    finishProcessingVersionUploadParams.Parameters.Add(new FinishProcessingVersionUploadParams.Parameter()
                     {
-                        VersionUploadId = versionUpload.Id,
-                        Status = VersionUploadStatus.Completed,
-                        PackageId = processedPluginInfo.PackageId,
-                        PackageVersion = processedPluginInfo.Version,
-                        Parameters = new()
-                    };
-
-                    foreach (ProcessedPluginInfo.ParameterInfo parameter in processedPluginInfo.Parameters)
-                    {
-                        Type type = Type.GetType(parameter.Type);
-
-                        finishProcessingVersionUploadParams.Parameters.Add(new FinishProcessingVersionUploadParams.Parameter()
-                        {
-                            Name = parameter.Name,
-                            DataType = parameter.Type,
-                            DefaultValue = parameter.Value,
-                            IsSecret = parameter.IsSecret,
-                            IsArray = type?.IsArray ?? false,
-                            IsRequired = parameter.IsRequired,
-                            Description = parameter.Description,
-                        });
-                    }
-
-                    versionUpload = await versionUploadService.FinishProcessingVersionUploadAsync(finishProcessingVersionUploadParams);
-
-                } catch (NodeDaemonCommunicationException exception)
-                {
-                    FinishProcessingVersionUploadParams finishProcessingVersionUploadParams = new()
-                    {
-                        VersionUploadId = versionUpload.Id,
-                        Status = VersionUploadStatus.Failed,
-                        ErrorMessage = exception.Message
-                    };
-
-                    versionUpload = await versionUploadService.FinishProcessingVersionUploadAsync(finishProcessingVersionUploadParams);
+                        Name = parameter.Name,
+                        DataType = parameter.Type,
+                        DefaultValue = parameter.Value,
+                        IsSecret = parameter.IsSecret,
+                        IsArray = type?.IsArray ?? false,
+                        IsRequired = parameter.IsRequired,
+                        Description = parameter.Description,
+                    });
                 }
+
+                versionUpload = await versionUploadService.FinishProcessingVersionUploadAsync(finishProcessingVersionUploadParams);
+
+            }
+            catch (NodeDaemonCommunicationException exception)
+            {
+                FinishProcessingVersionUploadParams finishProcessingVersionUploadParams = new()
+                {
+                    VersionUploadId = versionUpload.Id,
+                    Status = VersionUploadStatus.Failed,
+                    ErrorMessage = exception.Message
+                };
+
+                versionUpload = await versionUploadService.FinishProcessingVersionUploadAsync(finishProcessingVersionUploadParams);
             }
         }
     }

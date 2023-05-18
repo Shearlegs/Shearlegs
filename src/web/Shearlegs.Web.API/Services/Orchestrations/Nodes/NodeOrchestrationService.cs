@@ -92,5 +92,20 @@ namespace Shearlegs.Web.API.Services.Orchestrations.Nodes
 
             return await nodeDaemonService.ProcessPluginAsync(communicationDetails, @params);
         }
+
+        public async ValueTask<ExecutePluginResult> ExecutePluginAsync(int nodeId, ExecutePluginParams @params)
+        {
+            Node node = await nodeService.RetrieveNodeByIdAsync(nodeId);
+            NodeCommunicationDetails communicationDetails = new()
+            {
+                Scheme = node.Scheme,
+                FQDN = node.FQDN,
+                HttpPort = node.HttpPort,
+                HttpsPort = node.HttpsPort,
+                IsBehindProxy = node.IsBehindProxy
+            };
+
+            return await nodeDaemonService.ExecutePluginAsync(communicationDetails, @params);
+        }
     }
 }

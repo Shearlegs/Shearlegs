@@ -13,6 +13,7 @@ namespace Shearlegs.API.Plugins
     {
         IPlugin ActivatePlugin(Assembly assembly, string parametersJson);
         Task<IPluginResult> ExecutePluginAsync(byte[] pluginData, string parametersJson);
+        Task<IPluginResult> ExecutePluginAsync(Stream stream, string parametersJson);
         Task<IPluginInfo> GetPluginInfoAsync(byte[] pluginData);
         Task<IPluginInfo> GetPluginInfoAsync(Stream stream);
     }

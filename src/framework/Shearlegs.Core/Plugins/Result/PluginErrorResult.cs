@@ -7,6 +7,7 @@ namespace Shearlegs.Core.Plugins.Result
         public string Message { get; set; }
         public string ExceptionMessage { get; set; }
         public string ExceptionString { get; set; }
+        public override string ResultType => "Error";
 
         public PluginErrorResult(string message, Exception exception)
         {

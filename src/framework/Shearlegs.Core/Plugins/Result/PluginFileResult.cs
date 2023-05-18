@@ -1,17 +1,11 @@
-﻿using Shearlegs.API.Plugins.Result;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Shearlegs.Core.Plugins.Result
+﻿namespace Shearlegs.Core.Plugins.Result
 {
-    public class PluginFileResult : IPluginResult
+    public class PluginFileResult : PluginResult
     {
         public string Name { get; set; }
         public string MimeType { get; set; }
         public byte[] Content { get; set; }
+        public override string ResultType => "File";
 
         public PluginFileResult(string name, string mimeType, byte[] content)
         {

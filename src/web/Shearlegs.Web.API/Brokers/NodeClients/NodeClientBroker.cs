@@ -49,5 +49,16 @@ namespace Shearlegs.Web.API.Brokers.NodeClients
 
             return await nodeClient.ProcessPluginAsync(@params.PluginFile);
         }
+
+        public async ValueTask<string> ExecutePluginAsync(NodeCommunicationDetails nodeCommunicationDetails, ExecutePluginParams @params)
+        {
+            HttpClient httpClient = new()
+            {
+                BaseAddress = new Uri(nodeCommunicationDetails.GetBaseAddress())
+            };
+            ShearlegsWebNodeClient nodeClient = new(httpClient);
+
+            return await nodeClient.ExecutePluginAsync(@params.PluginFile, @params.ParametersJson);            
+        }
     }
 }

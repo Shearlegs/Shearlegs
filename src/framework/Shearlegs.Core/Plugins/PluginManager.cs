@@ -31,15 +31,22 @@ namespace Shearlegs.Core.Plugins
 
         public async Task<IPluginResult> ExecutePluginAsync(byte[] pluginData, string parametersJson)
         {
+            using MemoryStream ms = new(pluginData);
+
+            return await ExecutePluginAsync(ms, parametersJson);
+        }
+
+        public async Task<IPluginResult> ExecutePluginAsync(Stream stream, string parametersJson)
+        {
             using AssemblyContext context = AssemblyContext.Create();
-            using MemoryStream ms = new MemoryStream(pluginData);
 
             IPluginLoadResult loadResult;
 
             try
             {
-                loadResult = await pluginLoader.LoadPluginAsync(context, ms);
-            } catch (Exception e)
+                loadResult = await pluginLoader.LoadPluginAsync(context, stream);
+            }
+            catch (Exception e)
             {
                 return new PluginErrorResult("Error loading plugin", e);
             }
@@ -47,18 +54,20 @@ namespace Shearlegs.Core.Plugins
             IPlugin pluginInstance;
             try
             {
-               pluginInstance = ActivatePlugin(loadResult.PluginAssembly.Assembly, parametersJson);
-            } catch (Exception e)
+                pluginInstance = ActivatePlugin(loadResult.PluginAssembly.Assembly, parametersJson);
+            }
+            catch (Exception e)
             {
                 return new PluginErrorResult("Error activating plugin", e);
             }
-            
+
             IPluginResult result;
 
             try
             {
                 result = await pluginInstance.ExecuteAsync();
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 return new PluginErrorResult("Error executing plugin", e);
             }

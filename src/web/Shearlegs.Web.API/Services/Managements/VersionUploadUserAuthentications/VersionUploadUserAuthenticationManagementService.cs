@@ -24,7 +24,6 @@ namespace Shearlegs.Web.API.Services.Managements.VersionUploadUserAuthentication
         public async ValueTask<VersionUpload> AddUserVersionUploadAsync(IFormFile formFile)
         {
             VersionUpload versionUpload = await versionUploadUserAuthenticationService.AddUserVersionUploadAsync(formFile);
-
             await versionUploadService.QueueProcessVersionAsync(versionUpload.Id);
 
             return versionUpload;

@@ -10,6 +10,7 @@ namespace Shearlegs.Web.API.Services.Orchestrations.Nodes
     public interface INodeOrchestrationService
     {
         ValueTask<Node> AddNodeAsync(AddNodeParams @params);
+        ValueTask<ExecutePluginResult> ExecutePluginAsync(int nodeId, ExecutePluginParams @params);
         ValueTask<ProcessedPluginInfo> ProcessPluginAsync(int nodeId, ProcessPluginParams @params);
         ValueTask<IEnumerable<Node>> RetrieveAllNodesAsync();
         ValueTask<Node> RetrieveNodeByIdAsync(int nodeId);

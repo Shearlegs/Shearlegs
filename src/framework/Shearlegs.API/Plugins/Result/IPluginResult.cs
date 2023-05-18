@@ -8,6 +8,6 @@ namespace Shearlegs.API.Plugins.Result
 {
     public interface IPluginResult
     {
-
+        string ResultType { get; }
     }
 }
