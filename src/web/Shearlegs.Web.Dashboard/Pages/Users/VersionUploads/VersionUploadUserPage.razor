@@ -14,10 +14,88 @@
 <LoadingView IsLoaded="isLoaded" IsCanceled="isCanceled">
     <MudText Typo="Typo.h4" Class="mb-3">
         #@VersionUpload.Id (@VersionUpload.CreateDate.LocalDateTime)
-    </MudText>    
+    </MudText>
+
+    <Condition Evaluation="VersionUpload.Status == VersionUploadStatus.Pending || VersionUpload.Status == VersionUploadStatus.Processing">
+        <Match>
+            <MudCard Class="mb-3">
+                <MudCardHeader Class="mud-theme-primary">
+                    <CardHeaderContent>
+                        <MudText Typo="Typo.h6">
+                            Progress
+                        </MudText>
+                    </CardHeaderContent>
+                </MudCardHeader>
+                <MudDivider />
+                <MudCardContent>
+                    <MudProgressLinear Color="Color.Primary" Indeterminate="true" Size="Size.Large" Class="my-7" />
+                </MudCardContent>
+                <MudDivider />
+                <MudCardActions>
+                    <MudButton StartIcon="@Icons.Material.Filled.Refresh" Variant="Variant.Filled" Color="Color.Primary" OnClick="Refresh">
+                        Refresh
+                    </MudButton>
+                </MudCardActions>
+            </MudCard>
+        </Match>
+    </Condition>
+
+    <Condition Evaluation="VersionUpload.Status == VersionUploadStatus.Completed">
+        <Match>
+            <MudCard Class="mb-3">
+                <MudCardHeader Class="mud-theme-primary">
+                    <CardHeaderContent>
+                        <MudText Typo="Typo.h6">
+                            Summary
+                        </MudText>
+                    </CardHeaderContent>
+                </MudCardHeader>
+                <MudDivider />
+                <MudList Dense="true">
+                    <MudListItem>
+                        <MudText Typo="Typo.subtitle2">
+                            Package Id
+                        </MudText>
+                        @VersionUpload.PackageId
+                    </MudListItem>
+                    <MudDivider />
+                    <MudListItem>
+                        <MudText Typo="Typo.subtitle2">
+                            Package Version
+                        </MudText>
+                        @VersionUpload.PackageVersion
+                    </MudListItem>
+                </MudList>
+                <MudDivider />
+                <MudCardActions>
+                    <MudButton StartIcon="@Icons.Material.Filled.ContentCopy" Variant="Variant.Filled" Color="Color.Primary" OnClick="MigrateToVersionAsync">
+                        Migrate To Version
+                    </MudButton>
+                </MudCardActions>
+            </MudCard>
+        </Match>
+    </Condition>
+
+    <Condition Evaluation="VersionUpload.Status == VersionUploadStatus.Failed">
+        <Match>
+            <MudCard Class="mb-3">
+                <MudCardHeader Class="mud-theme-error">
+                    <CardHeaderContent>
+                        <MudText Typo="Typo.h6">
+                            Error Summary
+                        </MudText>
+                    </CardHeaderContent>
+                </MudCardHeader>
+                <MudDivider />
+                <MudCardContent>
+                    @VersionUpload.ErrorMessage
+                </MudCardContent>
+            </MudCard>
+        </Match>
+    </Condition>
 
     <MudGrid>
-        <MudItem lg="4">
+        <MudItem lg="4" Style="width: 100%;">
             <MudCard Class="mb-3">
                 <MudCardHeader Class="mud-theme-primary">
                     <CardHeaderContent>
@@ -66,11 +144,91 @@
                                 </MudTimelineItem>
                             </Match>
                         </Condition>
+                        <Condition Evaluation="!string.IsNullOrEmpty(VersionUpload.PackageId)">
+                            <Match>
+                                <MudTimelineItem Color="Color.Success">
+                                    <MudText Typo="Typo.body2">
+                                        <b>COMPLETED SUCCESSFULLY</b>
+                                    </MudText>
+                                </MudTimelineItem>
+                            </Match>
+                        </Condition>
+                        <Condition Evaluation="!string.IsNullOrEmpty(VersionUpload.ErrorMessage)">
+                            <Match>
+                                <MudTimelineItem Color="Color.Error">
+                                    <MudText Typo="Typo.body2">
+                                        <b>FAILED</b>
+                                    </MudText>
+                                </MudTimelineItem>
+                            </Match>
+                        </Condition>
+
+                        <Condition Evaluation="!string.IsNullOrEmpty(VersionUpload.ErrorMessage)">
+                            <Match>
+                                <MudTimelineItem Color="Color.Info" TimelineAlign="TimelineAlign.Start">
+                                    <MudText Typo="Typo.body2" Align="Align.End">
+                                        <b>FINISHED PROCESSING</b>
+                                    </MudText>
+                                    <MudText Typo="Typo.body2" Class="mud-text-secondary" Align="Align.End">
+                                        @VersionUpload.ProcessingEndDate.Value.LocalDateTime
+                                    </MudText>
+                                </MudTimelineItem>
+                            </Match>
+                        </Condition>
+
+                        <Condition Evaluation="VersionUpload.Status == VersionUploadStatus.Migrated">
+                            <Match>
+                                <MudTimelineItem Color="Color.Primary" TimelineAlign="TimelineAlign.Start">
+                                    <MudText Typo="Typo.body2" Align="Align.End">
+                                        <b>MIGRATED</b>
+                                    </MudText>
+                                    <MudText Typo="Typo.body2" Class="mud-text-secondary" Align="Align.End">
+                                        @Version.CreateDate.LocalDateTime
+                                    </MudText>
+                                </MudTimelineItem>
+                            </Match>
+                        </Condition>
+
                     </MudTimeline>
                 </MudCardContent>
             </MudCard>
         </MudItem>
-        <MudItem lg="8">
+        <MudItem lg="8" Style="width: 100%;">
+            <Condition Evaluation="Version != null && Plugin != null">
+                <Match>
+                    <MudCard Class="mb-3">
+                        <MudCardHeader Class="mud-theme-primary">
+                            <MudText Typo="Typo.h6">
+                                Migration Info
+                            </MudText>
+                        </MudCardHeader>
+                        <MudDivider />
+                        <MudList Dense="true">
+                            <MudListItem>
+                                <MudText Typo="Typo.subtitle2">
+                                    Plugin
+                                </MudText>
+                                @Plugin.Name (@Plugin.PackageId)
+                            </MudListItem>
+                            <MudDivider />
+                            <MudListItem>
+                                <MudText Typo="Typo.subtitle2">
+                                    Version
+                                </MudText>
+                                @Version.Name
+                            </MudListItem>
+                            <MudDivider />
+                            <MudListItem>
+                                <MudText Typo="Typo.subtitle2">
+                                    Create Date
+                                </MudText>
+                                @Version.CreateDate.LocalDateTime
+                            </MudListItem>
+                        </MudList>
+                    </MudCard>
+                </Match>
+            </Condition>
+
             <Condition Evaluation="VersionUpload.Node != null">
                 <Match>
                     <MudCard Class="mb-3">

@@ -89,5 +89,24 @@ namespace Shearlegs.Web.API.Brokers.Storages
 
             return versions;
         }
+
+        public async ValueTask<MigrateVersionUploadToVersionResult> MigrateVersionUploadToVersionAsync(int versionUploadId)
+        {
+            const string sql = "dbo.MigrateVersionUploadToVersion";
+
+            dynamic @params = new
+            {
+                VersionUploadId = versionUploadId
+            };
+
+            DynamicParameters dp = StoredProcedureParameters(@params);
+            dp.Add("@VersionId", dbType: DbType.Int32, direction: ParameterDirection.Output);
+
+            MigrateVersionUploadToVersionResult result = new();
+            result.StoredProcedureResult = await ExecuteStoredProcedureAsync(sql, dp);
+            result.VersionId = dp.Get<int?>("@VersionId");
+
+            return result;
+        }
     }
 }

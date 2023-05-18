@@ -14,5 +14,6 @@
 	ErrorMessage NVARCHAR(MAX) NULL,
 	ProcessingStartDate DATETIME2(0) NULL,
 	ProcessingEndDate DATETIME2(0) NULL,
+	VersionId INT NULL CONSTRAINT FK_VersionUploads_VersionId FOREIGN KEY REFERENCES dbo.Versions(Id),
 	CreateDate DATETIME2(0) NOT NULL CONSTRAINT DF_VersionUploads_CreateDate DEFAULT SYSDATETIME()
 )

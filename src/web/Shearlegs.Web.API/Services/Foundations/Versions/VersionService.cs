@@ -4,6 +4,8 @@ using Shearlegs.Web.API.Models.Versions;
 using Shearlegs.Web.API.Models.Versions.Exceptions;
 using Shearlegs.Web.API.Models.Versions.Params;
 using Shearlegs.Web.API.Models.Versions.Results;
+using Shearlegs.Web.API.Models.VersionUploads.Exceptions;
+using Shearlegs.Web.API.Utilities.StoredProcedures;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -81,6 +83,28 @@ namespace Shearlegs.Web.API.Services.Foundations.Versions
             }
 
             return await RetrieveVersionByIdAsync(result.VersionId.Value);
+        }
+
+        public async ValueTask<Version> MigrateVersionUploadToVersionAsync(int versionUploadId)
+        {
+            MigrateVersionUploadToVersionResult result = await storageBroker.MigrateVersionUploadToVersionAsync(versionUploadId);
+
+            if (result.StoredProcedureResult.ReturnValue == 1)
+            {
+                throw new NotFoundVersionUploadException();
+            }
+
+            if (result.StoredProcedureResult.ReturnValue == 2)
+            {
+                throw new NotFoundPluginException();
+            }
+
+            if (result.StoredProcedureResult.ReturnValue == 3)
+            {
+                throw new AlreadyExistsVersionException();
+            }
+
+            return await RetrieveVersionByIdAsync(result.VersionId.GetValueOrDefault());
         }
     }
 }

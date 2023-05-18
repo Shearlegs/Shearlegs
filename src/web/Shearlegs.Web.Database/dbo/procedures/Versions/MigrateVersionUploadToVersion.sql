@@ -1,5 +1,6 @@
 ﻿CREATE PROCEDURE dbo.MigrateVersionUploadToVersion
-	@VersionUploadId INT
+	@VersionUploadId INT,
+	@VersionId INT OUTPUT
 AS
 BEGIN
 	SET NOCOUNT ON;
@@ -43,7 +44,7 @@ BEGIN
 	FROM dbo.VersionUploads 
 	WHERE Id = @VersionUploadId;
 
-	DECLARE @versionId INT = SCOPE_IDENTITY();
+	SET @VersionId = SCOPE_IDENTITY();
 
 	INSERT INTO dbo.VersionParameters (VersionId, [Name], [Description], DataType, DefaultValue, IsArray, IsRequired, IsSecret)
 	SELECT 
@@ -56,6 +57,10 @@ BEGIN
 		IsRequired, 
 		IsSecret
 	FROM dbo.VersionUploadParameters WHERE VersionUploadId = @VersionUploadId;
+
+	UPDATE dbo.VersionUploads 
+	SET [Status] = 4, VersionId = @VersionId 
+	WHERE Id = @VersionUploadId;
 
 	COMMIT;
 

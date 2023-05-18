@@ -1,5 +1,6 @@
 ﻿using Shearlegs.Web.API.Brokers.Serializations;
 using Shearlegs.Web.API.Brokers.Storages;
+using Shearlegs.Web.API.Models.Versions;
 using Shearlegs.Web.API.Models.VersionUploads;
 using Shearlegs.Web.API.Models.VersionUploads.DTOs;
 using Shearlegs.Web.API.Models.VersionUploads.Exceptions;

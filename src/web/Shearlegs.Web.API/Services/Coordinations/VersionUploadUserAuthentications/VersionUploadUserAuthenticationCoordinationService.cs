@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Shearlegs.Web.API.Models.UserAuthentications;
+using Shearlegs.Web.API.Models.Versions;
 using Shearlegs.Web.API.Models.VersionUploads;
 using Shearlegs.Web.API.Models.VersionUploads.Params;
 using Shearlegs.Web.API.Services.Orchestrations.UserAuthentications;
@@ -8,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using Version = Shearlegs.Web.API.Models.Versions.Version;
 
 namespace Shearlegs.Web.API.Services.Coordinations.VersionUploadUserAuthentications
 {
@@ -65,6 +67,11 @@ namespace Shearlegs.Web.API.Services.Coordinations.VersionUploadUserAuthenticati
         public async ValueTask<IEnumerable<VersionUpload>> RetrieveAllVersionUploadsAsync()
         {
             return await versionUploadService.RetrieveAllVersionUploadsAsync();
+        }
+
+        public async ValueTask<Version> MigrateVersionUploadToVersionAsync(int versionUploadId)
+        {
+            return await versionUploadService.MigrateVersionUploadToVersionAsync(versionUploadId);
         }
     }
 }

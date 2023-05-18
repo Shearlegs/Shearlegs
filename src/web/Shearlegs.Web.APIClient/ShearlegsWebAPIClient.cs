@@ -5,6 +5,7 @@ using Shearlegs.Web.APIClient.Services.NodeVariablesAPI;
 using Shearlegs.Web.APIClient.Services.PluginsAPI;
 using Shearlegs.Web.APIClient.Services.UserAuthenticationAPI;
 using Shearlegs.Web.APIClient.Services.Users;
+using Shearlegs.Web.APIClient.Services.VersionsAPI;
 using Shearlegs.Web.APIClient.Services.VersionUploadsAPI;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -29,6 +30,7 @@ namespace Shearlegs.Web.APIClient
             Nodes = new(this);
             NodeVariables = new(this);
             VersionUploads = new(this);
+            Versions = new(this);
         }
 
         public void UpdateAuthorization(string jwtToken)
@@ -48,6 +50,7 @@ namespace Shearlegs.Web.APIClient
         public NodesAPIService Nodes { get; }
         public NodeVariablesAPIService NodeVariables { get; }
         public VersionUploadsAPIService VersionUploads { get; }
+        public VersionsAPIService Versions { get; }
 
         internal async ValueTask<T> GetFromJsonAsync<T>(string requestUri)
         {

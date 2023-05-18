@@ -18,6 +18,7 @@ namespace Shearlegs.Web.APIClient.Models.VersionUploads
         public string ErrorMessage { get; set; }
         public DateTimeOffset? ProcessingStartDate { get; set; }
         public DateTimeOffset? ProcessingEndDate { get; set; }
+        public int? VersionId { get; set; }
         public DateTimeOffset CreateDate { get; set; }
 
         public UserInfo User { get; set; }

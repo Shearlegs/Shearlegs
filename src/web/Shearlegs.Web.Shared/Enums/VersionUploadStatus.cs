@@ -5,6 +5,7 @@
         Pending = 0,
         Processing = 1,
         Completed = 2,
-        Failed = 3
+        Failed = 3,
+        Migrated = 4
     }
 }

@@ -12,5 +12,6 @@ namespace Shearlegs.Web.API.Brokers.Storages
         ValueTask<Version> GetVersionAsync(GetVersionsParams @params);
         ValueTask<IEnumerable<Version>> GetVersionsAsync(GetVersionsParams @params);
         ValueTask<VersionContent> SelectVersionContentByIdAsync(int versionId);
+        ValueTask<MigrateVersionUploadToVersionResult> MigrateVersionUploadToVersionAsync(int versionUploadId);
     }
 }

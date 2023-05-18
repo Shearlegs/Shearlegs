@@ -1,5 +1,7 @@
-﻿using Shearlegs.Web.API.Models.VersionUploads;
+﻿using Shearlegs.Web.API.Models.Versions;
+using Shearlegs.Web.API.Models.VersionUploads;
 using Shearlegs.Web.API.Models.VersionUploads.Params;
+using Shearlegs.Web.API.Services.Foundations.Versions;
 using Shearlegs.Web.API.Services.Foundations.VersionUploads;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -9,10 +11,12 @@ namespace Shearlegs.Web.API.Services.Orchestrations.VersionUploads
     public class VersionUploadOrchestrationService : IVersionUploadOrchestrationService
     {
         private readonly IVersionUploadService versionUploadService;
+        private readonly IVersionService versionService;
 
-        public VersionUploadOrchestrationService(IVersionUploadService versionUploadService)
+        public VersionUploadOrchestrationService(IVersionUploadService versionUploadService, IVersionService versionService)
         {
             this.versionUploadService = versionUploadService;
+            this.versionService = versionService;
         }
 
         public async ValueTask<VersionUpload> RetrieveVersionUploadByIdAsync(int versionUploadId)
@@ -62,6 +66,13 @@ namespace Shearlegs.Web.API.Services.Orchestrations.VersionUploads
             VersionUpload versionUpload = await versionUploadService.FinishProcessingVersionUploadAsync(@params);
 
             return versionUpload;
+        }
+
+        public async ValueTask<Version> MigrateVersionUploadToVersionAsync(int versionUploadId)
+        {
+            Version version = await versionService.MigrateVersionUploadToVersionAsync(versionUploadId);
+
+            return version;
         }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RESTFulSense.Controllers;
+using Shearlegs.Web.API.Models.Versions;
+using Shearlegs.Web.API.Models.Versions.Exceptions;
 using Shearlegs.Web.API.Models.VersionUploads;
 using Shearlegs.Web.API.Models.VersionUploads.Exceptions;
 using Shearlegs.Web.API.Services.Managements.VersionUploadUserAuthentications;
@@ -62,6 +64,26 @@ namespace Shearlegs.Web.API.Controllers
             {
                 return NotFound(exception);
             }            
+        }
+
+        [HttpPost("{versionUploadId}/migrate")]
+        public async ValueTask<IActionResult> MigrateVersionUploadToVersionAsync(int versionUploadId)
+        {
+            try
+            {
+                Version version = await versionUploadUserAuthenticationService.MigrateVersionUploadToVersionAsync(versionUploadId);
+
+                return Ok(version);
+            } catch (NotFoundVersionUploadException exception)
+            {
+                return NotFound(exception);
+            } catch (NotFoundVersionException exception)
+            {
+                return NotFound(exception);
+            } catch (AlreadyExistsVersionException exception)
+            {
+                return Conflict(exception);
+            }
         }
     }
 }

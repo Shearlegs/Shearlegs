@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Shearlegs.Web.APIClient.Models;
+using Shearlegs.Web.APIClient.Models.Versions;
 using Shearlegs.Web.APIClient.Models.VersionUploads;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -45,6 +45,13 @@ namespace Shearlegs.Web.APIClient.Services.VersionUploadsAPI
             HttpResponseMessage responseMessage  = await client.PostFileAsync(requestUri, formFile);
             
             return await responseMessage.Content.ReadFromJsonAsync<VersionUpload>();
+        }
+
+        public async ValueTask<Version> MigrateVersionUploadToVersionAsync(int versionUploadId)
+        {
+            string requestUri = $"/versionuploads/{versionUploadId}/migrate";
+
+            return await client.PostAsJsonAsync<Version>(requestUri, null);
         }
     }
 }

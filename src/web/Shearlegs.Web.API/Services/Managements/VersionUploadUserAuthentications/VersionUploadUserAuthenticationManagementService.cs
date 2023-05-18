@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Shearlegs.Web.API.Models.Versions;
 using Shearlegs.Web.API.Models.VersionUploads;
 using Shearlegs.Web.API.Services.Coordinations.VersionUploads;
 using Shearlegs.Web.API.Services.Coordinations.VersionUploadUserAuthentications;
@@ -42,6 +43,11 @@ namespace Shearlegs.Web.API.Services.Managements.VersionUploadUserAuthentication
         public async ValueTask<IEnumerable<VersionUpload>> RetrieveVersionUploadsByUserIdAsync(int userId)
         {
             return await versionUploadUserAuthenticationService.RetrieveVersionUploadsByUserIdAsync(userId);
+        }
+
+        public async ValueTask<Version> MigrateVersionUploadToVersionAsync(int versionUploadId)
+        {
+            return await versionUploadUserAuthenticationService.MigrateVersionUploadToVersionAsync(versionUploadId);
         }
     }
 }

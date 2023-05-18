@@ -8,6 +8,7 @@ namespace Shearlegs.Web.API.Services.Foundations.Versions
     public interface IVersionService
     {
         ValueTask<Version> AddVersionAsync(AddVersionParams @params);
+        ValueTask<Version> MigrateVersionUploadToVersionAsync(int versionUploadId);
         ValueTask<IEnumerable<Version>> RetrieveAllVersionsAsync();
         ValueTask<Version> RetrieveVersionByIdAsync(int versionId);
         ValueTask<VersionContent> RetrieveVersionContentByIdAsync(int versionId);
