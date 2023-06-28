@@ -49,7 +49,7 @@ namespace Shearlegs.Web.Dashboard.Pages.Managements.Users
                 showSuccessAlert = true;
 
                 navigationManager.NavigateTo($"/management/users/{user.Name}");                
-            } catch (ShearlegsWebAPIRequestException exception)
+            } catch (ShearlegsWebAPIRequestException)
             {
                 showErrorAlert = true;
             }

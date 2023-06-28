@@ -36,6 +36,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shearlegs.Samples.Test", "t
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{05D28244-5316-4C73-A730-2D6342407484}"
 	ProjectSection(SolutionItems) = preProject
+		Directory.Build.props = Directory.Build.props
 		props\FrameworkProject.props = props\FrameworkProject.props
 	EndProjectSection
 EndProject
