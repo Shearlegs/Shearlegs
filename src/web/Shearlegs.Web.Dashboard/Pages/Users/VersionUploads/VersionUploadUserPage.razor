@@ -176,11 +176,11 @@
                             </Match>
                         </Condition>
 
-                        <Condition Evaluation="VersionUpload.Status == VersionUploadStatus.Migrated">
+                        <Condition Evaluation="VersionUpload.Status == VersionUploadStatus.Published">
                             <Match>
                                 <MudTimelineItem Color="Color.Primary" TimelineAlign="TimelineAlign.Start">
                                     <MudText Typo="Typo.body2" Align="Align.End">
-                                        <b>MIGRATED</b>
+                                        <b>PUBLISHED</b>
                                     </MudText>
                                     <MudText Typo="Typo.body2" Class="mud-text-secondary" Align="Align.End">
                                         @Version.CreateDate.LocalDateTime
