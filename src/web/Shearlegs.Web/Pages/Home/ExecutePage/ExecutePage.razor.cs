@@ -75,7 +75,7 @@ namespace Shearlegs.Web.Pages.Home.ExecutePage
             StateHasChanged();
 
             string json = await JSRuntime.GetFormDataJsonAsync("parameters");            
-            int resultId = await PluginService.ExecuteVersionAsync(UserService.UserId, Version.Id, json);
+            int resultId = await PluginService.ExecuteVersionAsync(UserService.UserId, UserService.Username, Version.Id, json);
             isExecuting = false;
             NavigationManager.NavigateTo($"/results/{resultId}");
             

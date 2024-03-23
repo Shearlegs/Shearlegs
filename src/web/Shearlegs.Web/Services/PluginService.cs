@@ -23,13 +23,18 @@ namespace Shearlegs.Web.Services
             this.resultsRepository = resultsRepository;
         }
 
-        public async Task<int> ExecuteVersionAsync(int userId, int versionId, string parametersJson)
+        public async Task<int> ExecuteVersionAsync(int userId, string username, int versionId, string parametersJson)
         {
             JObject jObject = JObject.Parse(parametersJson);
             IEnumerable<MPluginSecret> secrets = await versionsRepository.GetVersionSecretsAsync(versionId);
             foreach (MPluginSecret secret in secrets)
             {
                 jObject.Add(secret.Name, JToken.FromObject(secret.Value));
+            }
+
+            if (!jObject.ContainsKey("Username"))
+            {
+                jObject.Add("Username", username);
             }
 
             byte[] content = await versionsRepository.GetVersionPackageContent(versionId);
