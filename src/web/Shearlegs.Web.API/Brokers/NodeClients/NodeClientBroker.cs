@@ -19,10 +19,9 @@ namespace Shearlegs.Web.API.Brokers.NodeClients
 
         public async ValueTask<NodeInfo> GetNodeInfoAsync(NodeCommunicationDetails nodeCommunicationDetails)
         {
-            HttpClient httpClient = new() 
-            {
-                BaseAddress = new Uri(nodeCommunicationDetails.GetBaseAddress())
-            };
+            HttpClient httpClient = httpClientFactory.CreateClient();
+            httpClient.BaseAddress = new Uri(nodeCommunicationDetails.GetBaseAddress());
+
             ShearlegsWebNodeClient nodeClient = new(httpClient);
 
             return await nodeClient.GetNodeInfoAsync();
@@ -30,10 +29,9 @@ namespace Shearlegs.Web.API.Brokers.NodeClients
 
         public async ValueTask<NodeStatistics> GetNodeStatisticsAsync(NodeCommunicationDetails nodeCommunicationDetails)
         {
-            HttpClient httpClient = new()
-            {
-                BaseAddress = new Uri(nodeCommunicationDetails.GetBaseAddress())
-            };
+            HttpClient httpClient = httpClientFactory.CreateClient();
+            httpClient.BaseAddress = new Uri(nodeCommunicationDetails.GetBaseAddress());
+
             ShearlegsWebNodeClient nodeClient = new(httpClient);
 
             return await nodeClient.GetNodeStatisticsAsync();
@@ -41,10 +39,9 @@ namespace Shearlegs.Web.API.Brokers.NodeClients
 
         public async ValueTask<PluginInformation> ProcessPluginAsync(NodeCommunicationDetails nodeCommunicationDetails, ProcessPluginParams @params)
         {
-            HttpClient httpClient = new()
-            {
-                BaseAddress = new Uri(nodeCommunicationDetails.GetBaseAddress())
-            };
+            HttpClient httpClient = httpClientFactory.CreateClient();
+            httpClient.BaseAddress = new Uri(nodeCommunicationDetails.GetBaseAddress());
+
             ShearlegsWebNodeClient nodeClient = new(httpClient);
 
             return await nodeClient.ProcessPluginAsync(@params.PluginFile);
@@ -52,10 +49,9 @@ namespace Shearlegs.Web.API.Brokers.NodeClients
 
         public async ValueTask<string> ExecutePluginAsync(NodeCommunicationDetails nodeCommunicationDetails, ExecutePluginParams @params)
         {
-            HttpClient httpClient = new()
-            {
-                BaseAddress = new Uri(nodeCommunicationDetails.GetBaseAddress())
-            };
+            HttpClient httpClient = httpClientFactory.CreateClient();
+            httpClient.BaseAddress = new Uri(nodeCommunicationDetails.GetBaseAddress());
+
             ShearlegsWebNodeClient nodeClient = new(httpClient);
 
             return await nodeClient.ExecutePluginAsync(@params.PluginFile, @params.ParametersJson);            
