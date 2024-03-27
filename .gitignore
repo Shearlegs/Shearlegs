@@ -365,3 +365,4 @@ MigrationBackup/
 FodyWeavers.xsd
 /src/web/Shearlegs.Web/cache/nuget
 /src/web/Shearlegs.Web.Node/cache/nuget
+/src/web/Shearlegs.Web/.config
