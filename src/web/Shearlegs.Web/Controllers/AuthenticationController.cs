@@ -72,7 +72,8 @@ namespace Shearlegs.Web.Controllers
                 user = await usersRepository.AddUserAsync(new MUser() 
                 { 
                     Name = userService.Username,
-                    Role = RoleConstants.GuestRoleId
+                    Role = RoleConstants.GuestRoleId,
+                    AuthenticationType = AuthenticationConstants.WindowsAuthenticationType,
                 });
             }
 

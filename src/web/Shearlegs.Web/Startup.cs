@@ -20,12 +20,14 @@ namespace Shearlegs.Web
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
             Configuration = configuration;
+            Environment = environment;
         }
 
         public IConfiguration Configuration { get; }
+        public IWebHostEnvironment Environment { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
@@ -53,7 +55,16 @@ namespace Shearlegs.Web
 
             services.AddRazorPages();
             services.AddControllers();
-            services.AddServerSideBlazor();
+            IServerSideBlazorBuilder serverSideBlazorBuilder = services.AddServerSideBlazor();
+            
+            if (Environment.IsDevelopment())
+            {
+                serverSideBlazorBuilder.AddCircuitOptions(options =>
+                {
+                    options.DetailedErrors = true;
+                });
+            }
+
             services.AddAuthorization();
             services.AddAuthorizationCore();
 
@@ -67,9 +78,9 @@ namespace Shearlegs.Web
             } );
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app)
         {
-            if (env.IsDevelopment())
+            if (Environment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
