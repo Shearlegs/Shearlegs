@@ -2,6 +2,7 @@
 using Shearlegs.Web.Models;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
@@ -52,12 +53,7 @@ namespace Shearlegs.Web.Database.Repositories
 
         public async Task<IEnumerable<MResult>> GetUserResultsAsync(int userId)
         {
-            const string sql = "SELECT r.*, v.*, p.*, u.* " +
-                "FROM dbo.Results r " +
-                "JOIN dbo.Versions v ON v.Id = r.VersionId " +
-                "JOIN dbo.Plugins p ON p.Id = v.PluginId " +
-                "JOIN dbo.Users u ON u.Id = r.UserId " +
-                "WHERE r.UserId = @userId;";
+            const string sql = "dbo.GetUserResults";
 
             return await connection.QueryAsync<MResult, MVersion, MPlugin, MUser, MResult>(sql, (r, v, p, u) =>
             {
@@ -65,16 +61,12 @@ namespace Shearlegs.Web.Database.Repositories
                 r.Version.Plugin = p;
                 r.User = u;
                 return r;
-            }, new { userId });
+            }, new { userId }, commandType: CommandType.StoredProcedure);
         }
 
         public async Task<IEnumerable<MResult>> GetResultsAsync()
         {
-            const string sql = "SELECT r.*, v.*, p.*, u.* " +
-                "FROM dbo.Results r " +
-                "JOIN dbo.Versions v ON v.Id = r.VersionId " +
-                "JOIN dbo.Plugins p ON p.Id = v.PluginId " +
-                "JOIN dbo.Users u ON u.Id = r.UserId";
+            const string sql = "dbo.GetResults";
 
             return await connection.QueryAsync<MResult, MVersion, MPlugin, MUser, MResult>(sql, (r, v, p, u) =>
             {
@@ -82,7 +74,7 @@ namespace Shearlegs.Web.Database.Repositories
                 r.Version.Plugin = p;
                 r.User = u;
                 return r;
-            });
+            }, commandType: CommandType.StoredProcedure);
         }
     }
 }

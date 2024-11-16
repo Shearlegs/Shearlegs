@@ -71,6 +71,8 @@
     <Build Include="dbo\tables\PluginSecrets.sql" />
     <Build Include="dbo\tables\Results.sql" />
     <Build Include="dbo\tables\UserPlugins.sql" />
+    <Build Include="dbo\procedures\GetUserResults.sql" />
+    <Build Include="dbo\procedures\GetResults.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Script.PostDeployment.sql" />
