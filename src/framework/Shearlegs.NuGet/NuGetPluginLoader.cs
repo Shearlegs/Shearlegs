@@ -24,7 +24,7 @@ namespace Shearlegs.NuGet
 {
     public class NuGetPluginLoader : IPluginLoader
     {
-        public const string FrameworkName = "net7.0";
+        public const string FrameworkName = "net8.0";
 
         private readonly ILogger<NuGetPluginLoader> logger;
 

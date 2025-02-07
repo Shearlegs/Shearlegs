@@ -1,11 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <PackageDescription>Shearlegs Testing Framework</PackageDescription>
   </PropertyGroup>
 
   <Import Project="$(MSBuildThisFileDirectory)..\..\props\FrameworkProject.props" />
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" />
+  </ItemGroup>
   
   <ItemGroup>
     <ProjectReference Include="..\Shearlegs.Runtime\Shearlegs.Runtime.csproj" />
